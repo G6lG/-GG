@@ -120,7 +120,7 @@
       backdrop-filter: blur(6px);
     }
 
-    /* ✅ Внутреннее свечение внутри карточки (чтобы было видно в меню/контенте) */
+    /* Внутреннее свечение внутри карточки */
     .page::before{
       content: "";
       position: absolute;
@@ -200,6 +200,7 @@
       white-space: nowrap;
       overflow:hidden;
       text-overflow: ellipsis;
+      /* текст убран, оставляем строку на будущее, если захочешь слоган */
     }
 
     .topRight{
@@ -827,7 +828,7 @@
         </div>
         <div class="brandText">
           <h1>Скриншоты</h1>
-          <p>Загрузка, вставка, переименование и скачивание — всё в браузере</p>
+          <p></p>
         </div>
       </div>
 
@@ -909,11 +910,7 @@
 
       <!-- VIEW: Notes -->
       <section class="view" id="viewNotes">
-        <div class="sectionHead" style="margin-top:0;">
-          <div class="help">Заметки сохраняются в IndexedDB (база данных в браузере).</div>
-          <div class="help">Работает на GitHub Pages ✅</div>
-        </div>
-
+        <!-- убрал блок с текстом про IndexedDB / GitHub Pages -->
         <div class="notesWrap">
           <div class="panel">
             <div class="panelHeader">
@@ -1293,7 +1290,6 @@
           const req = store.getAll();
           req.onsuccess = () => {
             const arr = req.result || [];
-            // сортировка: новые сверху
             arr.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0));
             resolve(arr);
           };
@@ -1375,14 +1371,13 @@
         saveStatus.textContent = "Открыто";
         noteMeta.textContent = "Обновлено: " + formatDate(note.updatedAt) + " • Создано: " + formatDate(note.createdAt);
         setEditorEnabled(true);
-        refreshNotesList(); // чтобы подсветить active
+        refreshNotesList();
       }
 
       async function refreshNotesList() {
         const notes = await getAllNotes();
         renderNoteList(notes);
 
-        // если открытая заметка удалена — сброс
         if (currentNoteId != null && !notes.some(n => n.id === currentNoteId)) {
           currentNoteId = null;
           noteTitle.value = "";
@@ -1405,7 +1400,6 @@
       async function saveCurrentNote() {
         if (currentNoteId == null) return;
 
-        // получим текущую заметку
         const notes = await getAllNotes();
         const n = notes.find(x => x.id === currentNoteId);
         if (!n) return;
@@ -1432,7 +1426,6 @@
         showToast("Заметка создана ✅");
         await refreshNotesList();
 
-        // открываем созданную
         const notes = await getAllNotes();
         const created = notes.find(n => n.id === id);
         if (created) loadNoteIntoEditor(created);
@@ -1477,11 +1470,11 @@
           const flake = document.createElement("span");
           flake.className = "snowflake";
 
-          const size = 6 + Math.random() * 12;        // 6–18px
+          const size = 6 + Math.random() * 12;
           const left = Math.random() * 100;
           const startTop = -20 - Math.random() * 140;
-          const fallDuration = 9 + Math.random() * 16; // 9–25s
-          const swayDuration = 4 + Math.random() * 7;  // 4–11s
+          const fallDuration = 9 + Math.random() * 16;
+          const swayDuration = 4 + Math.random() * 7;
           const delay = -Math.random() * fallDuration;
           const op = 0.55 + Math.random() * 0.35;
 
