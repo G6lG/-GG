@@ -1093,7 +1093,7 @@
     }
 
     @media (max-width: 768px){
-      .snow{ display:none; }
+      .snow{ opacity: 0.65; }
     }
 
     /* Views */
@@ -1392,6 +1392,23 @@
       const VIEW_KEY = "shots_view_v1";
       const SOUND_KEY = "shots_sound_v1";
       const MUSIC_KEY = "shots_music_v1";
+
+      function getSafeStorage() {
+        try {
+          const testKey = "__shots_storage_test__";
+          window.localStorage.setItem(testKey, "1");
+          window.localStorage.removeItem(testKey);
+          return window.localStorage;
+        } catch (err) {
+          return {
+            getItem: () => null,
+            setItem: () => {},
+            removeItem: () => {}
+          };
+        }
+      }
+
+      const storage = getSafeStorage();
 
       const fileInput = document.getElementById("fileInput");
       const btnUpload = document.getElementById("btnUpload");
@@ -1692,26 +1709,29 @@
 
       const prefersLight =
         window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
-      const savedTheme = localStorage.getItem(THEME_KEY) || (prefersLight ? "light" : "dark");
+      const savedTheme = storage.getItem(THEME_KEY) || (prefersLight ? "light" : "dark");
       applyTheme(savedTheme);
 
       btnTheme.addEventListener("click", () => {
         const isLight = document.body.classList.contains("theme-light");
         const next = isLight ? "dark" : "light";
         applyTheme(next);
-        localStorage.setItem(THEME_KEY, next);
+        storage.setItem(THEME_KEY, next);
         showToast(next === "dark" ? "Тёмная тема 🌙" : "Светлая тема ☀️");
       });
 
       // =========================
       // Background music
       // =========================
-      let musicEnabled = localStorage.getItem(MUSIC_KEY) !== "off";
+      let musicEnabled = storage.getItem(MUSIC_KEY) !== "off";
 
       function updateMusicButton() {
         if (!btnMusic) return;
         btnMusic.setAttribute("aria-pressed", String(musicEnabled));
-        btnMusic.querySelector("span").textContent = musicEnabled ? "Музыка: Вкл" : "Музыка: Выкл";
+        const label = btnMusic.querySelector("span:last-child") || btnMusic.querySelector("span");
+        if (label) {
+          label.textContent = musicEnabled ? "Музыка: Вкл" : "Музыка: Выкл";
+        }
       }
 
       function tryPlayMusic() {
@@ -1725,7 +1745,7 @@
       if (btnMusic) {
         btnMusic.addEventListener("click", () => {
           musicEnabled = !musicEnabled;
-          localStorage.setItem(MUSIC_KEY, musicEnabled ? "on" : "off");
+          storage.setItem(MUSIC_KEY, musicEnabled ? "on" : "off");
           updateMusicButton();
           if (musicEnabled) tryPlayMusic();
           else if (bgMusic) bgMusic.pause();
@@ -1762,7 +1782,7 @@
         actionsSnake.style.display = isSnake ? "flex" : "none";
         countChip.style.display = isShots ? "inline-flex" : "none";
 
-        localStorage.setItem(VIEW_KEY, name);
+        storage.setItem(VIEW_KEY, name);
         setSnakeActive(isSnake);
       }
 
@@ -1771,7 +1791,7 @@
       tabGame.addEventListener("click", () => setView("game"));
       tabSnake.addEventListener("click", () => setView("snake"));
 
-      const savedViewRaw = localStorage.getItem(VIEW_KEY);
+      const savedViewRaw = storage.getItem(VIEW_KEY);
       const savedView = ["shots", "notes", "game", "snake"].includes(savedViewRaw) ? savedViewRaw : "shots";
       setView(savedView);
 
@@ -1860,6 +1880,14 @@
         btnDeleteNote.disabled = !enabled;
       }
 
+      function clearNoteEditor() {
+        noteTitle.value = "";
+        noteBody.value = "";
+        saveStatus.textContent = "Не выбрано";
+        noteMeta.textContent = "—";
+        setEditorEnabled(false);
+      }
+
       function renderNoteList(notes) {
         noteList.innerHTML = "";
         notesCount.textContent = notes.length + (notes.length === 1 ? " заметка" : (notes.length >= 2 && notes.length <= 4 ? " заметки" : " заметок"));
@@ -1902,13 +1930,14 @@
         const notes = await getAllNotes();
         renderNoteList(notes);
 
-        if (currentNoteId != null && !notes.some(n => n.id === currentNoteId)) {
+        if (currentNoteId == null) {
+          clearNoteEditor();
+          return;
+        }
+
+        if (!notes.some(n => n.id === currentNoteId)) {
           currentNoteId = null;
-          noteTitle.value = "";
-          noteBody.value = "";
-          saveStatus.textContent = "Не выбрано";
-          noteMeta.textContent = "—";
-          setEditorEnabled(false);
+          clearNoteEditor();
         }
       }
 
@@ -1963,6 +1992,7 @@
         await deleteNote(id);
         showToast("Заметка удалена 🗑");
         currentNoteId = null;
+        clearNoteEditor();
         await refreshNotesList();
       });
 
@@ -1986,7 +2016,7 @@
       // Minesweeper
       // =========================
       let audioCtx = null;
-      let soundEnabled = localStorage.getItem(SOUND_KEY) !== "off";
+      let soundEnabled = storage.getItem(SOUND_KEY) !== "off";
 
       function updateSoundButton() {
         if (!btnSound) return;
@@ -2048,7 +2078,7 @@
       if (btnSound) {
         btnSound.addEventListener("click", () => {
           soundEnabled = !soundEnabled;
-          localStorage.setItem(SOUND_KEY, soundEnabled ? "on" : "off");
+          storage.setItem(SOUND_KEY, soundEnabled ? "on" : "off");
           updateSoundButton();
           if (soundEnabled) playSound("open");
         });
@@ -2407,7 +2437,7 @@
       let snakeApplesPositions = [];
       let snakeBody = [];
       let snakeScoreVal = 0;
-      let snakeBestVal = Number(localStorage.getItem(SNAKE_BEST_KEY) || 0);
+      let snakeBestVal = Number(storage.getItem(SNAKE_BEST_KEY) || 0);
       let snakeSpeedMs = 130;
       let snakeApplesCount = 3;
       let snakeCellSize = 20;
@@ -2602,7 +2632,7 @@
           snakeScoreVal += 1;
           if (snakeScoreVal > snakeBestVal) {
             snakeBestVal = snakeScoreVal;
-            localStorage.setItem(SNAKE_BEST_KEY, String(snakeBestVal));
+            storage.setItem(SNAKE_BEST_KEY, String(snakeBestVal));
           }
           updateSnakeHud();
           snakeApplesPositions.splice(appleIndex, 1);
@@ -2789,11 +2819,12 @@
         const reduceMotion =
           window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const lowPower =
-          reduceMotion ||
           (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
           (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
-        document.body.classList.toggle("low-power", !!lowPower);
-        const COUNT = isMobile ? 0 : (lowPower ? 46 : 70);
+        document.body.classList.toggle("low-power", !!lowPower || !!reduceMotion);
+        const COUNT = reduceMotion
+          ? 0
+          : (isMobile ? (lowPower ? 18 : 32) : (lowPower ? 46 : 70));
 
         for (let i = 0; i < COUNT; i++) {
           const flake = document.createElement("span");
