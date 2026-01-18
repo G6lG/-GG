@@ -1,2865 +1,2513 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <title>Скриншоты — Notion Style</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <style>
-    :root{
-      --bg:#050814;
-      --page:#070b18;
-      --text:#e5e7eb;
-      --muted:#9aa7bd;
-
-      --border: rgba(226, 232, 240, 0.10);
-      --border2: rgba(226, 232, 240, 0.18);
-
-      --card:#070b18;
-      --card2:#0b1226;
-
-      --shadow: 0 30px 90px rgba(0,0,0,0.65);
-      --shadow2: 0 18px 50px rgba(0,0,0,0.55);
-
-      --radius-xl: 22px;
-      --radius-lg: 16px;
-      --radius-md: 14px;
-
-      --btn:#0b1226;
-      --btn-hover:#111a33;
-
-      --primary:#f8fafc;
-      --primaryText:#050814;
-
-      --chip:#111a33;
-      --chipText:#c7d2fe;
-
-      --mx: 50%;
-      --my: 20%;
-      --flake-img: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><radialGradient id='g' cx='50%25' cy='50%25' r='60%25'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='60%25' stop-color='%23e9f6ff'/><stop offset='100%25' stop-color='%23cfeaff'/></radialGradient></defs><g stroke='url(%23g)' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'><g id='a'><line x1='100' y1='100' x2='100' y2='12'/><line x1='100' y1='28' x2='88' y2='18'/><line x1='100' y1='28' x2='112' y2='18'/><line x1='100' y1='50' x2='86' y2='42'/><line x1='100' y1='50' x2='114' y2='42'/><line x1='100' y1='72' x2='90' y2='66'/><line x1='100' y1='72' x2='110' y2='66'/></g><use href='%23a'/><use href='%23a' transform='rotate(60 100 100)'/><use href='%23a' transform='rotate(120 100 100)'/><use href='%23a' transform='rotate(180 100 100)'/><use href='%23a' transform='rotate(240 100 100)'/><use href='%23a' transform='rotate(300 100 100)'/></g><circle cx='100' cy='100' r='6' fill='%23ffffff'/></svg>");
-    }
-
-    body.theme-light{
-      --bg:#f5f6f8;
-      --page:#ffffff;
-      --text:#0f172a;
-      --muted:#64748b;
-
-      --border: rgba(15, 23, 42, 0.10);
-      --border2: rgba(15, 23, 42, 0.16);
-
-      --card:#ffffff;
-      --card2:#f7f8fb;
-
-      --shadow: 0 26px 70px rgba(2, 6, 23, 0.10);
-      --shadow2: 0 14px 40px rgba(2, 6, 23, 0.10);
-
-      --btn:#fbfcfe;
-      --btn-hover:#f2f5fb;
-
-      --primary:#0f172a;
-      --primaryText:#f8fafc;
-
-      --chip:#eef2ff;
-      --chipText:#3730a3;
-    }
-
-    *{ box-sizing:border-box; margin:0; padding:0; }
-    html, body{ height:100%; }
-
-    body{
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display:flex;
-      justify-content:center;
-      padding: 24px 12px 46px;
-      transition: background .18s ease, color .18s ease;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* ✨ Внешнее свечение (фон) */
-    body::before{
-      content:"";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background:
-        radial-gradient(720px 420px at var(--mx) var(--my),
-          rgba(99,102,241,0.22),
-          rgba(99,102,241,0.10) 40%,
-          rgba(99,102,241,0.00) 74%),
-        radial-gradient(520px 320px at calc(var(--mx) + 10%) calc(var(--my) + 16%),
-          rgba(56,189,248,0.14),
-          rgba(56,189,248,0.00) 70%);
-      opacity: 0.82;
-      transition: opacity .25s ease;
-    }
-
-    /* СНЕГ на фоне */
-    .snow{
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    /* Карточка приложения */
-    .page{
-      width: 100%;
-      max-width: 1000px;
-      background: var(--page);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-      z-index: 2;
-      backdrop-filter: blur(6px);
-    }
-
-    /* Внутреннее свечение внутри карточки */
-    .page::before{
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background:
-        radial-gradient(520px 320px at var(--mx) var(--my),
-          rgba(99,102,241,0.16),
-          rgba(99,102,241,0.00) 66%),
-        radial-gradient(380px 240px at calc(var(--mx) + 10%) calc(var(--my) + 20%),
-          rgba(56,189,248,0.10),
-          rgba(56,189,248,0.00) 72%);
-      opacity: 0.62;
-      mix-blend-mode: screen;
-    }
-    body.theme-light .page::before{
-      opacity: 0.55;
-      mix-blend-mode: normal;
-    }
-
-    /* Top bar */
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--border);
-      background:
-        linear-gradient(to bottom, rgba(255,255,255,0.07), rgba(255,255,255,0.00));
-      position: relative;
-      z-index: 1;
-    }
-    body.theme-light .topbar{
-      background:
-        linear-gradient(to bottom, rgba(255,255,255,0.70), rgba(255,255,255,0.00));
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .logo{
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      border: 1px solid var(--border2);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background: var(--card2);
-      box-shadow: var(--shadow2);
-      flex: 0 0 auto;
-    }
-
-    .brandText{
-      display:flex;
-      flex-direction:column;
-      gap: 2px;
-      min-width: 0;
-    }
-    .brandText h1{
-      font-size: 16px;
-      font-weight: 750;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .brandText p{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      /* текст убран, оставляем строку на будущее, если захочешь слоган */
-    }
-
-    .topRight{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-end;
-    }
-
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: var(--chip);
-      color: var(--chipText);
-      font-size: 12px;
-      border: 1px solid var(--border);
-      user-select:none;
-      white-space:nowrap;
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      gap: 9px;
-      padding: 9px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border2);
-      background: var(--btn);
-      color: var(--text);
-      cursor: pointer;
-      transition:
-        transform .10s ease,
-        background .14s ease,
-        box-shadow .14s ease,
-        border-color .14s ease,
-        filter .14s ease;
-      box-shadow: 0 1px 0 rgba(2,6,23,0.06);
-      user-select:none;
-      font-size: 13px;
-      outline: none;
-    }
-
-    .btn:hover{
-      background: var(--btn-hover);
-      border-color: var(--border2);
-      box-shadow: 0 14px 34px rgba(2,6,23,0.12);
-      transform: translateY(-1px);
-    }
-
-    .btn:active{
-      transform: translateY(0px);
-      box-shadow: 0 6px 18px rgba(2,6,23,0.12);
-    }
-
-    .btnPrimary{
-      background: var(--primary);
-      color: var(--primaryText);
-      border-color: transparent;
-      box-shadow: 0 18px 44px rgba(2,6,23,0.16);
-    }
-    body.theme-light .btnPrimary{
-      box-shadow: 0 18px 44px rgba(2,6,23,0.16);
-    }
-    .btnPrimary:hover{
-      filter: brightness(0.98);
-      box-shadow: 0 22px 52px rgba(2,6,23,0.18);
-    }
-
-    .btnGhost{
-      background: transparent;
-      border-style: dashed;
-      box-shadow: none;
-    }
-    .btnGhost:hover{
-      background: var(--btn-hover);
-      border-style: dashed;
-      box-shadow: 0 14px 34px rgba(2,6,23,0.10);
-    }
-
-    .btn:focus-visible{
-      outline: none;
-      box-shadow:
-        0 0 0 3px rgba(99,102,241,0.22),
-        0 0 0 1px rgba(15,23,42,0.42),
-        0 18px 44px rgba(2,6,23,0.12);
-      transform: translateY(-1px);
-    }
-
-    /* Tabs */
-    .tabs{
-      display:inline-flex;
-      align-items:center;
-      gap: 6px;
-      padding: 6px;
-      border-radius: 999px;
-      border: 1px solid var(--border2);
-      background: var(--card2);
-      box-shadow: var(--shadow2);
-    }
-
-    .tab{
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      font-size: 12.5px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      transition: background .14s ease, color .14s ease, transform .10s ease;
-      outline: none;
-    }
-
-    .tab:hover{
-      background: rgba(255,255,255,0.08);
-      transform: translateY(-1px);
-      color: var(--text);
-    }
-    body.theme-light .tab:hover{
-      background: rgba(15,23,42,0.06);
-    }
-
-    .tab.active{
-      background: var(--btn);
-      border: 1px solid var(--border2);
-      color: var(--text);
-      box-shadow: 0 14px 34px rgba(2,6,23,0.10);
-    }
-
-    /* ICONS (mask) */
-    .icon{
-      width: 18px;
-      height: 18px;
-      display: inline-block;
-      background-color: currentColor;
-      mask-size: contain;
-      mask-repeat: no-repeat;
-      mask-position: center;
-      opacity: 0.92;
-      transition: transform 0.18s ease, opacity 0.18s ease;
-    }
-    .btnGhost .icon{ opacity: 0.84; }
-    .btn:hover .icon{ opacity: 1; }
-    .btn:hover .icon-upload{ transform: translateY(-2px); }
-    .btn:hover .icon-trash{ transform: rotate(-9deg) translateY(-1px); }
-    .btn:hover .icon-theme{ transform: rotate(12deg); }
-    .btn:hover .icon-download{ transform: translateY(1px); }
-    .btn:active .icon{ transform: scale(0.97); opacity: 0.92; }
-    .btn:focus-visible .icon{ transform: translateY(-1px); opacity: 1; }
-
-    .icon-app{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h10V5H7z'/>\
-</svg>");
-    }
-    .icon-upload{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M12 3l5 5-1.4 1.4L13 6.8V16h-2V6.8L8.4 9.4 7 8l5-5zM4 19h16v2H4v-2z'/>\
-</svg>");
-    }
-    .icon-trash{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v10h-2V9zm4 0h2v10h-2V9z'/>\
-</svg>");
-    }
-    .icon-theme{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8z'/>\
-</svg>");
-    }
-    .icon-download{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M11 3h2v9l3-3 1.4 1.4L12 16.8 6.6 10.4 8 9l3 3V3zM4 19h16v2H4v-2z'/>\
-</svg>");
-    }
-    .icon-photos{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M4 6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v10h10V6H6zm12 3h2v9a2 2 0 0 1-2 2H9v-2h9V9z'/>\
-</svg>");
-    }
-    .icon-notes{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h10V5H7zm2 3h6v2H9V8zm0 4h6v2H9v-2z'/>\
-</svg>");
-    }
-    .icon-game{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z'/>\
-</svg>");
-    }
-    .icon-snake{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M6 6h7a3 3 0 0 1 0 6H9a1 1 0 0 0 0 2h6a4 4 0 0 1 0 8H8v-2h7a2 2 0 0 0 0-4H9a3 3 0 0 1 0-6h4a1 1 0 1 0 0-2H6V6z'/>\
-</svg>");
-    }
-    .icon-plus{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z'/>\
-</svg>");
-    }
-    .icon-music{
-      mask-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-<path fill='black' d='M16 3v10.2a2.8 2.8 0 1 1-2-2.68V5.5L8 7v6.2a2.8 2.8 0 1 1-2-2.68V5l10-2z'/>\
-</svg>");
-    }
-
-    /* Content */
-    .content{
-      padding: 18px;
-      position: relative;
-      z-index: 1;
-      background:
-        radial-gradient(900px 520px at 30% -10%, rgba(99,102,241,0.12), transparent 60%),
-        radial-gradient(900px 520px at 70% 0%, rgba(56,189,248,0.10), transparent 60%);
-    }
-    body.theme-light .content{
-      background:
-        radial-gradient(900px 500px at 30% -10%, rgba(99,102,241,0.06), transparent 60%),
-        radial-gradient(900px 500px at 70% 0%, rgba(56,189,248,0.06), transparent 60%);
-    }
-
-    @media (min-width: 860px){
-      .topbar{ padding: 16px 22px; }
-      .content{ padding: 22px; }
-      .brandText h1{ font-size: 17px; }
-    }
-
-    /* Screens tab UI */
-    .dropzone{
-      border-radius: var(--radius-lg);
-      border: 1px dashed var(--border2);
-      background: var(--card2);
-      padding: 18px 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 16px;
-      cursor: pointer;
-      transition: background .14s ease, border-color .14s ease, box-shadow .14s ease, transform .14s ease;
-      box-shadow: 0 10px 30px rgba(2,6,23,0.08);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .dropzone::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background: radial-gradient(420px 240px at 30% 20%, rgba(99,102,241,0.14), transparent 60%);
-      opacity: 0;
-      transition: opacity .18s ease;
-      pointer-events:none;
-    }
-
-    .dropzone:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 18px 44px rgba(2,6,23,0.12);
-    }
-    .dropzone:hover::before{ opacity: 1; }
-    .dropzone.dragover{
-      border-color: rgba(99,102,241,0.9);
-      box-shadow: 0 22px 52px rgba(2,6,23,0.14);
-    }
-
-    .dzMain{ display:flex; flex-direction:column; gap:4px; position:relative; z-index:1; }
-    .dzTitle{ font-weight: 700; font-size: 14px; letter-spacing:-0.02em; }
-    .dzSub{ font-size: 12px; color: var(--muted); }
-    .dzTag{ font-size: 12px; color: var(--muted); white-space:nowrap; position:relative; z-index:1; }
-
-    .sectionHead{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      margin-top: 14px;
-      margin-bottom: 10px;
-    }
-    .sectionHead .help{
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .empty{
-      margin-top: 12px;
-      border-radius: var(--radius-lg);
-      border: 1px dashed var(--border);
-      background: var(--card2);
-      padding: 16px;
-      color: var(--muted);
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-    }
-    .empty strong{ color: var(--text); }
-
-    .grid{
-      display:grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 14px;
-      margin-top: 12px;
-    }
-    @media (min-width: 820px){
-      .grid{ grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
-    }
-
-    .card{
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background: var(--card);
-      overflow: hidden;
-      box-shadow: var(--shadow2);
-      transform: translateZ(0);
-      animation: pop .16s ease-out;
-    }
-    @keyframes pop{
-      from{ transform: translateY(8px); opacity: 0.0; }
-      to{ transform: translateY(0); opacity: 1; }
-    }
-
-    .preview{
-      border-bottom: 1px solid var(--border);
-      background: #0b1020;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height: 140px;
-      max-height: 320px;
-      overflow: hidden;
-    }
-    .preview img{
-      max-width: 100%;
-      max-height: 320px;
-      display:block;
-    }
-
-    .meta{
-      padding: 12px 12px 12px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-
-    .row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .label{
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
-
-    .nameWrap{
-      display:flex;
-      align-items:center;
-      gap: 6px;
-      border: 1px solid var(--border2);
-      background: var(--btn);
-      border-radius: 999px;
-      padding: 7px 10px;
-      width: 100%;
-    }
-
-    .nameInput{
-      border:none;
-      outline:none;
-      background: transparent;
-      color: var(--text);
-      width: 100%;
-      font-size: 13px;
-    }
-
-    .ext{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .mini{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .actions{
-      display:flex;
-      justify-content:flex-end;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* Notes tab */
-    .notesWrap{
-      display:grid;
-      grid-template-columns: 320px minmax(0,1fr);
-      gap: 14px;
-      margin-top: 14px;
-    }
-    @media (max-width: 860px){
-      .notesWrap{
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .panel{
-      border: 1px solid var(--border);
-      background: var(--card2);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 10px 30px rgba(2,6,23,0.08);
-      overflow: hidden;
-    }
-
-    .panelHeader{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      padding: 12px 12px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-    }
-    body.theme-light .panelHeader{
-      background: rgba(15,23,42,0.03);
-    }
-
-    .panelHeader .title{
-      font-weight: 750;
-      letter-spacing: -0.01em;
-      font-size: 13px;
-      color: var(--text);
-      display:flex;
-      align-items:center;
-      gap: 8px;
-    }
-
-    .noteList{
-      max-height: 520px;
-      overflow: auto;
-      padding: 8px;
-    }
-    .noteItem{
-      border: 1px solid var(--border);
-      background: var(--page);
-      border-radius: 14px;
-      padding: 10px 10px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: transform .10s ease, box-shadow .14s ease, background .14s ease;
-    }
-    .noteItem:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 14px 34px rgba(2,6,23,0.12);
-    }
-    .noteItem.active{
-      border-color: rgba(99,102,241,0.55);
-      box-shadow: 0 14px 34px rgba(99,102,241,0.12);
-    }
-    .noteItem .h{
-      font-weight: 750;
-      font-size: 13px;
-      color: var(--text);
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .noteItem .m{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .editor{
-      padding: 12px;
-    }
-
-    .fieldLabel{
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      margin-bottom: 6px;
-    }
-
-    .input, .textarea{
-      width: 100%;
-      border: 1px solid var(--border2);
-      background: var(--page);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 10px 12px;
-      outline: none;
-      transition: box-shadow .14s ease, border-color .14s ease;
-      font-size: 13px;
-    }
-
-    .textarea{
-      min-height: 320px;
-      resize: vertical;
-      line-height: 1.45;
-    }
-
-    .input:focus, .textarea:focus{
-      border-color: rgba(99,102,241,0.65);
-      box-shadow:
-        0 0 0 3px rgba(99,102,241,0.18),
-        0 0 0 1px rgba(15,23,42,0.30);
-    }
-
-    .editorActions{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .status{
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* Game tab */
-    .gameWrap{
-      display:grid;
-      grid-template-columns: minmax(0,1fr) 280px;
-      gap: 14px;
-      margin-top: 14px;
-      align-items: start;
-    }
-    @media (max-width: 960px){
-      .gameWrap{
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .boardWrap{
-      padding: 12px;
-    }
-
-    .mineBoard{
-      --cols: 9;
-      display:grid;
-      grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-      gap: 6px;
-      padding: 12px;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: var(--card2);
-      width: min(100%, 460px);
-      margin: 0 auto;
-    }
-
-    .cell{
-      aspect-ratio: 1 / 1;
-      border-radius: 10px;
-      border: 1px solid var(--border2);
-      background: var(--btn);
-      color: var(--text);
-      position: relative;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      user-select: none;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transition: background .12s ease, transform .08s ease, box-shadow .12s ease, border-color .12s ease;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 6px 14px rgba(2,6,23,0.12);
-    }
-    .cell:hover{ transform: translateY(-1px); }
-    .cell:active{ transform: translateY(0); }
-    .cell.revealed{
-      background: var(--page);
-      border-color: var(--border);
-      cursor: default;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-    }
-    .cell.flagged{ color: #ef4444; }
-    .cell.flagged::before{
-      content: "";
-      position: absolute;
-      width: 2px;
-      height: 14px;
-      left: calc(50% - 7px);
-      top: calc(50% - 7px);
-      background: #e2e8f0;
-      border-radius: 2px;
-      box-shadow: 0 1px 2px rgba(2,6,23,0.25);
-    }
-    .cell.flagged::after{
-      content: "";
-      position: absolute;
-      width: 10px;
-      height: 8px;
-      left: calc(50% - 6px);
-      top: calc(50% - 7px);
-      background: #ef4444;
-      clip-path: polygon(0 0, 100% 25%, 0 50%, 100% 75%, 0 100%);
-      border-radius: 2px;
-    }
-    .cell.question{ color: #f59e0b; }
-    .cell.mine.revealed{ color: #ef4444; }
-    .cell.n1{ color: #38bdf8; }
-    .cell.n2{ color: #22c55e; }
-    .cell.n3{ color: #f97316; }
-    .cell.n4{ color: #a855f7; }
-    .cell.n5{ color: #e11d48; }
-
-    .gameHud{
-      padding: 12px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-    .statRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .statRow strong{
-      color: var(--text);
-      font-weight: 700;
-    }
-    .gameActions{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:center;
-    }
-    .gameInputs{
-      display:flex;
-      gap: 6px;
-      align-items:center;
-      padding: 6px 8px;
-      border-radius: 999px;
-      border: 1px dashed var(--border2);
-      background: var(--card2);
-    }
-    .gameInput{
-      display:flex;
-      align-items:center;
-      gap: 6px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--btn);
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .gameInput span{
-      font-weight: 700;
-      color: var(--text);
-    }
-    .gameInput input{
-      width: 46px;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 12px;
-      text-align: center;
-    }
-    .tabs.compact{
-      padding: 4px;
-      gap: 4px;
-    }
-    .tabs.compact .tab{
-      font-size: 12px;
-      padding: 6px 10px;
-    }
-    .gameHelp{
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* Snake tab */
-    .snakeWrap{
-      display:grid;
-      grid-template-columns: minmax(0,1fr) 280px;
-      gap: 14px;
-      margin-top: 14px;
-      align-items: start;
-    }
-    @media (max-width: 960px){
-      .snakeWrap{
-        grid-template-columns: 1fr;
-      }
-    }
-    .snakeBoard{
-      padding: 12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .snakeCanvas{
-      width: min(100%, 420px);
-      aspect-ratio: 1 / 1;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: var(--card2);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-      display:block;
-    }
-    .snakeHud{
-      padding: 12px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-    .snakePad{
-      margin-top: 6px;
-      display:grid;
-      grid-template-columns: repeat(3, 44px);
-      grid-template-rows: repeat(3, 44px);
-      gap: 6px;
-      justify-content:center;
-    }
-    .snakePadSpacer{
-      width: 44px;
-      height: 44px;
-    }
-    .snakeBtn{
-      border-radius: 12px;
-      border: 1px solid var(--border2);
-      background: var(--btn);
-      color: var(--text);
-      font-size: 12px;
-      cursor: pointer;
-      transition: background .14s ease, transform .10s ease;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      user-select: none;
-    }
-    .snakeBtn:hover{ background: var(--btn-hover); transform: translateY(-1px); }
-    .snakeBtn:active{ transform: translateY(0); }
-    .snakeInputs{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      padding: 6px 8px;
-      border-radius: 999px;
-      border: 1px dashed var(--border2);
-      background: var(--card2);
-    }
-    .snakeInput{
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--btn);
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .snakeInput span{
-      font-weight: 700;
-      color: var(--text);
-      white-space: nowrap;
-    }
-    .snakeInput input[type="number"]{
-      width: 44px;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 12px;
-      text-align: center;
-    }
-    .snakeInput input[type="range"]{
-      width: 110px;
-    }
-    .snakeInput em{
-      font-style: normal;
-      color: var(--muted);
-      font-size: 11px;
-      white-space: nowrap;
-    }
-
-    /* toast */
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      background: var(--primary);
-      color: var(--primaryText);
-      padding: 9px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      box-shadow: 0 18px 44px rgba(0,0,0,0.35);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .16s ease, transform .16s ease;
-      z-index: 50;
-      max-width: 92%;
-      text-align:center;
-    }
-    .toast.show{
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateX(-50%) translateY(-4px);
-    }
-
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.08);
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    body.theme-light .kbd{
-      background: rgba(15,23,42,0.06);
-    }
-
-    /* ❄️ снежинки — крупнее + glow + twinkle */
-    .snowflake{
-      position: absolute;
-      top: -12vh;
-      left: 0;
-      background-image: var(--flake-img);
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-position: center;
-      filter:
-        drop-shadow(0 0 8px rgba(255,255,255,0.45))
-        blur(var(--blur, 0.20px));
-      opacity: var(--op, 0.85);
-      animation-name: snow-fall, snow-sway, snow-twinkle;
-      animation-timing-function: linear, ease-in-out, ease-in-out;
-      animation-iteration-count: infinite, infinite, infinite;
-      transform-origin: center;
-      will-change: transform, opacity, margin-left;
-    }
-    body.theme-light .snowflake{
-      filter:
-        drop-shadow(0 0 6px rgba(255,255,255,0.30))
-        blur(var(--blur, 0.20px));
-      opacity: 0.65;
-    }
-    body.low-power .snowflake{
-      filter: blur(var(--blur, 0.20px));
-    }
-
-    @keyframes snow-fall{
-      0%{ transform: translateY(0) rotate(0deg); }
-      100%{ transform: translateY(120vh) rotate(var(--spin, 180deg)); }
-    }
-    @keyframes snow-sway{
-      0%{ margin-left: 0px; }
-      50%{ margin-left: var(--drift, 24px); }
-      100%{ margin-left: 0px; }
-    }
-    @keyframes snow-twinkle{
-      0%,100%{ opacity: var(--op, 0.8); }
-      50%{ opacity: calc(var(--op, 0.8) + 0.12); }
-    }
-
-    @media (max-width: 768px){
-      .snow{ opacity: 0.65; }
-    }
-
-    /* Views */
-    .view{ display:none; }
-    .view.active{ display:block; }
-  </style>
-</head>
-
-<body>
-  <div class="snow"></div>
-
-  <div class="page">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">
-          <span class="icon icon-app"></span>
-        </div>
-        <div class="brandText">
-          <h1>Скриншоты</h1>
-          <p></p>
-        </div>
-      </div>
-
-      <div class="topRight">
-        <div class="tabs" role="tablist" aria-label="Вкладки">
-          <button class="tab active" id="tabShots" role="tab" aria-selected="true">
-            <span class="icon icon-photos"></span>
-            <span>Скриншоты</span>
-          </button>
-          <button class="tab" id="tabNotes" role="tab" aria-selected="false">
-            <span class="icon icon-notes"></span>
-            <span>Заметки</span>
-          </button>
-          <button class="tab" id="tabGame" role="tab" aria-selected="false">
-            <span class="icon icon-game"></span>
-            <span>Сапер</span>
-          </button>
-          <button class="tab" id="tabSnake" role="tab" aria-selected="false">
-            <span class="icon icon-snake"></span>
-            <span>Змейка</span>
-          </button>
-        </div>
-
-        <span class="chip" id="countChip">0 файлов</span>
-
-        <!-- actions for screenshots -->
-        <div id="actionsShots" style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn btnPrimary" id="btnUpload">
-            <span class="icon icon-upload"></span>
-            <span>Загрузить</span>
-          </button>
-
-          <button class="btn btnGhost" id="btnClear">
-            <span class="icon icon-trash"></span>
-            <span>Очистить</span>
-          </button>
-        </div>
-
-        <!-- actions for notes -->
-        <div id="actionsNotes" style="display:none; gap:10px; flex-wrap:wrap;">
-          <button class="btn btnPrimary" id="btnNewNote">
-            <span class="icon icon-plus"></span>
-            <span>Новая</span>
-          </button>
-          <button class="btn btnGhost" id="btnDeleteNote">
-            <span class="icon icon-trash"></span>
-            <span>Удалить</span>
-          </button>
-        </div>
-
-        <!-- actions for game -->
-        <div id="actionsGame" style="display:none; gap:10px; flex-wrap:wrap; align-items:center;">
-          <div class="gameInputs" aria-label="Параметры поля">
-            <label class="gameInput">
-              <span>Р</span>
-              <input id="rowsInput" type="number" min="6" max="24" value="9" aria-label="Ряды" />
-            </label>
-            <label class="gameInput">
-              <span>К</span>
-              <input id="colsInput" type="number" min="6" max="24" value="9" aria-label="Колонки" />
-            </label>
-            <label class="gameInput">
-              <span>М</span>
-              <input id="minesInput" type="number" min="1" max="99" value="10" aria-label="Мины" />
-            </label>
-          </div>
-          <button class="btn btnPrimary" id="btnApplyGame">
-            <span class="icon icon-plus"></span>
-            <span>Создать</span>
-          </button>
-          <button class="btn btnGhost" id="btnRestartGame">
-            <span>Рестарт</span>
-          </button>
-          <button class="btn btnGhost" id="btnSound" aria-pressed="true">
-            <span>Звук: Вкл</span>
-          </button>
-        </div>
-
-        <!-- actions for snake -->
-        <div id="actionsSnake" style="display:none; gap:10px; flex-wrap:wrap; align-items:center;">
-          <button class="btn btnPrimary" id="btnSnakeStart">
-            <span>Старт</span>
-          </button>
-          <button class="btn btnGhost" id="btnSnakeRestart">
-            <span>Рестарт</span>
-          </button>
-          <div class="snakeInputs" aria-label="Настройки змейки">
-            <label class="snakeInput">
-              <span>Скорость</span>
-              <input id="snakeSpeed" type="range" min="60" max="220" step="10" value="130" />
-              <em id="snakeSpeedValue">130мс</em>
-            </label>
-            <label class="snakeInput">
-              <span>Яблоки</span>
-              <input id="snakeApples" type="number" min="1" max="6" value="3" />
-            </label>
-          </div>
-          <button class="btn btnGhost" id="btnSnakeEditor" aria-pressed="false">
-            <span>Редактор: Выкл</span>
-          </button>
-          <button class="btn btnGhost" id="btnSnakeClear">
-            <span>Очистить</span>
-          </button>
-        </div>
-
-        <button class="btn" id="btnTheme" title="Переключить тему">
-          <span class="icon icon-theme"></span>
-          <span>Тема</span>
-        </button>
-        <button class="btn" id="btnMusic" title="Музыка" aria-pressed="true">
-          <span class="icon icon-music"></span>
-          <span>Музыка: Вкл</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="content">
-      <!-- VIEW: Screenshots -->
-      <section class="view active" id="viewShots">
-        <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Зона загрузки">
-          <div class="dzMain">
-            <div class="dzTitle">Перетащите изображения, нажмите «Загрузить» или вставьте из буфера</div>
-            <div class="dzSub">
-              Поддержка: PNG, JPG, GIF, WEBP, SVG, BMP, TIFF и другие.
-              Горячие клавиши: <span class="kbd">Ctrl</span> + <span class="kbd">V</span> / <span class="kbd">Cmd</span> + <span class="kbd">V</span>
-            </div>
-          </div>
-          <div class="dzTag">Drag &amp; Drop • Paste</div>
-        </div>
-
-        <div class="sectionHead">
-          <div class="help">Совет: можно вставлять сразу несколько изображений.</div>
-          <div class="help" id="supportText">Принимаем любые <code>image/*</code></div>
-        </div>
-
-        <div class="empty" id="empty">
-          <div>📝</div>
-          <div>
-            <strong>Здесь пока пусто.</strong><br/>
-            Загрузите файл, перетащите его или вставьте скриншот — и он появится здесь.
-          </div>
-        </div>
-
-        <div class="grid" id="grid" aria-live="polite"></div>
-      </section>
-
-      <!-- VIEW: Notes -->
-      <section class="view" id="viewNotes">
-        <!-- убрал блок с текстом про IndexedDB / GitHub Pages -->
-        <div class="notesWrap">
-          <div class="panel">
-            <div class="panelHeader">
-              <div class="title">
-                <span class="icon icon-notes"></span>
-                <span>Мои заметки</span>
-              </div>
-              <div class="status" id="notesCount">0</div>
-            </div>
-            <div class="noteList" id="noteList"></div>
-          </div>
-
-          <div class="panel">
-            <div class="panelHeader">
-              <div class="title">
-                <span class="icon icon-notes"></span>
-                <span>Редактор</span>
-              </div>
-              <div class="status" id="saveStatus">Не выбрано</div>
-            </div>
-
-            <div class="editor">
-              <div class="fieldLabel">Заголовок</div>
-              <input class="input" id="noteTitle" placeholder="Например: Идеи для проекта" />
-
-              <div style="height:10px"></div>
-
-              <div class="fieldLabel">Текст</div>
-              <textarea class="textarea" id="noteBody" placeholder="Пишите заметку..."></textarea>
-
-              <div class="editorActions">
-                <div class="status" id="noteMeta">—</div>
-                <div class="status">Автосохранение включено</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- VIEW: Game -->
-      <section class="view" id="viewGame">
-        <div class="gameWrap">
-          <div class="panel">
-            <div class="panelHeader">
-              <div class="title">
-                <span class="icon icon-game"></span>
-                <span>Сапер</span>
-              </div>
-              <div class="status" id="gameStatus">Готово</div>
-            </div>
-            <div class="boardWrap">
-              <div class="mineBoard" id="mineBoard" aria-label="Поле сапера"></div>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="panelHeader">
-              <div class="title">
-                <span class="icon icon-game"></span>
-                <span>Инфо</span>
-              </div>
-              <div class="status" id="gameResult"></div>
-            </div>
-            <div class="gameHud">
-              <div class="statRow"><span>Мины</span><strong id="minesLeft">0</strong></div>
-              <div class="statRow"><span>Время</span><strong id="gameTime">0с</strong></div>
-              <div class="gameHelp">ЛКМ - открыть, ПКМ - флаг / ?.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- VIEW: Snake -->
-      <section class="view" id="viewSnake">
-        <div class="snakeWrap">
-          <div class="panel">
-            <div class="panelHeader">
-              <div class="title">
-                <span class="icon icon-snake"></span>
-                <span>Змейка</span>
-              </div>
-              <div class="status" id="snakeStatus">Готово</div>
-            </div>
-            <div class="snakeBoard">
-              <canvas class="snakeCanvas" id="snakeCanvas" aria-label="Поле змейки"></canvas>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="panelHeader">
-              <div class="title">
-                <span class="icon icon-snake"></span>
-                <span>Инфо</span>
-              </div>
-              <div class="status" id="snakeResult"></div>
-            </div>
-            <div class="snakeHud">
-              <div class="statRow"><span>Счет</span><strong id="snakeScore">0</strong></div>
-              <div class="statRow"><span>Лучший</span><strong id="snakeBest">0</strong></div>
-              <div class="gameHelp">Стрелки или WASD.</div>
-              <div class="snakePad" id="snakePad" aria-label="Управление змейкой">
-                <span class="snakePadSpacer"></span>
-                <button class="snakeBtn" data-dir="up">▲</button>
-                <span class="snakePadSpacer"></span>
-                <button class="snakeBtn" data-dir="left">◀</button>
-                <span class="snakePadSpacer"></span>
-                <button class="snakeBtn" data-dir="right">▶</button>
-                <span class="snakePadSpacer"></span>
-                <button class="snakeBtn" data-dir="down">▼</button>
-                <span class="snakePadSpacer"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <input id="fileInput" type="file" accept="image/*" multiple hidden />
-  <audio id="bgMusic" src="77a2d7c5-7aed-4740-b68f-2e8280497e27.mp3" preload="auto" loop></audio>
-  <div class="toast" id="toast"></div>
-
-  <script>
-    (function () {
-      const THEME_KEY = "shots_theme_v4";
-      const VIEW_KEY = "shots_view_v1";
-      const SOUND_KEY = "shots_sound_v1";
-      const MUSIC_KEY = "shots_music_v1";
-
-      function getSafeStorage() {
-        try {
-          const testKey = "__shots_storage_test__";
-          window.localStorage.setItem(testKey, "1");
-          window.localStorage.removeItem(testKey);
-          return window.localStorage;
-        } catch (err) {
-          return {
-            getItem: () => null,
-            setItem: () => {},
-            removeItem: () => {}
-          };
-        }
-      }
-
-      const storage = getSafeStorage();
-
-      const fileInput = document.getElementById("fileInput");
-      const btnUpload = document.getElementById("btnUpload");
-      const btnClear  = document.getElementById("btnClear");
-      const btnTheme  = document.getElementById("btnTheme");
-      const btnMusic  = document.getElementById("btnMusic");
-      const bgMusic   = document.getElementById("bgMusic");
-      const dropzone  = document.getElementById("dropzone");
-      const grid      = document.getElementById("grid");
-      const empty     = document.getElementById("empty");
-      const toast     = document.getElementById("toast");
-      const countChip = document.getElementById("countChip");
-
-      // Tabs
-      const tabShots = document.getElementById("tabShots");
-      const tabNotes = document.getElementById("tabNotes");
-      const tabGame = document.getElementById("tabGame");
-      const tabSnake = document.getElementById("tabSnake");
-      const viewShots = document.getElementById("viewShots");
-      const viewNotes = document.getElementById("viewNotes");
-      const viewGame = document.getElementById("viewGame");
-      const viewSnake = document.getElementById("viewSnake");
-      const actionsShots = document.getElementById("actionsShots");
-      const actionsNotes = document.getElementById("actionsNotes");
-      const actionsGame = document.getElementById("actionsGame");
-      const actionsSnake = document.getElementById("actionsSnake");
-
-      // Game UI
-      const btnApplyGame = document.getElementById("btnApplyGame");
-      const btnRestartGame = document.getElementById("btnRestartGame");
-      const btnSound = document.getElementById("btnSound");
-      const rowsInput = document.getElementById("rowsInput");
-      const colsInput = document.getElementById("colsInput");
-      const minesInput = document.getElementById("minesInput");
-      const mineBoard = document.getElementById("mineBoard");
-      const minesLeft = document.getElementById("minesLeft");
-      const gameTime = document.getElementById("gameTime");
-      const gameStatus = document.getElementById("gameStatus");
-      const gameResult = document.getElementById("gameResult");
-
-      // Snake UI
-      const btnSnakeStart = document.getElementById("btnSnakeStart");
-      const btnSnakeRestart = document.getElementById("btnSnakeRestart");
-      const btnSnakeEditor = document.getElementById("btnSnakeEditor");
-      const btnSnakeClear = document.getElementById("btnSnakeClear");
-      const snakeSpeed = document.getElementById("snakeSpeed");
-      const snakeSpeedValue = document.getElementById("snakeSpeedValue");
-      const snakeApples = document.getElementById("snakeApples");
-      const snakeCanvas = document.getElementById("snakeCanvas");
-      const snakeScore = document.getElementById("snakeScore");
-      const snakeBest = document.getElementById("snakeBest");
-      const snakeStatus = document.getElementById("snakeStatus");
-      const snakeResult = document.getElementById("snakeResult");
-      const snakePad = document.getElementById("snakePad");
-
-      // Notes UI
-      const noteList = document.getElementById("noteList");
-      const noteTitle = document.getElementById("noteTitle");
-      const noteBody = document.getElementById("noteBody");
-      const btnNewNote = document.getElementById("btnNewNote");
-      const btnDeleteNote = document.getElementById("btnDeleteNote");
-      const notesCount = document.getElementById("notesCount");
-      const saveStatus = document.getElementById("saveStatus");
-      const noteMeta = document.getElementById("noteMeta");
-
-      /* ✨ Мягкое смещение подсветки за мышкой */
-      function setGlowFromClient(x, y) {
-        const mx = x / window.innerWidth;
-        const my = y / window.innerHeight;
-        document.documentElement.style.setProperty("--mx", (mx * 100).toFixed(2) + "%");
-        document.documentElement.style.setProperty("--my", (my * 100).toFixed(2) + "%");
-      }
-
-      let glowX = window.innerWidth * 0.5;
-      let glowY = window.innerHeight * 0.2;
-      let glowRaf = 0;
-
-      function scheduleGlowUpdate() {
-        if (glowRaf) return;
-        glowRaf = requestAnimationFrame(() => {
-          setGlowFromClient(glowX, glowY);
-          glowRaf = 0;
-        });
-      }
-
-      window.addEventListener("pointermove", (e) => {
-        glowX = e.clientX;
-        glowY = e.clientY;
-        scheduleGlowUpdate();
-      }, { passive: true });
-
-      window.addEventListener("resize", scheduleGlowUpdate);
-
-      setGlowFromClient(glowX, glowY);
-
-      function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        clearTimeout(showToast._t);
-        showToast._t = setTimeout(() => toast.classList.remove("show"), 2400);
-      }
-
-      // =========================
-      // Screenshots logic
-      // =========================
-      function isImageFile(file) {
-        return !!file && typeof file.type === "string" && file.type.startsWith("image/");
-      }
-
-      function updateUI() {
-        const count = grid.children.length;
-        empty.style.display = count ? "none" : "flex";
-        countChip.textContent =
-          count + (count === 1 ? " файл" : (count >= 2 && count <= 4 ? " файла" : " файлов"));
-      }
-
-      function sanitizeName(name) {
-        return name.replace(/[\/\\:\*\?"<>|]/g, "_").trim();
-      }
-
-      function splitNameAndExt(file) {
-        const original = (file && file.name) ? file.name : "image";
-        const dot = original.lastIndexOf(".");
-        const base = dot === -1 ? original : original.slice(0, dot);
-        let ext = dot === -1 ? "" : original.slice(dot);
-
-        if (!ext) {
-          if (file.type === "image/png") ext = ".png";
-          else if (file.type === "image/jpeg") ext = ".jpg";
-          else if (file.type === "image/gif") ext = ".gif";
-          else if (file.type === "image/webp") ext = ".webp";
-          else if (file.type === "image/svg+xml") ext = ".svg";
-          else if (file.type === "image/bmp") ext = ".bmp";
-          else if (file.type === "image/tiff") ext = ".tiff";
-          else ext = "";
-        }
-        return { base: base || "image", ext };
-      }
-
-      function escapeHtml(s) {
-        return String(s)
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#039;");
-      }
-
-      function addCard(file) {
-        const url = URL.createObjectURL(file);
-        const { base, ext } = splitNameAndExt(file);
-
-        const card = document.createElement("article");
-        card.className = "card";
-
-        card.innerHTML = `
-          <div class="preview">
-            <img src="${url}" alt="Изображение" loading="lazy" />
-          </div>
-
-          <div class="meta">
-            <div class="row">
-              <div><div class="label">Имя файла</div></div>
-              <div class="mini">${(file.type || "image/*")}</div>
-            </div>
-
-            <div class="nameWrap">
-              <input class="nameInput" type="text" value="${escapeHtml(base)}" spellcheck="false" />
-              <span class="ext">${escapeHtml(ext)}</span>
-            </div>
-
-            <div class="actions">
-              <button class="btn" data-role="delete">
-                <span class="icon icon-trash"></span>
-                <span>Удалить</span>
-              </button>
-              <button class="btn btnPrimary" data-role="download">
-                <span class="icon icon-download"></span>
-                <span>Скачать</span>
-              </button>
-            </div>
-          </div>
-        `;
-
-        const input = card.querySelector(".nameInput");
-        const extEl = card.querySelector(".ext");
-        const btnDel = card.querySelector('[data-role="delete"]');
-        const btnDl  = card.querySelector('[data-role="download"]');
-
-        btnDl.addEventListener("click", () => {
-          const extText = extEl.textContent || "";
-          let name = sanitizeName(input.value || "");
-          if (!name) name = "image";
-          const filename = name + extText;
-
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-        });
-
-        btnDel.addEventListener("click", () => {
-          URL.revokeObjectURL(url);
-          card.remove();
-          updateUI();
-        });
-
-        grid.prepend(card);
-        updateUI();
-      }
-
-      function handleFiles(files) {
-        const list = Array.from(files || []);
-        if (!list.length) return;
-
-        let added = 0;
-        for (const file of list) {
-          if (!isImageFile(file)) continue;
-          addCard(file);
-          added++;
-        }
-
-        if (added > 1) showToast("Добавлено изображений: " + added);
-        else if (added === 1) showToast("Изображение добавлено ✅");
-      }
-
-      btnUpload.addEventListener("click", () => fileInput.click());
-      fileInput.addEventListener("change", (e) => {
-        handleFiles(e.target.files);
-        fileInput.value = "";
-      });
-
-      dropzone.addEventListener("click", () => fileInput.click());
-      dropzone.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          fileInput.click();
-        }
-      });
-
-      dropzone.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        dropzone.classList.add("dragover");
-      });
-      dropzone.addEventListener("dragenter", (e) => {
-        e.preventDefault();
-        dropzone.classList.add("dragover");
-      });
-      ["dragleave", "dragend", "drop"].forEach((name) => {
-        dropzone.addEventListener(name, () => dropzone.classList.remove("dragover"));
-      });
-      dropzone.addEventListener("drop", (e) => {
-        e.preventDefault();
-        handleFiles(e.dataTransfer.files);
-      });
-
-      btnClear.addEventListener("click", () => {
-        Array.from(grid.querySelectorAll("img")).forEach((img) => {
-          if (img.src && img.src.startsWith("blob:")) URL.revokeObjectURL(img.src);
-        });
-        grid.innerHTML = "";
-        updateUI();
-        showToast("Очищено 🗑");
-      });
-
-      document.addEventListener("paste", (event) => {
-        // только когда открыта вкладка "Скриншоты"
-        if (!viewShots.classList.contains("active")) return;
-
-        const clipboard = event.clipboardData || window.clipboardData;
-        if (!clipboard || !clipboard.items) return;
-
-        const items = Array.from(clipboard.items);
-        const imageFiles = [];
-
-        for (const item of items) {
-          if (item.type && item.type.startsWith("image/")) {
-            const file = item.getAsFile();
-            if (file) imageFiles.push(file);
-          }
-        }
-
-        if (imageFiles.length) {
-          handleFiles(imageFiles);
-          event.preventDefault();
-        }
-      });
-
-      // =========================
-      // Theme
-      // =========================
-      function applyTheme(theme) {
-        const light = theme === "light";
-        document.body.classList.toggle("theme-light", light);
-      }
-
-      const prefersLight =
-        window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
-      const savedTheme = storage.getItem(THEME_KEY) || (prefersLight ? "light" : "dark");
-      applyTheme(savedTheme);
-
-      btnTheme.addEventListener("click", () => {
-        const isLight = document.body.classList.contains("theme-light");
-        const next = isLight ? "dark" : "light";
-        applyTheme(next);
-        storage.setItem(THEME_KEY, next);
-        showToast(next === "dark" ? "Тёмная тема 🌙" : "Светлая тема ☀️");
-      });
-
-      // =========================
-      // Background music
-      // =========================
-      let musicEnabled = storage.getItem(MUSIC_KEY) !== "off";
-
-      function updateMusicButton() {
-        if (!btnMusic) return;
-        btnMusic.setAttribute("aria-pressed", String(musicEnabled));
-        const label = btnMusic.querySelector("span:last-child") || btnMusic.querySelector("span");
-        if (label) {
-          label.textContent = musicEnabled ? "Музыка: Вкл" : "Музыка: Выкл";
-        }
-      }
-
-      function tryPlayMusic() {
-        if (!bgMusic || !musicEnabled) return;
-        bgMusic.volume = 0.25;
-        const p = bgMusic.play();
-        if (p && typeof p.catch === "function") p.catch(() => {});
-      }
-
-      updateMusicButton();
-      if (btnMusic) {
-        btnMusic.addEventListener("click", () => {
-          musicEnabled = !musicEnabled;
-          storage.setItem(MUSIC_KEY, musicEnabled ? "on" : "off");
-          updateMusicButton();
-          if (musicEnabled) tryPlayMusic();
-          else if (bgMusic) bgMusic.pause();
-        });
-      }
-      document.addEventListener("pointerdown", tryPlayMusic, { once: true, passive: true });
-
-      // =========================
-      // Tabs switch
-      // =========================
-      function setView(name) {
-        const isShots = name === "shots";
-        const isNotes = name === "notes";
-        const isGame = name === "game";
-        const isSnake = name === "snake";
-
-        tabShots.classList.toggle("active", isShots);
-        tabNotes.classList.toggle("active", isNotes);
-        tabGame.classList.toggle("active", isGame);
-        tabSnake.classList.toggle("active", isSnake);
-        tabShots.setAttribute("aria-selected", String(isShots));
-        tabNotes.setAttribute("aria-selected", String(isNotes));
-        tabGame.setAttribute("aria-selected", String(isGame));
-        tabSnake.setAttribute("aria-selected", String(isSnake));
-
-        viewShots.classList.toggle("active", isShots);
-        viewNotes.classList.toggle("active", isNotes);
-        viewGame.classList.toggle("active", isGame);
-        viewSnake.classList.toggle("active", isSnake);
-
-        actionsShots.style.display = isShots ? "flex" : "none";
-        actionsNotes.style.display = isNotes ? "flex" : "none";
-        actionsGame.style.display = isGame ? "flex" : "none";
-        actionsSnake.style.display = isSnake ? "flex" : "none";
-        countChip.style.display = isShots ? "inline-flex" : "none";
-
-        storage.setItem(VIEW_KEY, name);
-        setSnakeActive(isSnake);
-      }
-
-      tabShots.addEventListener("click", () => setView("shots"));
-      tabNotes.addEventListener("click", () => setView("notes"));
-      tabGame.addEventListener("click", () => setView("game"));
-      tabSnake.addEventListener("click", () => setView("snake"));
-
-      const savedViewRaw = storage.getItem(VIEW_KEY);
-      const savedView = ["shots", "notes", "game", "snake"].includes(savedViewRaw) ? savedViewRaw : "shots";
-      setView(savedView);
-
-      // =========================
-      // Notes (IndexedDB)
-      // =========================
-      const DB_NAME = "shots_notes_db";
-      const DB_VERSION = 1;
-      const STORE = "notes";
-
-      let db = null;
-      let currentNoteId = null;
-      let saveTimer = null;
-
-      function openDB() {
-        return new Promise((resolve, reject) => {
-          const req = indexedDB.open(DB_NAME, DB_VERSION);
-
-          req.onupgradeneeded = () => {
-            const db = req.result;
-            if (!db.objectStoreNames.contains(STORE)) {
-              const store = db.createObjectStore(STORE, { keyPath: "id", autoIncrement: true });
-              store.createIndex("updatedAt", "updatedAt");
-            }
-          };
-
-          req.onsuccess = () => resolve(req.result);
-          req.onerror = () => reject(req.error);
-        });
-      }
-
-      function tx(storeName, mode = "readonly") {
-        const t = db.transaction(storeName, mode);
-        return t.objectStore(storeName);
-      }
-
-      function getAllNotes() {
-        return new Promise((resolve, reject) => {
-          const store = tx(STORE, "readonly");
-          const req = store.getAll();
-          req.onsuccess = () => {
-            const arr = req.result || [];
-            arr.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-            resolve(arr);
-          };
-          req.onerror = () => reject(req.error);
-        });
-      }
-
-      function addNote(note) {
-        return new Promise((resolve, reject) => {
-          const store = tx(STORE, "readwrite");
-          const req = store.add(note);
-          req.onsuccess = () => resolve(req.result);
-          req.onerror = () => reject(req.error);
-        });
-      }
-
-      function putNote(note) {
-        return new Promise((resolve, reject) => {
-          const store = tx(STORE, "readwrite");
-          const req = store.put(note);
-          req.onsuccess = () => resolve(true);
-          req.onerror = () => reject(req.error);
-        });
-      }
-
-      function deleteNote(id) {
-        return new Promise((resolve, reject) => {
-          const store = tx(STORE, "readwrite");
-          const req = store.delete(id);
-          req.onsuccess = () => resolve(true);
-          req.onerror = () => reject(req.error);
-        });
-      }
-
-      function formatDate(ts) {
-        if (!ts) return "";
-        const d = new Date(ts);
-        return d.toLocaleString("ru-RU", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
-      }
-
-      function setEditorEnabled(enabled) {
-        noteTitle.disabled = !enabled;
-        noteBody.disabled = !enabled;
-        btnDeleteNote.disabled = !enabled;
-      }
-
-      function clearNoteEditor() {
-        noteTitle.value = "";
-        noteBody.value = "";
-        saveStatus.textContent = "Не выбрано";
-        noteMeta.textContent = "—";
-        setEditorEnabled(false);
-      }
-
-      function renderNoteList(notes) {
-        noteList.innerHTML = "";
-        notesCount.textContent = notes.length + (notes.length === 1 ? " заметка" : (notes.length >= 2 && notes.length <= 4 ? " заметки" : " заметок"));
-
-        if (!notes.length) {
-          const div = document.createElement("div");
-          div.style.padding = "12px";
-          div.style.color = "var(--muted)";
-          div.style.fontSize = "12px";
-          div.textContent = "Заметок пока нет. Нажмите «Новая».";
-          noteList.appendChild(div);
-          return;
-        }
-
-        for (const n of notes) {
-          const item = document.createElement("div");
-          item.className = "noteItem" + (n.id === currentNoteId ? " active" : "");
-          const title = (n.title || "").trim() || "Без названия";
-          const snippet = ((n.body || "").trim().replace(/\s+/g," ")).slice(0, 80) || "—";
-          item.innerHTML = `
-            <div class="h">${escapeHtml(title)}</div>
-            <div class="m">${escapeHtml(snippet)}</div>
-          `;
-          item.addEventListener("click", () => loadNoteIntoEditor(n));
-          noteList.appendChild(item);
-        }
-      }
-
-      function loadNoteIntoEditor(note) {
-        currentNoteId = note.id;
-        noteTitle.value = note.title || "";
-        noteBody.value = note.body || "";
-        saveStatus.textContent = "Открыто";
-        noteMeta.textContent = "Обновлено: " + formatDate(note.updatedAt) + " • Создано: " + formatDate(note.createdAt);
-        setEditorEnabled(true);
-        refreshNotesList();
-      }
-
-      async function refreshNotesList() {
-        const notes = await getAllNotes();
-        renderNoteList(notes);
-
-        if (currentNoteId == null) {
-          clearNoteEditor();
-          return;
-        }
-
-        if (!notes.some(n => n.id === currentNoteId)) {
-          currentNoteId = null;
-          clearNoteEditor();
-        }
-      }
-
-      function scheduleAutoSave() {
-        if (currentNoteId == null) return;
-        saveStatus.textContent = "Сохранение…";
-        clearTimeout(saveTimer);
-        saveTimer = setTimeout(async () => {
-          await saveCurrentNote();
-        }, 350);
-      }
-
-      async function saveCurrentNote() {
-        if (currentNoteId == null) return;
-
-        const notes = await getAllNotes();
-        const n = notes.find(x => x.id === currentNoteId);
-        if (!n) return;
-
-        n.title = noteTitle.value;
-        n.body = noteBody.value;
-        n.updatedAt = Date.now();
-
-        await putNote(n);
-
-        saveStatus.textContent = "Сохранено";
-        noteMeta.textContent = "Обновлено: " + formatDate(n.updatedAt) + " • Создано: " + formatDate(n.createdAt);
-        refreshNotesList();
-      }
-
-      btnNewNote.addEventListener("click", async () => {
-        const now = Date.now();
-        const id = await addNote({
-          title: "Новая заметка",
-          body: "",
-          createdAt: now,
-          updatedAt: now
-        });
-        showToast("Заметка создана ✅");
-        await refreshNotesList();
-
-        const notes = await getAllNotes();
-        const created = notes.find(n => n.id === id);
-        if (created) loadNoteIntoEditor(created);
-        noteTitle.focus();
-        noteTitle.setSelectionRange(0, noteTitle.value.length);
-      });
-
-      btnDeleteNote.addEventListener("click", async () => {
-        if (currentNoteId == null) return;
-        const id = currentNoteId;
-        await deleteNote(id);
-        showToast("Заметка удалена 🗑");
-        currentNoteId = null;
-        clearNoteEditor();
-        await refreshNotesList();
-      });
-
-      noteTitle.addEventListener("input", scheduleAutoSave);
-      noteBody.addEventListener("input", scheduleAutoSave);
-
-      // Init notes DB
-      (async () => {
-        try{
-          db = await openDB();
-          setEditorEnabled(false);
-          await refreshNotesList();
-        }catch(err){
-          console.error(err);
-          showToast("Ошибка IndexedDB (заметки не сохраняются)");
-          setEditorEnabled(false);
-        }
-      })();
-
-      // =========================
-      // Minesweeper
-      // =========================
-      let audioCtx = null;
-      let soundEnabled = storage.getItem(SOUND_KEY) !== "off";
-
-      function updateSoundButton() {
-        if (!btnSound) return;
-        btnSound.setAttribute("aria-pressed", String(soundEnabled));
-        btnSound.querySelector("span").textContent = soundEnabled ? "Звук: Вкл" : "Звук: Выкл";
-      }
-
-      function ensureAudio() {
-        if (!soundEnabled) return null;
-        if (!audioCtx) {
-          const AudioCtor = window.AudioContext || window.webkitAudioContext;
-          if (!AudioCtor) return null;
-          audioCtx = new AudioCtor();
-        }
-        if (audioCtx.state === "suspended") {
-          audioCtx.resume();
-        }
-        return audioCtx;
-      }
-
-      function playTone(freq, duration, type, volume, when) {
-        const ctx = ensureAudio();
-        if (!ctx) return;
-        const startAt = ctx.currentTime + (when || 0);
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = type || "sine";
-        osc.frequency.setValueAtTime(freq, startAt);
-        gain.gain.setValueAtTime(0.0001, startAt);
-        gain.gain.linearRampToValueAtTime(volume || 0.05, startAt + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
-        osc.connect(gain).connect(ctx.destination);
-        osc.start(startAt);
-        osc.stop(startAt + duration + 0.03);
-      }
-
-      function playSound(type) {
-        if (!soundEnabled) return;
-        if (type === "open") {
-          playTone(420, 0.08, "triangle", 0.035);
-        } else if (type === "flag") {
-          playTone(740, 0.06, "square", 0.03);
-        } else if (type === "question") {
-          playTone(520, 0.06, "sine", 0.03);
-        } else if (type === "boom") {
-          playTone(140, 0.18, "sawtooth", 0.05);
-          playTone(90, 0.22, "triangle", 0.045, 0.02);
-        } else if (type === "win") {
-          playTone(440, 0.08, "sine", 0.04);
-          playTone(660, 0.08, "sine", 0.04, 0.06);
-          playTone(880, 0.12, "sine", 0.045, 0.12);
-        } else if (type === "lose") {
-          playTone(360, 0.12, "triangle", 0.04);
-          playTone(220, 0.14, "triangle", 0.04, 0.08);
-        }
-      }
-
-      updateSoundButton();
-      if (btnSound) {
-        btnSound.addEventListener("click", () => {
-          soundEnabled = !soundEnabled;
-          storage.setItem(SOUND_KEY, soundEnabled ? "on" : "off");
-          updateSoundButton();
-          if (soundEnabled) playSound("open");
-        });
-      }
-
-      const DEFAULT_CONFIG = { rows: 9, cols: 9, mines: 10 };
-      let currentConfig = { ...DEFAULT_CONFIG };
-
-      let game = null;
-      let gameTimer = null;
-      let startTime = 0;
-
-      function clamp(value, min, max) {
-        return Math.min(Math.max(value, min), max);
-      }
-
-      function normalizeConfig(rows, cols, mines) {
-        const r = clamp(Math.round(rows), 6, 24);
-        const c = clamp(Math.round(cols), 6, 24);
-        const maxMines = r * c - 1;
-        const m = clamp(Math.round(mines), 1, Math.max(1, maxMines));
-        return { rows: r, cols: c, mines: m };
-      }
-
-      function syncGameInputs(cfg) {
-        if (!rowsInput || !colsInput || !minesInput) return;
-        rowsInput.value = String(cfg.rows);
-        colsInput.value = String(cfg.cols);
-        minesInput.value = String(cfg.mines);
-      }
-
-      function getConfigFromInputs() {
-        if (!rowsInput || !colsInput || !minesInput) return { ...currentConfig };
-        const rows = Number(rowsInput.value);
-        const cols = Number(colsInput.value);
-        const mines = Number(minesInput.value);
-        if (!Number.isFinite(rows) || !Number.isFinite(cols) || !Number.isFinite(mines)) {
-          return null;
-        }
-        return normalizeConfig(rows, cols, mines);
-      }
-
-      function startTimer() {
-        if (gameTimer) return;
-        startTime = Date.now();
-        gameTime.textContent = "0с";
-        gameTimer = setInterval(() => {
-          const seconds = Math.floor((Date.now() - startTime) / 1000);
-          gameTime.textContent = seconds + "с";
-        }, 1000);
-      }
-
-      function stopTimer() {
-        clearInterval(gameTimer);
-        gameTimer = null;
-      }
-
-      function updateMinesLeft() {
-        const left = Math.max(game.mines - game.flags, 0);
-        minesLeft.textContent = String(left);
-      }
-
-      function setStatus(text) {
-        gameStatus.textContent = text;
-      }
-
-      function makeCell(index) {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "cell";
-        btn.addEventListener("click", () => revealCell(index));
-        btn.addEventListener("contextmenu", (e) => {
-          e.preventDefault();
-          toggleFlag(index);
-        });
-        return btn;
-      }
-
-      function initBoard(cfg) {
-        const config = cfg ? normalizeConfig(cfg.rows, cfg.cols, cfg.mines) : currentConfig;
-        currentConfig = { ...config };
-        stopTimer();
-        game = {
-          rows: config.rows,
-          cols: config.cols,
-          mines: config.mines,
-          initialMines: config.mines,
-          flags: 0,
-          revealed: 0,
-          firstClick: true,
-          over: false,
-          cells: []
-        };
-
-        mineBoard.style.setProperty("--cols", String(config.cols));
-        mineBoard.innerHTML = "";
-        for (let i = 0; i < config.rows * config.cols; i++) {
-          const cell = {
-            mine: false,
-            revealed: false,
-            flagged: false,
-            questioned: false,
-            adj: 0,
-            el: makeCell(i)
-          };
-          game.cells.push(cell);
-          mineBoard.appendChild(cell.el);
-        }
-
-        gameTime.textContent = "0с";
-        updateMinesLeft();
-        setStatus("Готово");
-        if (gameResult) gameResult.textContent = "";
-        syncGameInputs(currentConfig);
-      }
-
-      function placeMines(excludeIndex) {
-        const total = game.rows * game.cols;
-        const safe = new Set(getSafeIndices(excludeIndex));
-        const pool = [];
-        for (let i = 0; i < total; i++) {
-          if (!safe.has(i)) pool.push(i);
-        }
-        for (let i = pool.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [pool[i], pool[j]] = [pool[j], pool[i]];
-        }
-        const minesToPlace = Math.min(game.mines, pool.length);
-        if (minesToPlace !== game.mines) {
-          game.mines = minesToPlace;
-          updateMinesLeft();
-        }
-        for (let i = 0; i < minesToPlace; i++) {
-          game.cells[pool[i]].mine = true;
-        }
-        computeAdjacency();
-      }
-
-      function getSafeIndices(index) {
-        const safe = [];
-        const r = Math.floor(index / game.cols);
-        const c = index % game.cols;
-        for (let dr = -1; dr <= 1; dr++) {
-          for (let dc = -1; dc <= 1; dc++) {
-            const rr = r + dr;
-            const cc = c + dc;
-            if (rr < 0 || rr >= game.rows || cc < 0 || cc >= game.cols) continue;
-            safe.push(rr * game.cols + cc);
-          }
-        }
-        return safe;
-      }
-
-      function computeAdjacency() {
-        for (let r = 0; r < game.rows; r++) {
-          for (let c = 0; c < game.cols; c++) {
-            const index = r * game.cols + c;
-            const cell = game.cells[index];
-            if (cell.mine) {
-              cell.adj = 0;
-              continue;
-            }
-            let count = 0;
-            for (let dr = -1; dr <= 1; dr++) {
-              for (let dc = -1; dc <= 1; dc++) {
-                if (dr === 0 && dc === 0) continue;
-                const rr = r + dr;
-                const cc = c + dc;
-                if (rr < 0 || rr >= game.rows || cc < 0 || cc >= game.cols) continue;
-                const nIndex = rr * game.cols + cc;
-                if (game.cells[nIndex].mine) count++;
-              }
-            }
-            cell.adj = count;
-          }
-        }
-      }
-
-      function revealCell(index) {
-        const cell = game.cells[index];
-        if (game.over || cell.revealed || cell.flagged) return;
-        if (cell.questioned) {
-          cell.questioned = false;
-          cell.el.classList.remove("question");
-          cell.el.textContent = "";
-        }
-
-        if (game.firstClick) {
-          game.firstClick = false;
-          placeMines(index);
-          startTimer();
-        }
-
-        if (cell.mine) {
-          cell.revealed = true;
-          cell.el.classList.add("revealed", "mine");
-          cell.el.textContent = "*";
-          playSound("boom");
-          endGame(false, "boom");
-          return;
-        }
-
-        playSound("open");
-        floodReveal(index);
-        checkWin();
-      }
-
-      function floodReveal(startIndex) {
-        const queue = [startIndex];
-        while (queue.length) {
-          const index = queue.pop();
-          const cell = game.cells[index];
-          if (cell.revealed || cell.flagged) continue;
-          if (cell.questioned) {
-            cell.questioned = false;
-            cell.el.classList.remove("question");
-          }
-          cell.revealed = true;
-          cell.el.classList.add("revealed");
-          game.revealed++;
-
-          if (cell.adj > 0) {
-            cell.el.textContent = String(cell.adj);
-            cell.el.classList.add("n" + cell.adj);
-            continue;
-          }
-
-          const r = Math.floor(index / game.cols);
-          const c = index % game.cols;
-          for (let dr = -1; dr <= 1; dr++) {
-            for (let dc = -1; dc <= 1; dc++) {
-              if (dr === 0 && dc === 0) continue;
-              const rr = r + dr;
-              const cc = c + dc;
-              if (rr < 0 || rr >= game.rows || cc < 0 || cc >= game.cols) continue;
-              const nIndex = rr * game.cols + cc;
-              const next = game.cells[nIndex];
-              if (!next.revealed && !next.flagged && !next.mine) {
-                queue.push(nIndex);
-              }
-            }
-          }
-        }
-      }
-
-      function toggleFlag(index) {
-        const cell = game.cells[index];
-        if (game.over || cell.revealed) return;
-        const wasFlagged = cell.flagged;
-        let soundType = "";
-
-        if (cell.flagged) {
-          cell.flagged = false;
-          cell.questioned = true;
-          soundType = "question";
-        } else if (cell.questioned) {
-          cell.questioned = false;
-        } else {
-          cell.flagged = true;
-          soundType = "flag";
-        }
-
-        if (wasFlagged !== cell.flagged) {
-          game.flags += cell.flagged ? 1 : -1;
-        }
-
-        cell.el.classList.toggle("flagged", cell.flagged);
-        cell.el.classList.toggle("question", cell.questioned);
-        cell.el.textContent = cell.questioned ? "?" : "";
-        updateMinesLeft();
-        if (soundType) playSound(soundType);
-      }
-
-      function revealMines() {
-        for (const cell of game.cells) {
-          if (cell.mine) {
-            cell.el.classList.add("revealed", "mine");
-            cell.el.classList.remove("question");
-            cell.el.textContent = "*";
-          }
-        }
-      }
-
-      function endGame(won, cause) {
-        game.over = true;
-        stopTimer();
-        if (!won) revealMines();
-        setStatus(won ? "Победа!" : "Поражение");
-        if (gameResult) gameResult.textContent = won ? "Победа!" : "Поражение";
-        if (won) {
-          playSound("win");
-        } else if (cause !== "boom") {
-          playSound("lose");
-        }
-      }
-
-      function checkWin() {
-        if (game.revealed >= (game.rows * game.cols - game.mines)) {
-          endGame(true);
-        }
-      }
-
-      if (btnApplyGame) {
-        btnApplyGame.addEventListener("click", () => {
-          const cfg = getConfigFromInputs();
-          if (!cfg) {
-            showToast("Введите числа для поля.");
-            return;
-          }
-          currentConfig = cfg;
-          initBoard(currentConfig);
-          showToast("Поле создано.");
-        });
-      }
-
-      if (btnRestartGame) {
-        btnRestartGame.addEventListener("click", () => initBoard(currentConfig));
-      }
-
-      if (rowsInput) {
-        rowsInput.addEventListener("change", () => {
-          const cfg = getConfigFromInputs();
-          if (cfg) syncGameInputs(cfg);
-        });
-      }
-      if (colsInput) {
-        colsInput.addEventListener("change", () => {
-          const cfg = getConfigFromInputs();
-          if (cfg) syncGameInputs(cfg);
-        });
-      }
-      if (minesInput) {
-        minesInput.addEventListener("change", () => {
-          const cfg = getConfigFromInputs();
-          if (cfg) syncGameInputs(cfg);
-        });
-      }
-
-      if (mineBoard) {
-        syncGameInputs(currentConfig);
-        initBoard(currentConfig);
-      }
-
-      // =========================
-      // Snake
-      // =========================
-      const SNAKE_BEST_KEY = "snake_best_v1";
-      const SNAKE_GRID = 18;
-
-      let snakeCtx = null;
-      let snakeTimer = null;
-      let snakeRunning = false;
-      let snakeAlive = true;
-      let snakeDir = { x: 1, y: 0 };
-      let snakeNextDir = { x: 1, y: 0 };
-      let snakeApplesPositions = [];
-      let snakeBody = [];
-      let snakeScoreVal = 0;
-      let snakeBestVal = Number(storage.getItem(SNAKE_BEST_KEY) || 0);
-      let snakeSpeedMs = 130;
-      let snakeApplesCount = 3;
-      let snakeCellSize = 20;
-      let snakeEditorOn = false;
-      let snakeWalls = new Set();
-
-      function updateSnakeHud() {
-        if (snakeScore) snakeScore.textContent = String(snakeScoreVal);
-        if (snakeBest) snakeBest.textContent = String(snakeBestVal);
-      }
-
-      function setSnakeStatus(text) {
-        if (snakeStatus) snakeStatus.textContent = text;
-        if (snakeResult) snakeResult.textContent = text === "Игра" ? "" : text;
-      }
-
-      function resizeSnakeCanvas() {
-        if (!snakeCanvas) return;
-        const parent = snakeCanvas.parentElement;
-        const size = Math.min(parent.clientWidth || 0, 420);
-        if (size < 140) {
-          if (viewSnake && viewSnake.classList.contains("active")) {
-            requestAnimationFrame(resizeSnakeCanvas);
-          }
-          return;
-        }
-        const ratio = window.devicePixelRatio || 1;
-        snakeCanvas.width = Math.floor(size * ratio);
-        snakeCanvas.height = Math.floor(size * ratio);
-        snakeCanvas.style.width = size + "px";
-        snakeCanvas.style.height = size + "px";
-        snakeCtx = snakeCanvas.getContext("2d");
-        if (!snakeCtx) {
-          setSnakeStatus("Canvas не поддерживается");
-          return;
-        }
-        snakeCtx.setTransform(1, 0, 0, 1, 0, 0);
-        snakeCtx.scale(ratio, ratio);
-        snakeCellSize = size / SNAKE_GRID;
-        drawSnake();
-      }
-
-      function resetSnake() {
-        snakeAlive = true;
-        snakeRunning = false;
-        clearInterval(snakeTimer);
-        snakeTimer = null;
-        const start = findSnakeStart();
-        let tailX = start.x - 1;
-        if (tailX < 0 || snakeWalls.has(cellKey(tailX, start.y))) {
-          tailX = start.x + 1;
-        }
-        if (tailX >= SNAKE_GRID || snakeWalls.has(cellKey(tailX, start.y))) {
-          tailX = start.x;
-        }
-        snakeBody = [
-          { x: start.x, y: start.y },
-          { x: tailX, y: start.y }
-        ];
-        snakeDir = { x: 1, y: 0 };
-        snakeNextDir = { x: 1, y: 0 };
-        snakeScoreVal = 0;
-        spawnSnakeApples();
-        updateSnakeHud();
-        updateSnakeButton();
-        setSnakeStatus("Готово");
-        drawSnake();
-      }
-
-      function cellKey(x, y) {
-        return x + "," + y;
-      }
-
-      function findSnakeStart() {
-        const startX = Math.floor(SNAKE_GRID / 2);
-        const startY = Math.floor(SNAKE_GRID / 2);
-        if (!snakeWalls.has(cellKey(startX, startY))) {
-          return { x: startX, y: startY };
-        }
-        for (let r = 0; r < SNAKE_GRID; r++) {
-          for (let c = 0; c < SNAKE_GRID; c++) {
-            if (!snakeWalls.has(cellKey(c, r))) return { x: c, y: r };
-          }
-        }
-        return { x: 0, y: 0 };
-      }
-
-      function getRandomFreeCell(avoidSet) {
-        let x = 0;
-        let y = 0;
-        let tries = 0;
-        do {
-          x = Math.floor(Math.random() * SNAKE_GRID);
-          y = Math.floor(Math.random() * SNAKE_GRID);
-          tries++;
-        } while (avoidSet.has(cellKey(x, y)) && tries < 2000);
-        return { x, y, ok: !avoidSet.has(cellKey(x, y)) };
-      }
-
-      function spawnSnakeApples() {
-        const occupied = new Set();
-        snakeBody.forEach((p) => occupied.add(cellKey(p.x, p.y)));
-        snakeWalls.forEach((k) => occupied.add(k));
-        snakeApplesPositions = [];
-        for (let i = 0; i < snakeApplesCount; i++) {
-          const pick = getRandomFreeCell(occupied);
-          if (!pick.ok) break;
-          const key = cellKey(pick.x, pick.y);
-          occupied.add(key);
-          snakeApplesPositions.push({ x: pick.x, y: pick.y });
-        }
-      }
-
-      function fillCell(x, y, color) {
-        const pad = 1;
-        const px = x * snakeCellSize + pad;
-        const py = y * snakeCellSize + pad;
-        const size = snakeCellSize - pad * 2;
-        snakeCtx.fillStyle = color;
-        if (snakeCtx.roundRect) {
-          snakeCtx.beginPath();
-          snakeCtx.roundRect(px, py, size, size, 6);
-          snakeCtx.fill();
-        } else {
-          snakeCtx.fillRect(px, py, size, size);
-        }
-      }
-
-      function drawSnake() {
-        if (!snakeCtx || !snakeCanvas) return;
-        const w = snakeCanvas.clientWidth;
-        const h = snakeCanvas.clientHeight;
-        snakeCtx.clearRect(0, 0, w, h);
-
-        snakeCtx.fillStyle = "rgba(99,102,241,0.10)";
-        snakeCtx.fillRect(0, 0, w, h);
-
-        snakeWalls.forEach((key) => {
-          const parts = key.split(",");
-          const x = Number(parts[0]);
-          const y = Number(parts[1]);
-          fillCell(x, y, "#334155");
-        });
-
-        for (const apple of snakeApplesPositions) {
-          fillCell(apple.x, apple.y, "#f97316");
-        }
-
-        for (let i = 0; i < snakeBody.length; i++) {
-          const part = snakeBody[i];
-          fillCell(part.x, part.y, i === 0 ? "#38bdf8" : "#0ea5e9");
-        }
-      }
-
-      function setSnakeDirection(dx, dy) {
-        if (snakeEditorOn) return;
-        if (snakeDir.x === -dx && snakeDir.y === -dy) return;
-        snakeNextDir = { x: dx, y: dy };
-        if (!snakeRunning && snakeAlive) startSnake();
-      }
-
-      function stepSnake() {
-        if (!snakeRunning || !snakeAlive) return;
-        snakeDir = snakeNextDir;
-        const head = snakeBody[0];
-        const next = { x: head.x + snakeDir.x, y: head.y + snakeDir.y };
-        const nextKey = cellKey(next.x, next.y);
-
-        if (
-          next.x < 0 || next.x >= SNAKE_GRID ||
-          next.y < 0 || next.y >= SNAKE_GRID
-        ) {
-          endSnake(false);
-          return;
-        }
-
-        if (snakeWalls.has(nextKey)) {
-          endSnake(false);
-          return;
-        }
-
-        if (snakeBody.some((p) => p.x === next.x && p.y === next.y)) {
-          endSnake(false);
-          return;
-        }
-
-        snakeBody.unshift(next);
-        const appleIndex = snakeApplesPositions.findIndex(
-          (a) => a.x === next.x && a.y === next.y
-        );
-        if (appleIndex !== -1) {
-          snakeScoreVal += 1;
-          if (snakeScoreVal > snakeBestVal) {
-            snakeBestVal = snakeScoreVal;
-            storage.setItem(SNAKE_BEST_KEY, String(snakeBestVal));
-          }
-          updateSnakeHud();
-          snakeApplesPositions.splice(appleIndex, 1);
-          if (snakeApplesPositions.length < snakeApplesCount) {
-            const occupied = new Set();
-            snakeBody.forEach((p) => occupied.add(cellKey(p.x, p.y)));
-            snakeWalls.forEach((k) => occupied.add(k));
-            snakeApplesPositions.forEach((a) => occupied.add(cellKey(a.x, a.y)));
-            const pick = getRandomFreeCell(occupied);
-            if (pick.ok) snakeApplesPositions.push({ x: pick.x, y: pick.y });
-          }
-        } else {
-          snakeBody.pop();
-        }
-        drawSnake();
-      }
-
-      function startSnake() {
-        if (snakeRunning || !snakeAlive || snakeEditorOn) return;
-        snakeRunning = true;
-        setSnakeStatus("Игра");
-        updateSnakeButton();
-        clearInterval(snakeTimer);
-        snakeTimer = setInterval(stepSnake, snakeSpeedMs);
-      }
-
-      function pauseSnake() {
-        if (!snakeRunning) return;
-        snakeRunning = false;
-        clearInterval(snakeTimer);
-        snakeTimer = null;
-        setSnakeStatus("Пауза");
-        updateSnakeButton();
-      }
-
-      function endSnake() {
-        snakeAlive = false;
-        snakeRunning = false;
-        clearInterval(snakeTimer);
-        snakeTimer = null;
-        setSnakeStatus("Проигрыш");
-        updateSnakeButton();
-      }
-
-      function updateSnakeButton() {
-        if (!btnSnakeStart) return;
-        btnSnakeStart.querySelector("span").textContent = snakeRunning ? "Пауза" : "Старт";
-      }
-
-      function updateSnakeSpeedLabel() {
-        if (snakeSpeedValue) snakeSpeedValue.textContent = snakeSpeedMs + "мс";
-      }
-
-      function applySnakeSpeed(ms) {
-        snakeSpeedMs = clamp(Number(ms) || 130, 60, 220);
-        updateSnakeSpeedLabel();
-        if (snakeRunning) {
-          clearInterval(snakeTimer);
-          snakeTimer = setInterval(stepSnake, snakeSpeedMs);
-        }
-      }
-
-      function updateSnakeEditorButton() {
-        if (!btnSnakeEditor) return;
-        btnSnakeEditor.setAttribute("aria-pressed", String(snakeEditorOn));
-        btnSnakeEditor.querySelector("span").textContent =
-          snakeEditorOn ? "Редактор: Вкл" : "Редактор: Выкл";
-      }
-
-      function setSnakeActive(active) {
-        if (!active) {
-          pauseSnake();
-          return;
-        }
-        requestAnimationFrame(resizeSnakeCanvas);
-      }
-
-      if (btnSnakeStart) {
-        btnSnakeStart.addEventListener("click", () => {
-          if (!snakeAlive) {
-            resetSnake();
-            startSnake();
-          } else if (snakeRunning) {
-            pauseSnake();
-          } else {
-            startSnake();
-          }
-        });
-      }
-
-      if (btnSnakeRestart) {
-        btnSnakeRestart.addEventListener("click", () => {
-          resetSnake();
-        });
-      }
-
-      if (snakeSpeed) {
-        snakeSpeed.addEventListener("input", () => applySnakeSpeed(snakeSpeed.value));
-        applySnakeSpeed(snakeSpeed.value);
-      }
-
-      if (snakeApples) {
-        snakeApples.addEventListener("change", () => {
-          const count = clamp(Number(snakeApples.value) || 1, 1, 6);
-          snakeApplesCount = count;
-          snakeApples.value = String(count);
-          spawnSnakeApples();
-          drawSnake();
-        });
-      }
-
-      if (btnSnakeEditor) {
-        btnSnakeEditor.addEventListener("click", () => {
-          snakeEditorOn = !snakeEditorOn;
-          updateSnakeEditorButton();
-          if (snakeEditorOn) pauseSnake();
-        });
-        updateSnakeEditorButton();
-      }
-
-      if (btnSnakeClear) {
-        btnSnakeClear.addEventListener("click", () => {
-          snakeWalls.clear();
-          drawSnake();
-        });
-      }
-
-      if (snakePad) {
-        snakePad.addEventListener("click", (e) => {
-          const btn = e.target.closest("button[data-dir]");
-          if (!btn) return;
-          const dir = btn.dataset.dir;
-          if (dir === "up") setSnakeDirection(0, -1);
-          if (dir === "down") setSnakeDirection(0, 1);
-          if (dir === "left") setSnakeDirection(-1, 0);
-          if (dir === "right") setSnakeDirection(1, 0);
-        });
-      }
-
-      if (snakeCanvas) {
-        snakeCanvas.addEventListener("click", (e) => {
-          if (!snakeEditorOn) return;
-          const rect = snakeCanvas.getBoundingClientRect();
-          const x = Math.floor((e.clientX - rect.left) / (rect.width / SNAKE_GRID));
-          const y = Math.floor((e.clientY - rect.top) / (rect.height / SNAKE_GRID));
-          if (x < 0 || y < 0 || x >= SNAKE_GRID || y >= SNAKE_GRID) return;
-          const key = cellKey(x, y);
-          const occupiedBySnake = snakeBody.some((p) => p.x === x && p.y === y);
-          const occupiedByApple = snakeApplesPositions.some((a) => a.x === x && a.y === y);
-          if (occupiedBySnake || occupiedByApple) return;
-          if (snakeWalls.has(key)) snakeWalls.delete(key);
-          else snakeWalls.add(key);
-          drawSnake();
-        });
-      }
-
-      window.addEventListener("keydown", (e) => {
-        if (!viewSnake || !viewSnake.classList.contains("active")) return;
-        const key = e.key.toLowerCase();
-        if (key === "arrowup" || key === "w") setSnakeDirection(0, -1);
-        if (key === "arrowdown" || key === "s") setSnakeDirection(0, 1);
-        if (key === "arrowleft" || key === "a") setSnakeDirection(-1, 0);
-        if (key === "arrowright" || key === "d") setSnakeDirection(1, 0);
-      });
-
-      if (snakeCanvas) {
-        if (snakeApples) {
-          const count = clamp(Number(snakeApples.value) || 3, 1, 6);
-          snakeApplesCount = count;
-          snakeApples.value = String(count);
-        }
-        updateSnakeHud();
-        resizeSnakeCanvas();
-        resetSnake();
-        window.addEventListener("resize", resizeSnakeCanvas);
-      }
-
-      // =========================
-      // Snow generation
-      // =========================
-      const snowContainer = document.querySelector(".snow");
-      if (snowContainer) {
-        const isMobile = window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
-        const reduceMotion =
-          window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const lowPower =
-          (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
-          (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
-        document.body.classList.toggle("low-power", !!lowPower || !!reduceMotion);
-        const COUNT = reduceMotion
-          ? 0
-          : (isMobile ? (lowPower ? 18 : 32) : (lowPower ? 46 : 70));
-
-        for (let i = 0; i < COUNT; i++) {
-          const flake = document.createElement("span");
-          flake.className = "snowflake";
-
-          const depth = Math.random();
-          const size = 8 + depth * 14;
-          const left = Math.random() * 100;
-          const startTop = -30 - Math.random() * 120;
-          const fallDuration = 18 + (1 - depth) * 8 + Math.random() * 6;
-          const swayDuration = 10 + Math.random() * 6;
-          const delay = -Math.random() * fallDuration;
-          const op = 0.32 + depth * 0.56;
-          const drift = (Math.random() * 2 - 1) * (4 + depth * 10);
-          const spin = (Math.random() * 2 - 1) * (60 + depth * 100);
-          const blur = depth < 0.35 ? 0.6 : (depth < 0.7 ? 0.35 : 0.15);
-
-          flake.style.width = size + "px";
-          flake.style.height = size + "px";
-          flake.style.left = left + "vw";
-          flake.style.top = startTop + "vh";
-          flake.style.setProperty("--op", op.toFixed(2));
-          flake.style.setProperty("--drift", drift.toFixed(1) + "px");
-          flake.style.setProperty("--spin", spin.toFixed(1) + "deg");
-          flake.style.setProperty("--blur", blur.toFixed(2) + "px");
-          flake.style.animationDuration =
-            fallDuration + "s, " + swayDuration + "s, " + (4 + Math.random() * 3) + "s";
-          flake.style.animationDelay = delay + "s, " + delay + "s, " + delay + "s";
-
-          snowContainer.appendChild(flake);
-        }
-      }
-
-      updateUI();
-    })();
-  </script>
-</body>
-</html>
+diff --git a/c:\Users\79257\Desktop\Проэкт\index.html b/c:\Users\79257\Desktop\Проэкт\index.html
+new file mode 100644
+--- /dev/null
++++ b/c:\Users\79257\Desktop\Проэкт\index.html
+@@ -0,0 +1,2508 @@
++<!DOCTYPE html>
++<html lang="ru">
++<head>
++  <meta charset="UTF-8" />
++  <title>Личное пространство — скриншоты, заметки, игры, облако</title>
++  <meta name="viewport" content="width=device-width, initial-scale=1" />
++  <style>
++    @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap");
++
++    :root{
++      --bg:#050814;
++      --page:#0a1020;
++      --text:#e5e7eb;
++      --muted:#94a3b8;
++      --border: rgba(226, 232, 240, 0.12);
++      --border2: rgba(226, 232, 240, 0.20);
++      --card:#0d152a;
++      --card2:#101a33;
++      --shadow: 0 30px 90px rgba(0,0,0,0.6);
++      --shadow2: 0 18px 45px rgba(0,0,0,0.45);
++      --radius-xl: 22px;
++      --radius-lg: 16px;
++      --radius-md: 12px;
++      --btn:#0f1933;
++      --btn-hover:#182245;
++      --primary:#f8fafc;
++      --primaryText:#050814;
++      --chip:#162041;
++      --chipText:#cbd5f5;
++      --mx: 50%;
++      --my: 20%;
++      --flake-img: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><radialGradient id='g' cx='50%25' cy='50%25' r='60%25'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='60%25' stop-color='%23e9f6ff'/><stop offset='100%25' stop-color='%23cfeaff'/></radialGradient></defs><g stroke='url(%23g)' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'><g id='a'><line x1='100' y1='100' x2='100' y2='12'/><line x1='100' y1='28' x2='88' y2='18'/><line x1='100' y1='28' x2='112' y2='18'/><line x1='100' y1='50' x2='86' y2='42'/><line x1='100' y1='50' x2='114' y2='42'/><line x1='100' y1='72' x2='90' y2='66'/><line x1='100' y1='72' x2='110' y2='66'/></g><use href='%23a'/><use href='%23a' transform='rotate(60 100 100)'/><use href='%23a' transform='rotate(120 100 100)'/><use href='%23a' transform='rotate(180 100 100)'/><use href='%23a' transform='rotate(240 100 100)'/><use href='%23a' transform='rotate(300 100 100)'/></g><circle cx='100' cy='100' r='6' fill='%23ffffff'/></svg>");
++    }
++
++    body.theme-light{
++      --bg:#f4f5f8;
++      --page:#ffffff;
++      --text:#0f172a;
++      --muted:#64748b;
++      --border: rgba(15, 23, 42, 0.10);
++      --border2: rgba(15, 23, 42, 0.16);
++      --card:#ffffff;
++      --card2:#f6f7fb;
++      --shadow: 0 26px 70px rgba(2, 6, 23, 0.10);
++      --shadow2: 0 14px 40px rgba(2, 6, 23, 0.10);
++      --btn:#f8fafc;
++      --btn-hover:#eef2f7;
++      --primary:#0f172a;
++      --primaryText:#f8fafc;
++      --chip:#eef2ff;
++      --chipText:#3730a3;
++    }
++
++    *{ box-sizing:border-box; margin:0; padding:0; }
++    html, body{ height:100%; }
++
++    body{
++      font-family: "Space Grotesk", "Source Sans 3", sans-serif;
++      background: var(--bg);
++      color: var(--text);
++      display:flex;
++      justify-content:center;
++      padding: 24px 12px 44px;
++      position: relative;
++      overflow-x: hidden;
++      transition: background .18s ease, color .18s ease;
++    }
++
++    body::before{
++      content:"";
++      position: fixed;
++      inset: 0;
++      pointer-events: none;
++      z-index: 0;
++      background:
++        radial-gradient(720px 420px at var(--mx) var(--my), rgba(99,102,241,0.22), rgba(99,102,241,0.10) 40%, rgba(99,102,241,0.00) 74%),
++        radial-gradient(520px 320px at calc(var(--mx) + 10%) calc(var(--my) + 16%), rgba(56,189,248,0.14), rgba(56,189,248,0.00) 70%);
++      opacity: 0.82;
++      transition: opacity .25s ease;
++    }
++
++    .snow{
++      position: fixed;
++      inset: 0;
++      pointer-events: none;
++      overflow: hidden;
++      z-index: 0;
++    }
++
++    .page{
++      width: 100%;
++      max-width: 1100px;
++      background: var(--page);
++      border: 1px solid var(--border);
++      border-radius: var(--radius-xl);
++      box-shadow: var(--shadow);
++      overflow: hidden;
++      position: relative;
++      z-index: 2;
++      backdrop-filter: blur(6px);
++    }
++
++    .page::before{
++      content: "";
++      position: absolute;
++      inset: 0;
++      pointer-events: none;
++      z-index: 0;
++      background:
++        radial-gradient(520px 320px at var(--mx) var(--my), rgba(99,102,241,0.16), rgba(99,102,241,0.00) 66%),
++        radial-gradient(380px 240px at calc(var(--mx) + 10%) calc(var(--my) + 20%), rgba(56,189,248,0.10), rgba(56,189,248,0.00) 72%);
++      opacity: 0.62;
++      mix-blend-mode: screen;
++    }
++
++    body.theme-light .page::before{
++      opacity: 0.55;
++      mix-blend-mode: normal;
++    }
++
++    .topbar{
++      display:flex;
++      align-items:center;
++      justify-content:space-between;
++      gap: 10px;
++      padding: 16px 18px;
++      border-bottom: 1px solid var(--border);
++      background: linear-gradient(to bottom, rgba(255,255,255,0.07), rgba(255,255,255,0.00));
++      position: relative;
++      z-index: 1;
++    }
++
++    body.theme-light .topbar{
++      background: linear-gradient(to bottom, rgba(255,255,255,0.70), rgba(255,255,255,0.00));
++    }
++
++    .brand{
++      display:flex;
++      align-items:center;
++      gap: 12px;
++      min-width: 0;
++    }
++
++    .logo{
++      width: 42px;
++      height: 42px;
++      border-radius: 14px;
++      border: 1px solid var(--border2);
++      display:flex;
++      align-items:center;
++      justify-content:center;
++      background: var(--card2);
++      box-shadow: var(--shadow2);
++      flex: 0 0 auto;
++    }
++
++    .brandText{
++      display:flex;
++      flex-direction:column;
++      gap: 2px;
++      min-width: 0;
++    }
++    .brandText h1{
++      font-size: 16px;
++      font-weight: 700;
++      letter-spacing: -0.02em;
++      white-space: nowrap;
++      overflow:hidden;
++      text-overflow: ellipsis;
++    }
++    .brandText p{
++      font-size: 12px;
++      color: var(--muted);
++      white-space: nowrap;
++      overflow:hidden;
++      text-overflow: ellipsis;
++    }
++
++    .topRight{
++      display:flex;
++      align-items:center;
++      gap: 10px;
++      flex-wrap: wrap;
++      justify-content:flex-end;
++    }
++
++    .chip{
++      display:inline-flex;
++      align-items:center;
++      gap: 8px;
++      padding: 7px 11px;
++      border-radius: 999px;
++      background: var(--chip);
++      color: var(--chipText);
++      font-size: 12px;
++      border: 1px solid var(--border);
++      user-select:none;
++      white-space:nowrap;
++    }
++
++    .musicVolume{
++      display:inline-flex;
++      align-items:center;
++      gap: 8px;
++      padding: 6px 10px;
++      border-radius: 999px;
++      border: 1px dashed var(--border2);
++      background: var(--card2);
++      color: var(--muted);
++      font-size: 12px;
++      white-space: nowrap;
++    }
++    .musicVolume input[type="range"]{
++      width: 120px;
++    }
++    .musicVolume em{
++      font-style: normal;
++      color: var(--muted);
++      font-size: 11px;
++      white-space: nowrap;
++    }
++
++    .btn{
++      display:inline-flex;
++      align-items:center;
++      gap: 9px;
++      padding: 9px 14px;
++      border-radius: 999px;
++      border: 1px solid var(--border2);
++      background: var(--btn);
++      color: var(--text);
++      cursor: pointer;
++      transition: transform .10s ease, background .14s ease, box-shadow .14s ease, border-color .14s ease, filter .14s ease;
++      box-shadow: 0 1px 0 rgba(2,6,23,0.06);
++      user-select:none;
++      font-size: 13px;
++      outline: none;
++    }
++
++    .btn:hover{
++      background: var(--btn-hover);
++      border-color: var(--border2);
++      box-shadow: 0 14px 34px rgba(2,6,23,0.12);
++      transform: translateY(-1px);
++    }
++
++    .btn:active{
++      transform: translateY(0px);
++      box-shadow: 0 6px 18px rgba(2,6,23,0.12);
++    }
++
++    .btnPrimary{
++      background: var(--primary);
++      color: var(--primaryText);
++      border-color: transparent;
++      box-shadow: 0 18px 44px rgba(2,6,23,0.16);
++    }
++    .btnPrimary:hover{
++      filter: brightness(0.98);
++      box-shadow: 0 22px 52px rgba(2,6,23,0.18);
++    }
++
++    .btnGhost{
++      background: transparent;
++      border-style: dashed;
++      box-shadow: none;
++    }
++    .btnGhost:hover{
++      background: var(--btn-hover);
++      border-style: dashed;
++      box-shadow: 0 14px 34px rgba(2,6,23,0.10);
++    }
++
++    .btn:focus-visible{
++      outline: none;
++      box-shadow: 0 0 0 3px rgba(99,102,241,0.22), 0 0 0 1px rgba(15,23,42,0.42), 0 18px 44px rgba(2,6,23,0.12);
++      transform: translateY(-1px);
++    }
++
++    .tabs{
++      display:inline-flex;
++      align-items:center;
++      gap: 6px;
++      padding: 6px;
++      border-radius: 999px;
++      border: 1px solid var(--border2);
++      background: var(--card2);
++      box-shadow: var(--shadow2);
++    }
++
++    .tab{
++      border: 0;
++      background: transparent;
++      color: var(--muted);
++      font-size: 12.5px;
++      padding: 8px 12px;
++      border-radius: 999px;
++      cursor: pointer;
++      display:inline-flex;
++      align-items:center;
++      gap: 8px;
++      transition: background .14s ease, color .14s ease, transform .10s ease;
++      outline: none;
++    }
++
++    .tab:hover{ background: rgba(255,255,255,0.08); transform: translateY(-1px); color: var(--text); }
++    body.theme-light .tab:hover{ background: rgba(15,23,42,0.06); }
++
++    .tab.active{
++      background: var(--btn);
++      border: 1px solid var(--border2);
++      color: var(--text);
++      box-shadow: 0 14px 34px rgba(2,6,23,0.10);
++    }
++
++    .icon{
++      width: 18px;
++      height: 18px;
++      display: inline-block;
++      background-color: currentColor;
++      mask-size: contain;
++      mask-repeat: no-repeat;
++      mask-position: center;
++      opacity: 0.92;
++      transition: transform 0.18s ease, opacity 0.18s ease;
++    }
++    .btn:hover .icon{ opacity: 1; }
++
++    .icon-app{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h10V5H7z'/></svg>"); }
++    .icon-upload{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M12 3l5 5-1.4 1.4L13 6.8V16h-2V6.8L8.4 9.4 7 8l5-5zM4 19h16v2H4v-2z'/></svg>"); }
++    .icon-trash{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v10h-2V9zm4 0h2v10h-2V9z'/></svg>"); }
++    .icon-theme{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8z'/></svg>"); }
++    .icon-download{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M11 3h2v9l3-3 1.4 1.4L12 16.8 6.6 10.4 8 9l3 3V3zM4 19h16v2H4v-2z'/></svg>"); }
++    .icon-photos{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M4 6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v10h10V6H6zm12 3h2v9a2 2 0 0 1-2 2H9v-2h9V9z'/></svg>"); }
++    .icon-notes{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h10V5H7zm2 3h6v2H9V8zm0 4h6v2H9v-2z'/></svg>"); }
++    .icon-game{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z'/></svg>"); }
++    .icon-snake{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M6 6h7a3 3 0 0 1 0 6H9a1 1 0 0 0 0 2h6a4 4 0 0 1 0 8H8v-2h7a2 2 0 0 0 0-4H9a3 3 0 0 1 0-6h4a1 1 0 1 0 0-2H6V6z'/></svg>"); }
++    .icon-plus{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z'/></svg>"); }
++    .icon-music{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M16 3v10.2a2.8 2.8 0 1 1-2-2.68V5.5L8 7v6.2a2.8 2.8 0 1 1-2-2.68V5l10-2z'/></svg>"); }
++    .icon-cloud{ mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M6.5 18a4.5 4.5 0 0 1-.48-8.98A6 6 0 0 1 18 11.5a3.5 3.5 0 0 1-.5 7H6.5z'/></svg>"); }
++
++    .content{
++      padding: 18px;
++      position: relative;
++      z-index: 1;
++      background:
++        radial-gradient(900px 520px at 30% -10%, rgba(99,102,241,0.12), transparent 60%),
++        radial-gradient(900px 520px at 70% 0%, rgba(56,189,248,0.10), transparent 60%);
++    }
++    body.theme-light .content{
++      background:
++        radial-gradient(900px 500px at 30% -10%, rgba(99,102,241,0.06), transparent 60%),
++        radial-gradient(900px 500px at 70% 0%, rgba(56,189,248,0.06), transparent 60%);
++    }
++
++    @media (min-width: 860px){
++      .topbar{ padding: 16px 22px; }
++      .content{ padding: 22px; }
++    }
++
++    .dropzone{
++      border-radius: var(--radius-lg);
++      border: 1px dashed var(--border2);
++      background: var(--card2);
++      padding: 18px 16px;
++      display:flex;
++      align-items:center;
++      justify-content:space-between;
++      gap: 16px;
++      cursor: pointer;
++      transition: background .14s ease, border-color .14s ease, box-shadow .14s ease, transform .14s ease;
++      box-shadow: 0 10px 30px rgba(2,6,23,0.08);
++      position: relative;
++      overflow: hidden;
++    }
++    .dropzone::before{
++      content:"";
++      position:absolute;
++      inset:-2px;
++      background: radial-gradient(420px 240px at 30% 20%, rgba(99,102,241,0.14), transparent 60%);
++      opacity: 0;
++      transition: opacity .18s ease;
++      pointer-events:none;
++    }
++    .dropzone:hover{ transform: translateY(-1px); box-shadow: 0 18px 44px rgba(2,6,23,0.12); }
++    .dropzone:hover::before{ opacity: 1; }
++    .dropzone.dragover{ border-color: rgba(99,102,241,0.9); box-shadow: 0 22px 52px rgba(2,6,23,0.14); }
++
++    .dzMain{ display:flex; flex-direction:column; gap:4px; position:relative; z-index:1; }
++    .dzTitle{ font-weight: 600; font-size: 14px; letter-spacing:-0.02em; }
++    .dzSub{ font-size: 12px; color: var(--muted); }
++    .dzTag{ font-size: 12px; color: var(--muted); white-space:nowrap; position:relative; z-index:1; }
++
++    .sectionHead{ display:flex; align-items:center; justify-content:space-between; gap: 10px; margin-top: 14px; margin-bottom: 10px; }
++    .sectionHead .help{ font-size: 12px; color: var(--muted); }
++
++    .empty{
++      margin-top: 12px;
++      border-radius: var(--radius-lg);
++      border: 1px dashed var(--border);
++      background: var(--card2);
++      padding: 16px;
++      color: var(--muted);
++      display:flex;
++      gap: 10px;
++      align-items:flex-start;
++    }
++    .empty strong{ color: var(--text); }
++
++    .grid{ display:grid; grid-template-columns: minmax(0,1fr); gap: 14px; margin-top: 12px; }
++    @media (min-width: 820px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
++
++    .card{
++      border: 1px solid var(--border);
++      border-radius: var(--radius-md);
++      background: var(--card);
++      overflow: hidden;
++      box-shadow: var(--shadow2);
++      transform: translateZ(0);
++      animation: pop .16s ease-out;
++    }
++    @keyframes pop{ from{ transform: translateY(8px); opacity: 0.0; } to{ transform: translateY(0); opacity: 1; } }
++
++    .preview{ border-bottom: 1px solid var(--border); background: #0b1020; display:flex; align-items:center; justify-content:center; min-height: 140px; max-height: 320px; overflow: hidden; }
++    .preview img{ max-width: 100%; max-height: 320px; display:block; }
++
++    .meta{ padding: 12px; display:flex; flex-direction:column; gap: 10px; }
++    .row{ display:flex; align-items:center; justify-content:space-between; gap: 10px; flex-wrap: wrap; }
++    .label{ font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
++
++    .nameWrap{ display:flex; align-items:center; gap: 6px; border: 1px solid var(--border2); background: var(--btn); border-radius: 999px; padding: 7px 10px; width: 100%; }
++    .nameInput{ border:none; outline:none; background: transparent; color: var(--text); width: 100%; font-size: 13px; }
++    .ext{ font-size: 12px; color: var(--muted); white-space: nowrap; }
++    .mini{ font-size: 12px; color: var(--muted); white-space: nowrap; }
++    .actions{ display:flex; justify-content:flex-end; gap: 10px; flex-wrap: wrap; }
++
++    .notesWrap{ display:grid; grid-template-columns: 320px minmax(0,1fr); gap: 14px; margin-top: 14px; }
++    @media (max-width: 860px){ .notesWrap{ grid-template-columns: 1fr; } }
++
++    .panel{ border: 1px solid var(--border); background: var(--card2); border-radius: var(--radius-lg); box-shadow: 0 10px 30px rgba(2,6,23,0.08); overflow: hidden; }
++
++    .panelHeader{ display:flex; align-items:center; justify-content:space-between; gap: 10px; padding: 12px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.04); }
++    body.theme-light .panelHeader{ background: rgba(15,23,42,0.03); }
++
++    .panelHeader .title{ font-weight: 700; letter-spacing: -0.01em; font-size: 13px; color: var(--text); display:flex; align-items:center; gap: 8px; }
++
++    .noteList{ max-height: 520px; overflow: auto; padding: 8px; }
++    .noteItem{ border: 1px solid var(--border); background: var(--page); border-radius: 14px; padding: 10px; margin-bottom: 8px; cursor: pointer; transition: transform .10s ease, box-shadow .14s ease, background .14s ease; }
++    .noteItem:hover{ transform: translateY(-1px); box-shadow: 0 14px 34px rgba(2,6,23,0.12); }
++    .noteItem.active{ border-color: rgba(99,102,241,0.55); box-shadow: 0 14px 34px rgba(99,102,241,0.12); }
++    .noteItem .h{ font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
++    .noteItem .m{ font-size: 12px; color: var(--muted); }
++
++    .editor{ padding: 12px; display:flex; flex-direction:column; gap: 8px; }
++    .fieldLabel{ font-size: 12px; color: var(--muted); }
++    .input, .textarea{
++      width: 100%;
++      border-radius: 12px;
++      border: 1px solid var(--border2);
++      padding: 10px 12px;
++      font-size: 13px;
++      background: var(--page);
++      color: var(--text);
++      outline: none;
++    }
++    .textarea{ min-height: 220px; resize: vertical; }
++    .editorActions{ display:flex; justify-content:space-between; gap: 10px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
++
++    .status{ font-size: 12px; color: var(--muted); }
++
++    .gameWrap{ display:grid; grid-template-columns: minmax(0,1fr) 280px; gap: 14px; margin-top: 14px; align-items: start; }
++    @media (max-width: 960px){ .gameWrap{ grid-template-columns: 1fr; } }
++    .boardWrap{ padding: 12px; }
++    .mineBoard{ --cols: 9; display:grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 6px; padding: 12px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--card2); width: min(100%, 460px); margin: 0 auto; }
++    .cell{ aspect-ratio: 1 / 1; border-radius: 10px; border: 1px solid var(--border2); background: var(--btn); color: var(--text); position: relative; font-weight: 700; font-size: 14px; cursor: pointer; user-select: none; display:flex; align-items:center; justify-content:center; transition: background .12s ease, transform .08s ease, box-shadow .12s ease, border-color .12s ease; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 6px 14px rgba(2,6,23,0.12); }
++    .cell:hover{ transform: translateY(-1px); }
++    .cell:active{ transform: translateY(0); }
++    .cell.revealed{ background: var(--page); border-color: var(--border); cursor: default; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
++    .cell.flagged{ color: #ef4444; }
++    .cell.flagged::before{ content: ""; position: absolute; width: 2px; height: 14px; left: calc(50% - 7px); top: calc(50% - 7px); background: #e2e8f0; border-radius: 2px; box-shadow: 0 1px 2px rgba(2,6,23,0.25); }
++    .cell.flagged::after{ content: ""; position: absolute; width: 10px; height: 8px; left: calc(50% - 6px); top: calc(50% - 7px); background: #ef4444; clip-path: polygon(0 0, 100% 25%, 0 50%, 100% 75%, 0 100%); border-radius: 2px; }
++    .cell.question{ color: #f59e0b; }
++    .cell.mine.revealed{ color: #ef4444; }
++    .cell.n1{ color: #38bdf8; }
++    .cell.n2{ color: #22c55e; }
++    .cell.n3{ color: #f97316; }
++    .cell.n4{ color: #a855f7; }
++    .cell.n5{ color: #e11d48; }
++
++    .gameHud{ padding: 12px; display:flex; flex-direction:column; gap: 10px; }
++    .statRow{ display:flex; align-items:center; justify-content:space-between; gap: 10px; font-size: 13px; }
++    .gameInputs{ display:flex; gap: 6px; align-items:center; padding: 6px 8px; border-radius: 999px; border: 1px dashed var(--border2); background: var(--card2); }
++    .gameInput{ display:flex; align-items:center; gap: 6px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: var(--btn); font-size: 12px; color: var(--muted); }
++    .gameInput span{ font-weight: 700; color: var(--text); }
++    .gameInput input{ width: 66px; border: none; outline: none; background: transparent; color: var(--text); font-size: 12px; text-align: center; }
++    .gameHelp{ font-size: 12px; color: var(--muted); }
++
++    .snakeWrap{ display:grid; grid-template-columns: minmax(0,1fr) 280px; gap: 14px; margin-top: 14px; align-items: start; }
++    @media (max-width: 960px){ .snakeWrap{ grid-template-columns: 1fr; } }
++    .snakeBoard{ padding: 12px; display:flex; align-items:center; justify-content:center; }
++    .snakeCanvas{ width: min(100%, 420px); aspect-ratio: 1 / 1; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--card2); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); display:block; }
++    .snakeHud{ padding: 12px; display:flex; flex-direction:column; gap: 10px; }
++    .snakePad{ margin-top: 6px; display:grid; grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(3, 44px); gap: 6px; justify-content:center; }
++    .snakePadSpacer{ width: 44px; height: 44px; }
++    .snakeBtn{ border-radius: 12px; border: 1px solid var(--border2); background: var(--btn); color: var(--text); font-size: 12px; cursor: pointer; transition: background .14s ease, transform .10s ease; display:flex; align-items:center; justify-content:center; user-select: none; }
++    .snakeBtn:hover{ background: var(--btn-hover); transform: translateY(-1px); }
++    .snakeBtn:active{ transform: translateY(0); }
++    .snakeInputs{ display:flex; gap: 10px; align-items:center; padding: 6px 8px; border-radius: 999px; border: 1px dashed var(--border2); background: var(--card2); }
++    .snakeInput{ display:flex; align-items:center; gap: 8px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: var(--btn); font-size: 12px; color: var(--muted); }
++    .snakeInput span{ font-weight: 700; color: var(--text); white-space: nowrap; }
++    .snakeInput input[type="number"]{ width: 44px; border: none; outline: none; background: transparent; color: var(--text); font-size: 12px; text-align: center; }
++    .snakeInput input[type="range"]{ width: 120px; }
++    .snakeInput em{ font-style: normal; color: var(--muted); font-size: 11px; white-space: nowrap; }
++
++    .cloudWrap{ display:grid; grid-template-columns: 320px minmax(0,1fr); gap: 14px; margin-top: 14px; align-items: start; }
++    @media (max-width: 960px){ .cloudWrap{ grid-template-columns: 1fr; } }
++    .cloudAuth{ padding: 12px; display:flex; flex-direction:column; gap: 10px; }
++    .cloudAuthActions{ display:flex; gap: 10px; flex-wrap: wrap; }
++    .cloudStorage{ padding: 12px; display:flex; flex-direction:column; gap: 12px; }
++    .cloudList{ display:grid; grid-template-columns: minmax(0,1fr); gap: 10px; }
++    .cloudFile{ border: 1px solid var(--border); background: var(--page); border-radius: 12px; padding: 10px; display:flex; align-items:center; justify-content:space-between; gap: 10px; }
++    .cloudMeta{ display:flex; flex-direction:column; gap: 2px; min-width: 0; }
++    .cloudName{ font-weight: 700; font-size: 13px; overflow:hidden; text-overflow: ellipsis; white-space: nowrap; }
++    .cloudInfo{ font-size: 12px; color: var(--muted); }
++    .cloudActions{ display:flex; gap: 8px; flex-wrap: wrap; }
++    .cloudHint{ font-size: 12px; color: var(--muted); }
++
++    .toast{
++      position: fixed;
++      left: 50%;
++      bottom: 18px;
++      transform: translateX(-50%);
++      background: var(--primary);
++      color: var(--primaryText);
++      padding: 9px 14px;
++      border-radius: 999px;
++      font-size: 12px;
++      box-shadow: 0 18px 44px rgba(0,0,0,0.35);
++      opacity: 0;
++      pointer-events: none;
++      transition: opacity .16s ease, transform .16s ease;
++      z-index: 50;
++      max-width: 92%;
++      text-align:center;
++    }
++    .toast.show{ opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(-4px); }
++
++    .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.08); color: var(--muted); white-space: nowrap; }
++    body.theme-light .kbd{ background: rgba(15,23,42,0.06); }
++
++    .snowflake{
++      position: absolute;
++      top: -12vh;
++      left: 0;
++      background-image: var(--flake-img);
++      background-repeat: no-repeat;
++      background-size: contain;
++      background-position: center;
++      filter: drop-shadow(0 0 8px rgba(255,255,255,0.45));
++      opacity: var(--op, 0.85);
++      animation-name: snow-fall, snow-sway, snow-twinkle;
++      animation-timing-function: linear, ease-in-out, ease-in-out;
++      animation-iteration-count: infinite, infinite, infinite;
++      transform-origin: center;
++      will-change: transform, opacity, margin-left;
++    }
++    @keyframes snow-fall{ 0%{ transform: translateY(0) rotate(0deg); } 100%{ transform: translateY(120vh) rotate(var(--spin, 180deg)); } }
++    @keyframes snow-sway{ 0%{ margin-left: 0px; } 50%{ margin-left: var(--drift, 24px); } 100%{ margin-left: 0px; } }
++    @keyframes snow-twinkle{ 0%,100%{ opacity: var(--op, 0.8); } 50%{ opacity: calc(var(--op, 0.8) + 0.12); } }
++
++    @media (max-width: 768px){ .snow{ opacity: 0.65; } }
++
++    @media (max-width: 720px){
++      body{ padding: calc(14px + env(safe-area-inset-top, 0px)) calc(10px + env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) calc(10px + env(safe-area-inset-left, 0px)); }
++      .page{ border-radius: 16px; }
++      .topbar{ flex-direction: column; align-items: stretch; gap: 12px; }
++      .brand{ width: 100%; }
++      .logo{ width: 36px; height: 36px; border-radius: 12px; }
++      .brandText h1{ font-size: 15px; }
++      .brandText p{ font-size: 11px; }
++      .topRight{ width: 100%; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 8px; }
++      .tabs{ width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
++      .tab{ justify-content: center; }
++      .chip{ align-self: flex-start; }
++      #actionsShots,
++      #actionsNotes,
++      #actionsGame,
++      #actionsSnake,
++      #actionsCloud{ width: 100%; flex-direction: column; align-items: stretch; }
++      #actionsShots .btn,
++      #actionsNotes .btn,
++      #actionsGame .btn,
++      #actionsSnake .btn,
++      #actionsCloud .btn,
++      .topRight > .btn{ width: 100%; justify-content: center; min-height: 40px; }
++      .musicVolume{ width: 100%; justify-content: space-between; }
++      .musicVolume input[type="range"]{ width: 100%; }
++      .content{ padding: 14px; }
++      .dropzone{ flex-direction: column; align-items: flex-start; gap: 10px; }
++      .dzTag{ align-self: flex-start; }
++      .gameInputs,
++      .snakeInputs{ width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 8px 10px; }
++      .gameInput input{ width: 72px; }
++      .snakeInput input[type="range"]{ width: 140px; }
++      .noteList{ max-height: 260px; }
++      .snakePad{ grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(3, 40px); gap: 5px; }
++      .snakePadSpacer{ width: 40px; height: 40px; }
++      .toast{ bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
++    }
++
++    .view{ display:none; }
++    .view.active{ display:block; }
++  </style>
++</head>
++<body>
++  <div class="snow"></div>
++
++  <div class="page">
++    <div class="topbar">
++      <div class="brand">
++        <div class="logo" aria-hidden="true">
++          <span class="icon icon-app"></span>
++        </div>
++        <div class="brandText">
++          <h1>Личное пространство</h1>
++          <p>Скриншоты, заметки, игры и локальное облако</p>
++        </div>
++      </div>
++
++      <div class="topRight">
++        <div class="tabs" role="tablist" aria-label="Вкладки">
++          <button class="tab active" id="tabShots" role="tab" aria-selected="true">
++            <span class="icon icon-photos"></span>
++            <span>Скриншоты</span>
++          </button>
++          <button class="tab" id="tabNotes" role="tab" aria-selected="false">
++            <span class="icon icon-notes"></span>
++            <span>Заметки</span>
++          </button>
++          <button class="tab" id="tabGame" role="tab" aria-selected="false">
++            <span class="icon icon-game"></span>
++            <span>Сапер</span>
++          </button>
++          <button class="tab" id="tabSnake" role="tab" aria-selected="false">
++            <span class="icon icon-snake"></span>
++            <span>Змейка</span>
++          </button>
++          <button class="tab" id="tabCloud" role="tab" aria-selected="false">
++            <span class="icon icon-cloud"></span>
++            <span>Облако</span>
++          </button>
++        </div>
++
++        <span class="chip" id="countChip">0 файлов</span>
++
++        <div id="actionsShots" style="display:flex; gap:10px; flex-wrap:wrap;">
++          <button class="btn btnPrimary" id="btnUpload">
++            <span class="icon icon-upload"></span>
++            <span>Загрузить</span>
++          </button>
++          <button class="btn btnGhost" id="btnClear">
++            <span class="icon icon-trash"></span>
++            <span>Очистить</span>
++          </button>
++        </div>
++
++        <div id="actionsNotes" style="display:none; gap:10px; flex-wrap:wrap;">
++          <button class="btn btnPrimary" id="btnNewNote">
++            <span class="icon icon-plus"></span>
++            <span>Новая</span>
++          </button>
++          <button class="btn btnGhost" id="btnDeleteNote">
++            <span class="icon icon-trash"></span>
++            <span>Удалить</span>
++          </button>
++        </div>
++
++        <div id="actionsGame" style="display:none; gap:10px; flex-wrap:wrap; align-items:center;">
++          <div class="gameInputs" aria-label="Параметры поля">
++            <label class="gameInput">
++              <span>Ряды</span>
++              <input id="rowsInput" type="number" min="6" max="24" value="9" aria-label="Ряды" />
++            </label>
++            <label class="gameInput">
++              <span>Колонки</span>
++              <input id="colsInput" type="number" min="6" max="24" value="9" aria-label="Колонки" />
++            </label>
++            <label class="gameInput">
++              <span>Мины</span>
++              <input id="minesInput" type="number" min="1" max="99" value="10" aria-label="Мины" />
++            </label>
++          </div>
++          <button class="btn btnPrimary" id="btnApplyGame">
++            <span class="icon icon-plus"></span>
++            <span>Создать</span>
++          </button>
++          <button class="btn btnGhost" id="btnRestartGame">
++            <span>Перезапуск</span>
++          </button>
++          <button class="btn btnGhost" id="btnSound" aria-pressed="true">
++            <span>Звук: Включен</span>
++          </button>
++        </div>
++
++        <div id="actionsSnake" style="display:none; gap:10px; flex-wrap:wrap; align-items:center;">
++          <button class="btn btnPrimary" id="btnSnakeStart">
++            <span>Старт</span>
++          </button>
++          <button class="btn btnGhost" id="btnSnakeRestart">
++            <span>Перезапуск</span>
++          </button>
++          <div class="snakeInputs" aria-label="Настройки змейки">
++            <label class="snakeInput">
++              <span>Скорость</span>
++              <input id="snakeSpeed" type="range" min="60" max="220" step="10" value="130" />
++              <em id="snakeSpeedValue">130 миллисекунд</em>
++            </label>
++            <label class="snakeInput">
++              <span>Яблоки</span>
++              <input id="snakeApples" type="number" min="1" max="6" value="3" />
++            </label>
++          </div>
++          <button class="btn btnGhost" id="btnSnakeEditor" aria-pressed="false">
++            <span>Редактор: Выключен</span>
++          </button>
++          <button class="btn btnGhost" id="btnSnakeClear">
++            <span>Очистить</span>
++          </button>
++        </div>
++
++        <div id="actionsCloud" style="display:none; gap:10px; flex-wrap:wrap; align-items:center;">
++          <button class="btn btnPrimary" id="btnCloudUpload">
++            <span class="icon icon-upload"></span>
++            <span>Загрузить в облако</span>
++          </button>
++          <button class="btn btnGhost" id="btnCloudRefresh">
++            <span>Обновить список</span>
++          </button>
++        </div>
++
++        <button class="btn" id="btnTheme" title="Переключить тему">
++          <span class="icon icon-theme"></span>
++          <span>Тема</span>
++        </button>
++        <div class="musicVolume">
++          <span>Громкость музыки</span>
++          <input id="musicVolume" type="range" min="0" max="100" step="1" value="25" />
++          <em id="musicVolumeValue">25 процентов</em>
++        </div>
++        <button class="btn" id="btnMusic" title="Музыка" aria-pressed="true">
++          <span class="icon icon-music"></span>
++          <span>Музыка: Включена</span>
++        </button>
++      </div>
++    </div>
++
++    <div class="content">
++      <section class="view active" id="viewShots">
++        <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Зона загрузки">
++          <div class="dzMain">
++            <div class="dzTitle">Перетащите изображения, нажмите «Загрузить» или вставьте из буфера</div>
++            <div class="dzSub">
++              Поддержка: PNG, JPG, GIF, WEBP, SVG, BMP, TIFF и другие.
++              Горячие клавиши: <span class="kbd">Control</span> + <span class="kbd">V</span> / <span class="kbd">Command</span> + <span class="kbd">V</span>
++            </div>
++          </div>
++          <div class="dzTag">Перетащить • Вставить</div>
++        </div>
++
++        <div class="sectionHead">
++          <div class="help">Совет: можно вставлять сразу несколько изображений.</div>
++          <div class="help" id="supportText">Принимаем любые <code>image/*</code></div>
++        </div>
++
++        <div class="empty" id="empty">
++          <div>[Пусто]</div>
++          <div>
++            <strong>Здесь пока пусто.</strong><br/>
++            Загрузите файл, перетащите его или вставьте скриншот — и он появится здесь.
++          </div>
++        </div>
++
++        <div class="grid" id="grid" aria-live="polite"></div>
++      </section>
++
++      <section class="view" id="viewNotes">
++        <div class="notesWrap">
++          <div class="panel">
++            <div class="panelHeader">
++              <div class="title">
++                <span class="icon icon-notes"></span>
++                <span>Мои заметки</span>
++              </div>
++              <div class="status" id="notesCount">0</div>
++            </div>
++            <div class="noteList" id="noteList"></div>
++          </div>
++
++          <div class="panel">
++            <div class="panelHeader">
++              <div class="title">
++                <span class="icon icon-notes"></span>
++                <span>Редактор</span>
++              </div>
++              <div class="status" id="saveStatus">Не выбрано</div>
++            </div>
++
++            <div class="editor">
++              <div class="fieldLabel">Заголовок</div>
++              <input class="input" id="noteTitle" placeholder="Например: идеи для проекта" />
++
++              <div class="fieldLabel">Текст</div>
++              <textarea class="textarea" id="noteBody" placeholder="Пишите заметку..."></textarea>
++
++              <div class="editorActions">
++                <div class="status" id="noteMeta">—</div>
++                <div class="status">Автосохранение включено</div>
++              </div>
++            </div>
++          </div>
++        </div>
++      </section>
++
++      <section class="view" id="viewGame">
++        <div class="gameWrap">
++          <div class="panel">
++            <div class="panelHeader">
++              <div class="title">
++                <span class="icon icon-game"></span>
++                <span>Сапер</span>
++              </div>
++              <div class="status" id="gameStatus">Готово</div>
++            </div>
++            <div class="boardWrap">
++              <div class="mineBoard" id="mineBoard" aria-label="Поле сапера"></div>
++            </div>
++          </div>
++
++          <div class="panel">
++            <div class="panelHeader">
++              <div class="title">
++                <span class="icon icon-game"></span>
++                <span>Информация</span>
++              </div>
++              <div class="status" id="gameResult"></div>
++            </div>
++            <div class="gameHud">
++              <div class="statRow"><span>Мины</span><strong id="minesLeft">0</strong></div>
++              <div class="statRow"><span>Время</span><strong id="gameTime">0 секунд</strong></div>
++              <div class="gameHelp">Левая кнопка мыши — открыть, правая кнопка мыши — флаг / ?.</div>
++            </div>
++          </div>
++        </div>
++      </section>
++
++      <section class="view" id="viewSnake">
++        <div class="snakeWrap">
++          <div class="panel">
++            <div class="panelHeader">
++              <div class="title">
++                <span class="icon icon-snake"></span>
++                <span>Змейка</span>
++              </div>
++              <div class="status" id="snakeStatus">Готово</div>
++            </div>
++            <div class="snakeBoard">
++              <canvas class="snakeCanvas" id="snakeCanvas" aria-label="Поле змейки"></canvas>
++            </div>
++          </div>
++
++          <div class="panel">
++            <div class="panelHeader">
++              <div class="title">
++                <span class="icon icon-snake"></span>
++                <span>Информация</span>
++              </div>
++              <div class="status" id="snakeResult"></div>
++            </div>
++            <div class="snakeHud">
++              <div class="statRow"><span>Счет</span><strong id="snakeScore">0</strong></div>
++              <div class="statRow"><span>Лучший</span><strong id="snakeBest">0</strong></div>
++              <div class="gameHelp">Стрелки или клавиши W, A, S, D.</div>
++              <div class="snakePad" id="snakePad" aria-label="Управление змейкой">
++                <span class="snakePadSpacer"></span>
++                <button class="snakeBtn" data-dir="up">▲</button>
++                <span class="snakePadSpacer"></span>
++                <button class="snakeBtn" data-dir="left">◀</button>
++                <span class="snakePadSpacer"></span>
++                <button class="snakeBtn" data-dir="right">▶</button>
++                <span class="snakePadSpacer"></span>
++                <button class="snakeBtn" data-dir="down">▼</button>
++                <span class="snakePadSpacer"></span>
++              </div>
++            </div>
++          </div>
++        </div>
++      </section>
++
++      <section class="view" id="viewCloud">
++        <div class="cloudWrap">
++          <div class="panel">
++            <div class="panelHeader">
++              <div class="title">
++                <span class="icon icon-cloud"></span>
++                <span>Авторизация</span>
++              </div>
++              <div class="status" id="cloudStatus">Не авторизован</div>
++            </div>
++            <div class="cloudAuth">
++              <div class="fieldLabel">Логин</div>
++              <input class="input" id="cloudUser" placeholder="например: admin" />
++
++              <div class="fieldLabel">Пароль</div>
++              <input class="input" id="cloudPass" type="password" placeholder="Введите пароль" />
++
++              <div class="cloudAuthActions">
++                <button class="btn btnPrimary" id="btnCloudLogin">
++                  <span>Войти</span>
++                </button>
++                <button class="btn btnGhost" id="btnCloudRegister">
++                  <span>Создать аккаунт</span>
++                </button>
++                <button class="btn btnGhost" id="btnCloudLogout" style="display:none;">
++                  <span>Выйти</span>
++                </button>
++              </div>
++              <div class="cloudHint" id="cloudNotice">Хранилище находится на этом компьютере.</div>
++            </div>
++          </div>
++
++          <div class="panel">
++            <div class="panelHeader">
++              <div class="title">
++                <span class="icon icon-cloud"></span>
++                <span>Файлы</span>
++              </div>
++              <div class="status" id="cloudUsage">0 байт из 5 гигабайт</div>
++            </div>
++            <div class="cloudStorage">
++              <div class="empty" id="cloudEmpty">
++                <div>[Файлы]</div>
++                <div>
++                  <strong>Файлов пока нет.</strong><br/>
++                  Загрузите файлы через кнопку сверху.
++                </div>
++              </div>
++              <div class="cloudList" id="cloudList"></div>
++            </div>
++          </div>
++        </div>
++      </section>
++    </div>
++  </div>
++
++  <input id="fileInput" type="file" accept="image/*" multiple hidden />
++  <input id="cloudFileInput" type="file" multiple hidden />
++  <audio id="bgMusic" src="77a2d7c5-7aed-4740-b68f-2e8280497e27.mp3" preload="auto" loop></audio>
++  <div class="toast" id="toast"></div>
++
++  <script>
++    (function () {
++      const THEME_KEY = "shots_theme_v5";
++      const VIEW_KEY = "shots_view_v2";
++      const SOUND_KEY = "shots_sound_v2";
++      const MUSIC_KEY = "shots_music_v2";
++      const MUSIC_VOL_KEY = "shots_music_volume_v1";
++      const CLOUD_TOKEN_KEY = "shots_cloud_token_v1";
++
++      const fileInput = document.getElementById("fileInput");
++      const cloudFileInput = document.getElementById("cloudFileInput");
++      const btnUpload = document.getElementById("btnUpload");
++      const btnClear  = document.getElementById("btnClear");
++      const btnTheme  = document.getElementById("btnTheme");
++      const btnMusic  = document.getElementById("btnMusic");
++      const musicVolume = document.getElementById("musicVolume");
++      const musicVolumeValue = document.getElementById("musicVolumeValue");
++      const bgMusic   = document.getElementById("bgMusic");
++      const dropzone  = document.getElementById("dropzone");
++      const grid      = document.getElementById("grid");
++      const empty     = document.getElementById("empty");
++      const toast     = document.getElementById("toast");
++      const countChip = document.getElementById("countChip");
++
++      const tabShots = document.getElementById("tabShots");
++      const tabNotes = document.getElementById("tabNotes");
++      const tabGame = document.getElementById("tabGame");
++      const tabSnake = document.getElementById("tabSnake");
++      const tabCloud = document.getElementById("tabCloud");
++      const viewShots = document.getElementById("viewShots");
++      const viewNotes = document.getElementById("viewNotes");
++      const viewGame = document.getElementById("viewGame");
++      const viewSnake = document.getElementById("viewSnake");
++      const viewCloud = document.getElementById("viewCloud");
++      const actionsShots = document.getElementById("actionsShots");
++      const actionsNotes = document.getElementById("actionsNotes");
++      const actionsGame = document.getElementById("actionsGame");
++      const actionsSnake = document.getElementById("actionsSnake");
++      const actionsCloud = document.getElementById("actionsCloud");
++
++      const btnApplyGame = document.getElementById("btnApplyGame");
++      const btnRestartGame = document.getElementById("btnRestartGame");
++      const btnSound = document.getElementById("btnSound");
++      const rowsInput = document.getElementById("rowsInput");
++      const colsInput = document.getElementById("colsInput");
++      const minesInput = document.getElementById("minesInput");
++      const mineBoard = document.getElementById("mineBoard");
++      const minesLeft = document.getElementById("minesLeft");
++      const gameTime = document.getElementById("gameTime");
++      const gameStatus = document.getElementById("gameStatus");
++      const gameResult = document.getElementById("gameResult");
++
++      const btnSnakeStart = document.getElementById("btnSnakeStart");
++      const btnSnakeRestart = document.getElementById("btnSnakeRestart");
++      const btnSnakeEditor = document.getElementById("btnSnakeEditor");
++      const btnSnakeClear = document.getElementById("btnSnakeClear");
++      const snakeSpeed = document.getElementById("snakeSpeed");
++      const snakeSpeedValue = document.getElementById("snakeSpeedValue");
++      const snakeApples = document.getElementById("snakeApples");
++      const snakeCanvas = document.getElementById("snakeCanvas");
++      const snakeScore = document.getElementById("snakeScore");
++      const snakeBest = document.getElementById("snakeBest");
++      const snakeStatus = document.getElementById("snakeStatus");
++      const snakeResult = document.getElementById("snakeResult");
++      const snakePad = document.getElementById("snakePad");
++
++      const noteList = document.getElementById("noteList");
++      const noteTitle = document.getElementById("noteTitle");
++      const noteBody = document.getElementById("noteBody");
++      const btnNewNote = document.getElementById("btnNewNote");
++      const btnDeleteNote = document.getElementById("btnDeleteNote");
++      const notesCount = document.getElementById("notesCount");
++      const saveStatus = document.getElementById("saveStatus");
++      const noteMeta = document.getElementById("noteMeta");
++
++      const btnCloudUpload = document.getElementById("btnCloudUpload");
++      const btnCloudRefresh = document.getElementById("btnCloudRefresh");
++      const cloudUser = document.getElementById("cloudUser");
++      const cloudPass = document.getElementById("cloudPass");
++      const btnCloudLogin = document.getElementById("btnCloudLogin");
++      const btnCloudRegister = document.getElementById("btnCloudRegister");
++      const btnCloudLogout = document.getElementById("btnCloudLogout");
++      const cloudStatus = document.getElementById("cloudStatus");
++      const cloudUsage = document.getElementById("cloudUsage");
++      const cloudList = document.getElementById("cloudList");
++      const cloudEmpty = document.getElementById("cloudEmpty");
++
++      function getSafeStorage() {
++        try {
++          const testKey = "__shots_storage_test__";
++          window.localStorage.setItem(testKey, "1");
++          window.localStorage.removeItem(testKey);
++          return window.localStorage;
++        } catch (err) {
++          return {
++            getItem: () => null,
++            setItem: () => {},
++            removeItem: () => {}
++          };
++        }
++      }
++
++      const storage = getSafeStorage();
++      const API_BASE = window.location.protocol === "file:" ? "http://localhost:3000" : "";
++      const CLOUD_LIMIT_BYTES = 5 * 1024 * 1024 * 1024;
++      let cloudToken = storage.getItem(CLOUD_TOKEN_KEY) || "";
++
++      function setGlowFromClient(x, y) {
++        const mx = x / window.innerWidth;
++        const my = y / window.innerHeight;
++        document.documentElement.style.setProperty("--mx", (mx * 100).toFixed(2) + "%");
++        document.documentElement.style.setProperty("--my", (my * 100).toFixed(2) + "%");
++      }
++
++      let glowX = window.innerWidth * 0.5;
++      let glowY = window.innerHeight * 0.2;
++      let glowRaf = 0;
++
++      function scheduleGlowUpdate() {
++        if (glowRaf) return;
++        glowRaf = requestAnimationFrame(() => {
++          setGlowFromClient(glowX, glowY);
++          glowRaf = 0;
++        });
++      }
++
++      window.addEventListener("pointermove", (e) => {
++        glowX = e.clientX;
++        glowY = e.clientY;
++        scheduleGlowUpdate();
++      }, { passive: true });
++
++      window.addEventListener("resize", scheduleGlowUpdate);
++      setGlowFromClient(glowX, glowY);
++
++      function showToast(msg) {
++        if (!toast) return;
++        toast.textContent = msg;
++        toast.classList.add("show");
++        clearTimeout(showToast._t);
++        showToast._t = setTimeout(() => toast.classList.remove("show"), 2400);
++      }
++
++      function isImageFile(file) {
++        return !!file && typeof file.type === "string" && file.type.startsWith("image/");
++      }
++
++      function updateUI() {
++        const count = grid.children.length;
++        empty.style.display = count ? "none" : "flex";
++        countChip.textContent = count + (count === 1 ? " файл" : (count >= 2 && count <= 4 ? " файла" : " файлов"));
++      }
++
++      function sanitizeName(name) {
++        return name.replace(/[\/\\:\*\?"<>|]/g, "_").trim();
++      }
++
++      function splitNameAndExt(file) {
++        const original = (file && file.name) ? file.name : "image";
++        const dot = original.lastIndexOf(".");
++        const base = dot === -1 ? original : original.slice(0, dot);
++        let ext = dot === -1 ? "" : original.slice(dot);
++
++        if (!ext) {
++          if (file.type === "image/png") ext = ".png";
++          else if (file.type === "image/jpeg") ext = ".jpg";
++          else if (file.type === "image/gif") ext = ".gif";
++          else if (file.type === "image/webp") ext = ".webp";
++          else if (file.type === "image/svg+xml") ext = ".svg";
++          else if (file.type === "image/bmp") ext = ".bmp";
++          else if (file.type === "image/tiff") ext = ".tiff";
++          else ext = "";
++        }
++        return { base: base || "image", ext };
++      }
++
++      function escapeHtml(s) {
++        return String(s)
++          .replaceAll("&", "&amp;")
++          .replaceAll("<", "&lt;")
++          .replaceAll(">", "&gt;")
++          .replaceAll('"', "&quot;")
++          .replaceAll("'", "&#039;");
++      }
++
++      function addCard(file) {
++        const url = URL.createObjectURL(file);
++        const { base, ext } = splitNameAndExt(file);
++
++        const card = document.createElement("article");
++        card.className = "card";
++
++        card.innerHTML = `
++          <div class="preview">
++            <img src="${url}" alt="Изображение" loading="lazy" />
++          </div>
++          <div class="meta">
++            <div class="row">
++              <div><div class="label">Имя файла</div></div>
++              <div class="mini">${(file.type || "image/*")}</div>
++            </div>
++            <div class="nameWrap">
++              <input class="nameInput" type="text" value="${escapeHtml(base)}" spellcheck="false" />
++              <span class="ext">${escapeHtml(ext)}</span>
++            </div>
++            <div class="actions">
++              <button class="btn" data-role="delete">
++                <span class="icon icon-trash"></span>
++                <span>Удалить</span>
++              </button>
++              <button class="btn btnPrimary" data-role="download">
++                <span class="icon icon-download"></span>
++                <span>Скачать</span>
++              </button>
++            </div>
++          </div>
++        `;
++
++        const input = card.querySelector(".nameInput");
++        const extEl = card.querySelector(".ext");
++        const btnDel = card.querySelector('[data-role="delete"]');
++        const btnDl  = card.querySelector('[data-role="download"]');
++
++        btnDl.addEventListener("click", () => {
++          const extText = extEl.textContent || "";
++          let name = sanitizeName(input.value || "");
++          if (!name) name = "image";
++          const filename = name + extText;
++
++          const a = document.createElement("a");
++          a.href = url;
++          a.download = filename;
++          document.body.appendChild(a);
++          a.click();
++          a.remove();
++        });
++
++        btnDel.addEventListener("click", () => {
++          URL.revokeObjectURL(url);
++          card.remove();
++          updateUI();
++        });
++
++        grid.prepend(card);
++        updateUI();
++      }
++
++      function handleFiles(files) {
++        const list = Array.from(files || []);
++        if (!list.length) return;
++
++        let added = 0;
++        for (const file of list) {
++          if (!isImageFile(file)) continue;
++          addCard(file);
++          added++;
++        }
++
++        if (added > 1) showToast("Добавлено изображений: " + added);
++        else if (added === 1) showToast("Изображение добавлено");
++      }
++
++      btnUpload.addEventListener("click", () => fileInput.click());
++      fileInput.addEventListener("change", (e) => {
++        handleFiles(e.target.files);
++        fileInput.value = "";
++      });
++
++      dropzone.addEventListener("click", () => fileInput.click());
++      dropzone.addEventListener("keydown", (e) => {
++        if (e.key === "Enter" || e.key === " ") {
++          e.preventDefault();
++          fileInput.click();
++        }
++      });
++
++      dropzone.addEventListener("dragover", (e) => {
++        e.preventDefault();
++        dropzone.classList.add("dragover");
++      });
++      dropzone.addEventListener("dragenter", (e) => {
++        e.preventDefault();
++        dropzone.classList.add("dragover");
++      });
++      ["dragleave", "dragend", "drop"].forEach((name) => {
++        dropzone.addEventListener(name, () => dropzone.classList.remove("dragover"));
++      });
++      dropzone.addEventListener("drop", (e) => {
++        e.preventDefault();
++        handleFiles(e.dataTransfer.files);
++      });
++
++      btnClear.addEventListener("click", () => {
++        Array.from(grid.querySelectorAll("img")).forEach((img) => {
++          if (img.src && img.src.startsWith("blob:")) URL.revokeObjectURL(img.src);
++        });
++        grid.innerHTML = "";
++        updateUI();
++        showToast("Очищено");
++      });
++
++      document.addEventListener("paste", (event) => {
++        if (!viewShots.classList.contains("active")) return;
++        const clipboard = event.clipboardData || window.clipboardData;
++        if (!clipboard || !clipboard.items) return;
++        const items = Array.from(clipboard.items);
++        const imageFiles = [];
++        for (const item of items) {
++          if (item.type && item.type.startsWith("image/")) {
++            const file = item.getAsFile();
++            if (file) imageFiles.push(file);
++          }
++        }
++        if (imageFiles.length) {
++          handleFiles(imageFiles);
++          event.preventDefault();
++        }
++      });
++
++      function applyTheme(theme) {
++        const light = theme === "light";
++        document.body.classList.toggle("theme-light", light);
++      }
++
++      const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
++      const savedTheme = storage.getItem(THEME_KEY) || (prefersLight ? "light" : "dark");
++      applyTheme(savedTheme);
++
++      btnTheme.addEventListener("click", () => {
++        const isLight = document.body.classList.contains("theme-light");
++        const next = isLight ? "dark" : "light";
++        applyTheme(next);
++        storage.setItem(THEME_KEY, next);
++        showToast(next === "dark" ? "Темная тема" : "Светлая тема");
++      });
++
++      let musicEnabled = storage.getItem(MUSIC_KEY) !== "off";
++      let musicVolumeVal = Number(storage.getItem(MUSIC_VOL_KEY));
++      if (!Number.isFinite(musicVolumeVal)) musicVolumeVal = 25;
++
++      function applyMusicVolume(value) {
++        const vol = Math.max(0, Math.min(100, Number(value)));
++        musicVolumeVal = vol;
++        if (bgMusic) bgMusic.volume = vol / 100;
++        if (musicVolume) musicVolume.value = String(vol);
++        if (musicVolumeValue) musicVolumeValue.textContent = vol + " процентов";
++        storage.setItem(MUSIC_VOL_KEY, String(vol));
++      }
++
++      function updateMusicButton() {
++        if (!btnMusic) return;
++        btnMusic.setAttribute("aria-pressed", String(musicEnabled));
++        const label = btnMusic.querySelector("span:last-child") || btnMusic.querySelector("span");
++        if (label) {
++          label.textContent = musicEnabled ? "Музыка: Включена" : "Музыка: Выключена";
++        }
++      }
++
++      function tryPlayMusic() {
++        if (!bgMusic || !musicEnabled) return;
++        bgMusic.volume = musicVolumeVal / 100;
++        const p = bgMusic.play();
++        if (p && typeof p.catch === "function") p.catch(() => {});
++      }
++
++      updateMusicButton();
++      applyMusicVolume(musicVolumeVal);
++      if (musicVolume) {
++        musicVolume.addEventListener("input", () => applyMusicVolume(musicVolume.value));
++      }
++      if (btnMusic) {
++        btnMusic.addEventListener("click", () => {
++          musicEnabled = !musicEnabled;
++          storage.setItem(MUSIC_KEY, musicEnabled ? "on" : "off");
++          updateMusicButton();
++          if (musicEnabled) tryPlayMusic();
++          else if (bgMusic) bgMusic.pause();
++        });
++      }
++      document.addEventListener("pointerdown", tryPlayMusic, { once: true, passive: true });
++
++      const VIEW_NAMES = ["shots", "notes", "game", "snake", "cloud"];
++      function normalizeViewName(name) {
++        return VIEW_NAMES.includes(name) ? name : "shots";
++      }
++
++      function setView(name) {
++        const safeName = normalizeViewName(name);
++        const isShots = safeName === "shots";
++        const isNotes = safeName === "notes";
++        const isGame = safeName === "game";
++        const isSnake = safeName === "snake";
++        const isCloud = safeName === "cloud";
++
++        tabShots.classList.toggle("active", isShots);
++        tabNotes.classList.toggle("active", isNotes);
++        tabGame.classList.toggle("active", isGame);
++        tabSnake.classList.toggle("active", isSnake);
++        tabCloud.classList.toggle("active", isCloud);
++        tabShots.setAttribute("aria-selected", String(isShots));
++        tabNotes.setAttribute("aria-selected", String(isNotes));
++        tabGame.setAttribute("aria-selected", String(isGame));
++        tabSnake.setAttribute("aria-selected", String(isSnake));
++        tabCloud.setAttribute("aria-selected", String(isCloud));
++
++        viewShots.classList.toggle("active", isShots);
++        viewNotes.classList.toggle("active", isNotes);
++        viewGame.classList.toggle("active", isGame);
++        viewSnake.classList.toggle("active", isSnake);
++        viewCloud.classList.toggle("active", isCloud);
++
++        actionsShots.style.display = isShots ? "flex" : "none";
++        actionsNotes.style.display = isNotes ? "flex" : "none";
++        actionsGame.style.display = isGame ? "flex" : "none";
++        actionsSnake.style.display = isSnake ? "flex" : "none";
++        actionsCloud.style.display = isCloud ? "flex" : "none";
++        countChip.style.display = isShots ? "inline-flex" : "none";
++
++        storage.setItem(VIEW_KEY, safeName);
++        setSnakeActive(isSnake);
++        setCloudActive(isCloud);
++      }
++
++      tabShots.addEventListener("click", () => setView("shots"));
++      tabNotes.addEventListener("click", () => setView("notes"));
++      tabGame.addEventListener("click", () => setView("game"));
++      tabSnake.addEventListener("click", () => setView("snake"));
++      tabCloud.addEventListener("click", () => setView("cloud"));
++
++      const savedViewRaw = storage.getItem(VIEW_KEY);
++      setView(normalizeViewName(savedViewRaw));
++      const anyActive = viewShots.classList.contains("active") || viewNotes.classList.contains("active") || viewGame.classList.contains("active") || viewSnake.classList.contains("active") || viewCloud.classList.contains("active");
++      if (!anyActive) setView("shots");
++
++      const DB_NAME = "shots_notes_db";
++      const DB_VERSION = 1;
++      const STORE = "notes";
++      const NOTES_FALLBACK_KEY = "shots_notes_fallback_v1";
++
++      let db = null;
++      let currentNoteId = null;
++      let saveTimer = null;
++      let useFallbackNotes = false;
++      let fallbackNotes = [];
++
++      function loadFallbackNotes() {
++        try {
++          const raw = storage.getItem(NOTES_FALLBACK_KEY);
++          const parsed = raw ? JSON.parse(raw) : [];
++          fallbackNotes = Array.isArray(parsed) ? parsed : [];
++        } catch (err) {
++          fallbackNotes = [];
++        }
++      }
++
++      function persistFallbackNotes() {
++        try {
++          storage.setItem(NOTES_FALLBACK_KEY, JSON.stringify(fallbackNotes));
++        } catch (err) {
++        }
++      }
++
++      function enableFallbackNotes() {
++        useFallbackNotes = true;
++        loadFallbackNotes();
++      }
++
++      function getNextFallbackId() {
++        let maxId = 0;
++        for (const note of fallbackNotes) {
++          if (typeof note.id === "number" && note.id > maxId) maxId = note.id;
++        }
++        return maxId + 1;
++      }
++
++      function openDB() {
++        return new Promise((resolve, reject) => {
++          const req = indexedDB.open(DB_NAME, DB_VERSION);
++          req.onupgradeneeded = () => {
++            const db = req.result;
++            if (!db.objectStoreNames.contains(STORE)) {
++              const store = db.createObjectStore(STORE, { keyPath: "id", autoIncrement: true });
++              store.createIndex("updatedAt", "updatedAt");
++            }
++          };
++          req.onsuccess = () => resolve(req.result);
++          req.onerror = () => reject(req.error);
++        });
++      }
++
++      function tx(storeName, mode = "readonly") {
++        const t = db.transaction(storeName, mode);
++        return t.objectStore(storeName);
++      }
++
++      function getAllNotes() {
++        if (useFallbackNotes) {
++          const arr = fallbackNotes.slice();
++          arr.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0));
++          return Promise.resolve(arr);
++        }
++        return new Promise((resolve, reject) => {
++          const store = tx(STORE, "readonly");
++          const req = store.getAll();
++          req.onsuccess = () => {
++            const arr = req.result || [];
++            arr.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0));
++            resolve(arr);
++          };
++          req.onerror = () => reject(req.error);
++        });
++      }
++
++      function addNote(note) {
++        if (useFallbackNotes) {
++          const id = getNextFallbackId();
++          fallbackNotes.push({ ...note, id });
++          persistFallbackNotes();
++          return Promise.resolve(id);
++        }
++        return new Promise((resolve, reject) => {
++          const store = tx(STORE, "readwrite");
++          const req = store.add(note);
++          req.onsuccess = () => resolve(req.result);
++          req.onerror = () => reject(req.error);
++        });
++      }
++
++      function putNote(note) {
++        if (useFallbackNotes) {
++          const index = fallbackNotes.findIndex((n) => n.id === note.id);
++          if (index !== -1) fallbackNotes[index] = { ...note };
++          persistFallbackNotes();
++          return Promise.resolve(true);
++        }
++        return new Promise((resolve, reject) => {
++          const store = tx(STORE, "readwrite");
++          const req = store.put(note);
++          req.onsuccess = () => resolve(true);
++          req.onerror = () => reject(req.error);
++        });
++      }
++
++      function deleteNote(id) {
++        if (useFallbackNotes) {
++          fallbackNotes = fallbackNotes.filter((n) => n.id !== id);
++          persistFallbackNotes();
++          return Promise.resolve(true);
++        }
++        return new Promise((resolve, reject) => {
++          const store = tx(STORE, "readwrite");
++          const req = store.delete(id);
++          req.onsuccess = () => resolve(true);
++          req.onerror = () => reject(req.error);
++        });
++      }
++
++      function formatDate(ts) {
++        if (!ts) return "";
++        const d = new Date(ts);
++        return d.toLocaleString("ru-RU", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
++      }
++
++      function setEditorEnabled(enabled) {
++        noteTitle.disabled = !enabled;
++        noteBody.disabled = !enabled;
++        btnDeleteNote.disabled = !enabled;
++      }
++
++      function clearNoteEditor() {
++        noteTitle.value = "";
++        noteBody.value = "";
++        saveStatus.textContent = "Не выбрано";
++        noteMeta.textContent = "—";
++        setEditorEnabled(false);
++      }
++
++      function renderNoteList(notes) {
++        noteList.innerHTML = "";
++        notesCount.textContent = notes.length + (notes.length === 1 ? " заметка" : (notes.length >= 2 && notes.length <= 4 ? " заметки" : " заметок"));
++        if (!notes.length) {
++          const div = document.createElement("div");
++          div.style.padding = "12px";
++          div.style.color = "var(--muted)";
++          div.style.fontSize = "12px";
++          div.textContent = "Заметок пока нет. Нажмите «Новая».";
++          noteList.appendChild(div);
++          return;
++        }
++        for (const n of notes) {
++          const item = document.createElement("div");
++          item.className = "noteItem" + (n.id === currentNoteId ? " active" : "");
++          const title = (n.title || "").trim() || "Без названия";
++          const snippet = ((n.body || "").trim().replace(/\s+/g," ")).slice(0, 80) || "—";
++          item.innerHTML = `
++            <div class="h">${escapeHtml(title)}</div>
++            <div class="m">${escapeHtml(snippet)}</div>
++          `;
++          item.addEventListener("click", () => loadNoteIntoEditor(n));
++          noteList.appendChild(item);
++        }
++      }
++
++      function loadNoteIntoEditor(note) {
++        currentNoteId = note.id;
++        noteTitle.value = note.title || "";
++        noteBody.value = note.body || "";
++        saveStatus.textContent = "Открыто";
++        noteMeta.textContent = "Обновлено: " + formatDate(note.updatedAt) + " • Создано: " + formatDate(note.createdAt);
++        setEditorEnabled(true);
++        refreshNotesList();
++      }
++
++      async function refreshNotesList() {
++        const notes = await getAllNotes();
++        renderNoteList(notes);
++        if (currentNoteId == null) {
++          clearNoteEditor();
++          return;
++        }
++        if (!notes.some(n => n.id === currentNoteId)) {
++          currentNoteId = null;
++          clearNoteEditor();
++        }
++      }
++
++      function scheduleAutoSave() {
++        if (currentNoteId == null) return;
++        saveStatus.textContent = "Сохранение…";
++        clearTimeout(saveTimer);
++        saveTimer = setTimeout(async () => {
++          await saveCurrentNote();
++        }, 350);
++      }
++
++      async function saveCurrentNote() {
++        if (currentNoteId == null) return;
++        const notes = await getAllNotes();
++        const n = notes.find(x => x.id === currentNoteId);
++        if (!n) return;
++        n.title = noteTitle.value;
++        n.body = noteBody.value;
++        n.updatedAt = Date.now();
++        await putNote(n);
++        saveStatus.textContent = "Сохранено";
++        noteMeta.textContent = "Обновлено: " + formatDate(n.updatedAt) + " • Создано: " + formatDate(n.createdAt);
++        refreshNotesList();
++      }
++
++      function flushNoteSave() {
++        if (currentNoteId == null) return;
++        clearTimeout(saveTimer);
++        if (useFallbackNotes) {
++          const index = fallbackNotes.findIndex((n) => n.id === currentNoteId);
++          if (index !== -1) {
++            fallbackNotes[index] = { ...fallbackNotes[index], title: noteTitle.value, body: noteBody.value, updatedAt: Date.now() };
++            persistFallbackNotes();
++          }
++          return;
++        }
++        saveCurrentNote();
++      }
++
++      window.addEventListener("beforeunload", flushNoteSave);
++      document.addEventListener("visibilitychange", () => {
++        if (document.visibilityState === "hidden") flushNoteSave();
++      });
++
++      btnNewNote.addEventListener("click", async () => {
++        const now = Date.now();
++        const id = await addNote({ title: "Новая заметка", body: "", createdAt: now, updatedAt: now });
++        showToast("Заметка создана");
++        await refreshNotesList();
++        const notes = await getAllNotes();
++        const created = notes.find(n => n.id === id);
++        if (created) loadNoteIntoEditor(created);
++        noteTitle.focus();
++        noteTitle.setSelectionRange(0, noteTitle.value.length);
++      });
++
++      btnDeleteNote.addEventListener("click", async () => {
++        if (currentNoteId == null) return;
++        const id = currentNoteId;
++        await deleteNote(id);
++        showToast("Заметка удалена");
++        currentNoteId = null;
++        clearNoteEditor();
++        await refreshNotesList();
++      });
++
++      noteTitle.addEventListener("input", scheduleAutoSave);
++      noteBody.addEventListener("input", scheduleAutoSave);
++
++      (async () => {
++        try{
++          if (!("indexedDB" in window)) throw new Error("IndexedDB is not available");
++          db = await openDB();
++          setEditorEnabled(false);
++          await refreshNotesList();
++        }catch(err){
++          console.error(err);
++          enableFallbackNotes();
++          showToast("Ошибка IndexedDB. Заметки сохраняются локально.");
++          setEditorEnabled(false);
++          await refreshNotesList();
++        }
++      })();
++
++      let audioCtx = null;
++      let soundEnabled = storage.getItem(SOUND_KEY) !== "off";
++
++      function updateSoundButton() {
++        if (!btnSound) return;
++        btnSound.setAttribute("aria-pressed", String(soundEnabled));
++        btnSound.querySelector("span").textContent = soundEnabled ? "Звук: Включен" : "Звук: Выключен";
++      }
++
++      function ensureAudio() {
++        if (!soundEnabled) return null;
++        if (!audioCtx) {
++          const AudioCtor = window.AudioContext || window.webkitAudioContext;
++          if (!AudioCtor) return null;
++          audioCtx = new AudioCtor();
++        }
++        if (audioCtx.state === "suspended") audioCtx.resume();
++        return audioCtx;
++      }
++
++      function playTone(freq, duration, type, volume, when) {
++        const ctx = ensureAudio();
++        if (!ctx) return;
++        const startAt = ctx.currentTime + (when || 0);
++        const osc = ctx.createOscillator();
++        const gain = ctx.createGain();
++        osc.type = type || "sine";
++        osc.frequency.setValueAtTime(freq, startAt);
++        gain.gain.setValueAtTime(0.0001, startAt);
++        gain.gain.linearRampToValueAtTime(volume || 0.05, startAt + 0.01);
++        gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
++        osc.connect(gain).connect(ctx.destination);
++        osc.start(startAt);
++        osc.stop(startAt + duration + 0.03);
++      }
++
++      function playSound(type) {
++        if (!soundEnabled) return;
++        if (type === "open") playTone(420, 0.08, "triangle", 0.035);
++        else if (type === "flag") playTone(740, 0.06, "square", 0.03);
++        else if (type === "question") playTone(520, 0.06, "sine", 0.03);
++        else if (type === "boom") { playTone(140, 0.18, "sawtooth", 0.05); playTone(90, 0.22, "triangle", 0.045, 0.02); }
++        else if (type === "win") { playTone(440, 0.08, "sine", 0.04); playTone(660, 0.08, "sine", 0.04, 0.06); playTone(880, 0.12, "sine", 0.045, 0.12); }
++        else if (type === "lose") { playTone(360, 0.12, "triangle", 0.04); playTone(220, 0.14, "triangle", 0.04, 0.08); }
++      }
++
++      updateSoundButton();
++      if (btnSound) {
++        btnSound.addEventListener("click", () => {
++          soundEnabled = !soundEnabled;
++          storage.setItem(SOUND_KEY, soundEnabled ? "on" : "off");
++          updateSoundButton();
++          if (soundEnabled) playSound("open");
++        });
++      }
++
++      const DEFAULT_CONFIG = { rows: 9, cols: 9, mines: 10 };
++      let currentConfig = { ...DEFAULT_CONFIG };
++
++      let game = null;
++      let gameTimer = null;
++      let startTime = 0;
++
++      function clamp(value, min, max) {
++        return Math.min(Math.max(value, min), max);
++      }
++
++      function normalizeConfig(rows, cols, mines) {
++        const r = clamp(Math.round(rows), 6, 24);
++        const c = clamp(Math.round(cols), 6, 24);
++        const maxMines = r * c - 1;
++        const m = clamp(Math.round(mines), 1, Math.max(1, maxMines));
++        return { rows: r, cols: c, mines: m };
++      }
++
++      function syncGameInputs(cfg) {
++        rowsInput.value = String(cfg.rows);
++        colsInput.value = String(cfg.cols);
++        minesInput.value = String(cfg.mines);
++      }
++
++      function getConfigFromInputs() {
++        const rows = Number(rowsInput.value);
++        const cols = Number(colsInput.value);
++        const mines = Number(minesInput.value);
++        if (!Number.isFinite(rows) || !Number.isFinite(cols) || !Number.isFinite(mines)) return null;
++        return normalizeConfig(rows, cols, mines);
++      }
++
++      function startTimer() {
++        if (gameTimer) return;
++        startTime = Date.now();
++        gameTime.textContent = "0 секунд";
++        gameTimer = setInterval(() => {
++          const seconds = Math.floor((Date.now() - startTime) / 1000);
++          gameTime.textContent = seconds + " секунд";
++        }, 1000);
++      }
++
++      function stopTimer() {
++        clearInterval(gameTimer);
++        gameTimer = null;
++      }
++
++      function updateMinesLeft() {
++        const left = Math.max(game.mines - game.flags, 0);
++        minesLeft.textContent = String(left);
++      }
++
++      function setStatus(text) {
++        gameStatus.textContent = text;
++      }
++
++      function makeCell(index) {
++        const btn = document.createElement("button");
++        btn.type = "button";
++        btn.className = "cell";
++        btn.addEventListener("click", () => revealCell(index));
++        btn.addEventListener("contextmenu", (e) => {
++          e.preventDefault();
++          toggleFlag(index);
++        });
++        return btn;
++      }
++
++      function initBoard(cfg) {
++        const config = cfg ? normalizeConfig(cfg.rows, cfg.cols, cfg.mines) : currentConfig;
++        currentConfig = { ...config };
++        stopTimer();
++        game = { rows: config.rows, cols: config.cols, mines: config.mines, initialMines: config.mines, flags: 0, revealed: 0, firstClick: true, over: false, cells: [] };
++        mineBoard.style.setProperty("--cols", String(config.cols));
++        mineBoard.innerHTML = "";
++        for (let i = 0; i < config.rows * config.cols; i++) {
++          const cell = { mine: false, revealed: false, flagged: false, questioned: false, adj: 0, el: makeCell(i) };
++          game.cells.push(cell);
++          mineBoard.appendChild(cell.el);
++        }
++        gameTime.textContent = "0 секунд";
++        updateMinesLeft();
++        setStatus("Готово");
++        if (gameResult) gameResult.textContent = "";
++        syncGameInputs(currentConfig);
++      }
++
++      function placeMines(excludeIndex) {
++        const total = game.rows * game.cols;
++        const safe = new Set(getSafeIndices(excludeIndex));
++        const pool = [];
++        for (let i = 0; i < total; i++) if (!safe.has(i)) pool.push(i);
++        for (let i = pool.length - 1; i > 0; i--) {
++          const j = Math.floor(Math.random() * (i + 1));
++          [pool[i], pool[j]] = [pool[j], pool[i]];
++        }
++        const minesToPlace = Math.min(game.mines, pool.length);
++        if (minesToPlace !== game.mines) {
++          game.mines = minesToPlace;
++          updateMinesLeft();
++        }
++        for (let i = 0; i < minesToPlace; i++) game.cells[pool[i]].mine = true;
++        computeAdjacency();
++      }
++
++      function getSafeIndices(index) {
++        const safe = [];
++        const r = Math.floor(index / game.cols);
++        const c = index % game.cols;
++        for (let dr = -1; dr <= 1; dr++) {
++          for (let dc = -1; dc <= 1; dc++) {
++            const rr = r + dr;
++            const cc = c + dc;
++            if (rr < 0 || rr >= game.rows || cc < 0 || cc >= game.cols) continue;
++            safe.push(rr * game.cols + cc);
++          }
++        }
++        return safe;
++      }
++
++      function computeAdjacency() {
++        for (let r = 0; r < game.rows; r++) {
++          for (let c = 0; c < game.cols; c++) {
++            const index = r * game.cols + c;
++            const cell = game.cells[index];
++            if (cell.mine) { cell.adj = 0; continue; }
++            let count = 0;
++            for (let dr = -1; dr <= 1; dr++) {
++              for (let dc = -1; dc <= 1; dc++) {
++                if (dr === 0 && dc === 0) continue;
++                const rr = r + dr;
++                const cc = c + dc;
++                if (rr < 0 || rr >= game.rows || cc < 0 || cc >= game.cols) continue;
++                const nIndex = rr * game.cols + cc;
++                if (game.cells[nIndex].mine) count++;
++              }
++            }
++            cell.adj = count;
++          }
++        }
++      }
++
++      function revealCell(index) {
++        const cell = game.cells[index];
++        if (game.over || cell.revealed || cell.flagged) return;
++        if (cell.questioned) {
++          cell.questioned = false;
++          cell.el.classList.remove("question");
++          cell.el.textContent = "";
++        }
++        if (game.firstClick) {
++          game.firstClick = false;
++          placeMines(index);
++          startTimer();
++        }
++        if (cell.mine) {
++          cell.revealed = true;
++          cell.el.classList.add("revealed", "mine");
++          cell.el.textContent = "*";
++          playSound("boom");
++          endGame(false, "boom");
++          return;
++        }
++        playSound("open");
++        floodReveal(index);
++        checkWin();
++      }
++
++      function floodReveal(startIndex) {
++        const queue = [startIndex];
++        while (queue.length) {
++          const index = queue.pop();
++          const cell = game.cells[index];
++          if (cell.revealed || cell.flagged) continue;
++          if (cell.questioned) {
++            cell.questioned = false;
++            cell.el.classList.remove("question");
++          }
++          cell.revealed = true;
++          cell.el.classList.add("revealed");
++          game.revealed++;
++          if (cell.adj > 0) {
++            cell.el.textContent = String(cell.adj);
++            cell.el.classList.add("n" + cell.adj);
++            continue;
++          }
++          const r = Math.floor(index / game.cols);
++          const c = index % game.cols;
++          for (let dr = -1; dr <= 1; dr++) {
++            for (let dc = -1; dc <= 1; dc++) {
++              if (dr === 0 && dc === 0) continue;
++              const rr = r + dr;
++              const cc = c + dc;
++              if (rr < 0 || rr >= game.rows || cc < 0 || cc >= game.cols) continue;
++              const nIndex = rr * game.cols + cc;
++              const next = game.cells[nIndex];
++              if (!next.revealed && !next.flagged && !next.mine) queue.push(nIndex);
++            }
++          }
++        }
++      }
++
++      function toggleFlag(index) {
++        const cell = game.cells[index];
++        if (game.over || cell.revealed) return;
++        const wasFlagged = cell.flagged;
++        let soundType = "";
++        if (cell.flagged) { cell.flagged = false; cell.questioned = true; soundType = "question"; }
++        else if (cell.questioned) { cell.questioned = false; }
++        else { cell.flagged = true; soundType = "flag"; }
++        if (wasFlagged !== cell.flagged) game.flags += cell.flagged ? 1 : -1;
++        cell.el.classList.toggle("flagged", cell.flagged);
++        cell.el.classList.toggle("question", cell.questioned);
++        cell.el.textContent = cell.questioned ? "?" : "";
++        updateMinesLeft();
++        if (soundType) playSound(soundType);
++      }
++
++      function revealMines() {
++        for (const cell of game.cells) {
++          if (cell.mine) {
++            cell.el.classList.add("revealed", "mine");
++            cell.el.classList.remove("question");
++            cell.el.textContent = "*";
++          }
++        }
++      }
++
++      function endGame(won, cause) {
++        game.over = true;
++        stopTimer();
++        if (!won) revealMines();
++        setStatus(won ? "Победа" : "Поражение");
++        if (gameResult) gameResult.textContent = won ? "Победа" : "Поражение";
++        if (won) playSound("win");
++        else if (cause !== "boom") playSound("lose");
++      }
++
++      function checkWin() {
++        if (game.revealed >= (game.rows * game.cols - game.mines)) endGame(true);
++      }
++
++      btnApplyGame.addEventListener("click", () => {
++        const cfg = getConfigFromInputs();
++        if (!cfg) { showToast("Введите числа для поля."); return; }
++        currentConfig = cfg;
++        initBoard(currentConfig);
++        showToast("Поле создано.");
++      });
++
++      btnRestartGame.addEventListener("click", () => initBoard(currentConfig));
++      rowsInput.addEventListener("change", () => { const cfg = getConfigFromInputs(); if (cfg) syncGameInputs(cfg); });
++      colsInput.addEventListener("change", () => { const cfg = getConfigFromInputs(); if (cfg) syncGameInputs(cfg); });
++      minesInput.addEventListener("change", () => { const cfg = getConfigFromInputs(); if (cfg) syncGameInputs(cfg); });
++
++      syncGameInputs(currentConfig);
++      initBoard(currentConfig);
++
++      const SNAKE_BEST_KEY = "snake_best_v1";
++      const SNAKE_GRID = 18;
++
++      let snakeCtx = null;
++      let snakeTimer = null;
++      let snakeRunning = false;
++      let snakeAlive = true;
++      let snakeDir = { x: 1, y: 0 };
++      let snakeNextDir = { x: 1, y: 0 };
++      let snakeApplesPositions = [];
++      let snakeBody = [];
++      let snakeScoreVal = 0;
++      let snakeBestVal = Number(storage.getItem(SNAKE_BEST_KEY) || 0);
++      let snakeSpeedMs = 130;
++      let snakeApplesCount = 3;
++      let snakeCellSize = 20;
++      let snakeEditorOn = false;
++      let snakeWalls = new Set();
++
++      function updateSnakeHud() {
++        snakeScore.textContent = String(snakeScoreVal);
++        snakeBest.textContent = String(snakeBestVal);
++      }
++
++      function setSnakeStatus(text) {
++        snakeStatus.textContent = text;
++        snakeResult.textContent = text === "Игра" ? "" : text;
++      }
++
++      function resizeSnakeCanvas() {
++        if (!snakeCanvas) return;
++        const parent = snakeCanvas.parentElement;
++        const size = Math.min(parent.clientWidth || 0, 420);
++        if (size < 140) {
++          if (viewSnake.classList.contains("active")) requestAnimationFrame(resizeSnakeCanvas);
++          return;
++        }
++        const ratio = window.devicePixelRatio || 1;
++        snakeCanvas.width = Math.floor(size * ratio);
++        snakeCanvas.height = Math.floor(size * ratio);
++        snakeCanvas.style.width = size + "px";
++        snakeCanvas.style.height = size + "px";
++        snakeCtx = snakeCanvas.getContext("2d");
++        if (!snakeCtx) { setSnakeStatus("Canvas не поддерживается"); return; }
++        snakeCtx.setTransform(1, 0, 0, 1, 0, 0);
++        snakeCtx.scale(ratio, ratio);
++        snakeCellSize = size / SNAKE_GRID;
++        drawSnake();
++      }
++
++      function resetSnake() {
++        snakeAlive = true;
++        snakeRunning = false;
++        clearInterval(snakeTimer);
++        snakeTimer = null;
++        const start = findSnakeStart();
++        let tailX = start.x - 1;
++        if (tailX < 0 || snakeWalls.has(cellKey(tailX, start.y))) tailX = start.x + 1;
++        if (tailX >= SNAKE_GRID || snakeWalls.has(cellKey(tailX, start.y))) tailX = start.x;
++        snakeBody = [ { x: start.x, y: start.y }, { x: tailX, y: start.y } ];
++        snakeDir = { x: 1, y: 0 };
++        snakeNextDir = { x: 1, y: 0 };
++        snakeScoreVal = 0;
++        spawnSnakeApples();
++        updateSnakeHud();
++        updateSnakeButton();
++        setSnakeStatus("Готово");
++        drawSnake();
++      }
++
++      function cellKey(x, y) { return x + "," + y; }
++
++      function findSnakeStart() {
++        const startX = Math.floor(SNAKE_GRID / 2);
++        const startY = Math.floor(SNAKE_GRID / 2);
++        if (!snakeWalls.has(cellKey(startX, startY))) return { x: startX, y: startY };
++        for (let r = 0; r < SNAKE_GRID; r++) {
++          for (let c = 0; c < SNAKE_GRID; c++) {
++            if (!snakeWalls.has(cellKey(c, r))) return { x: c, y: r };
++          }
++        }
++        return { x: 0, y: 0 };
++      }
++
++      function getRandomFreeCell(avoidSet) {
++        let x = 0;
++        let y = 0;
++        let tries = 0;
++        do {
++          x = Math.floor(Math.random() * SNAKE_GRID);
++          y = Math.floor(Math.random() * SNAKE_GRID);
++          tries++;
++        } while (avoidSet.has(cellKey(x, y)) && tries < 2000);
++        return { x, y, ok: !avoidSet.has(cellKey(x, y)) };
++      }
++
++      function spawnSnakeApples() {
++        const occupied = new Set();
++        snakeBody.forEach((p) => occupied.add(cellKey(p.x, p.y)));
++        snakeWalls.forEach((k) => occupied.add(k));
++        snakeApplesPositions = [];
++        for (let i = 0; i < snakeApplesCount; i++) {
++          const pick = getRandomFreeCell(occupied);
++          if (!pick.ok) break;
++          const key = cellKey(pick.x, pick.y);
++          occupied.add(key);
++          snakeApplesPositions.push({ x: pick.x, y: pick.y });
++        }
++      }
++
++      function fillCell(x, y, color) {
++        const pad = 1;
++        const px = x * snakeCellSize + pad;
++        const py = y * snakeCellSize + pad;
++        const size = snakeCellSize - pad * 2;
++        snakeCtx.fillStyle = color;
++        if (snakeCtx.roundRect) {
++          snakeCtx.beginPath();
++          snakeCtx.roundRect(px, py, size, size, 6);
++          snakeCtx.fill();
++        } else {
++          snakeCtx.fillRect(px, py, size, size);
++        }
++      }
++
++      function drawSnake() {
++        if (!snakeCtx || !snakeCanvas) return;
++        const w = snakeCanvas.clientWidth;
++        const h = snakeCanvas.clientHeight;
++        snakeCtx.clearRect(0, 0, w, h);
++        snakeCtx.fillStyle = "rgba(99,102,241,0.10)";
++        snakeCtx.fillRect(0, 0, w, h);
++        snakeWalls.forEach((key) => {
++          const parts = key.split(",");
++          fillCell(Number(parts[0]), Number(parts[1]), "#334155");
++        });
++        for (const apple of snakeApplesPositions) fillCell(apple.x, apple.y, "#f97316");
++        for (let i = 0; i < snakeBody.length; i++) {
++          const part = snakeBody[i];
++          fillCell(part.x, part.y, i === 0 ? "#38bdf8" : "#0ea5e9");
++        }
++      }
++
++      function setSnakeDirection(dx, dy) {
++        if (snakeEditorOn) return;
++        if (snakeDir.x === -dx && snakeDir.y === -dy) return;
++        snakeNextDir = { x: dx, y: dy };
++        if (!snakeRunning && snakeAlive) startSnake();
++      }
++
++      function stepSnake() {
++        if (!snakeRunning || !snakeAlive) return;
++        snakeDir = snakeNextDir;
++        const head = snakeBody[0];
++        const next = { x: head.x + snakeDir.x, y: head.y + snakeDir.y };
++        const nextKey = cellKey(next.x, next.y);
++        if (next.x < 0 || next.x >= SNAKE_GRID || next.y < 0 || next.y >= SNAKE_GRID) { endSnake(false); return; }
++        if (snakeWalls.has(nextKey)) { endSnake(false); return; }
++        if (snakeBody.some((p) => p.x === next.x && p.y === next.y)) { endSnake(false); return; }
++        snakeBody.unshift(next);
++        const appleIndex = snakeApplesPositions.findIndex((a) => a.x === next.x && a.y === next.y);
++        if (appleIndex !== -1) {
++          snakeScoreVal += 1;
++          if (snakeScoreVal > snakeBestVal) { snakeBestVal = snakeScoreVal; storage.setItem(SNAKE_BEST_KEY, String(snakeBestVal)); }
++          updateSnakeHud();
++          snakeApplesPositions.splice(appleIndex, 1);
++          if (snakeApplesPositions.length < snakeApplesCount) {
++            const occupied = new Set();
++            snakeBody.forEach((p) => occupied.add(cellKey(p.x, p.y)));
++            snakeWalls.forEach((k) => occupied.add(k));
++            snakeApplesPositions.forEach((a) => occupied.add(cellKey(a.x, a.y)));
++            const pick = getRandomFreeCell(occupied);
++            if (pick.ok) snakeApplesPositions.push({ x: pick.x, y: pick.y });
++          }
++        } else {
++          snakeBody.pop();
++        }
++        drawSnake();
++      }
++
++      function startSnake() {
++        if (snakeRunning || !snakeAlive || snakeEditorOn) return;
++        snakeRunning = true;
++        setSnakeStatus("Игра");
++        updateSnakeButton();
++        clearInterval(snakeTimer);
++        snakeTimer = setInterval(stepSnake, snakeSpeedMs);
++      }
++
++      function pauseSnake() {
++        if (!snakeRunning) return;
++        snakeRunning = false;
++        clearInterval(snakeTimer);
++        snakeTimer = null;
++        setSnakeStatus("Пауза");
++        updateSnakeButton();
++      }
++
++      function endSnake() {
++        snakeAlive = false;
++        snakeRunning = false;
++        clearInterval(snakeTimer);
++        snakeTimer = null;
++        setSnakeStatus("Проигрыш");
++        updateSnakeButton();
++      }
++
++      function updateSnakeButton() {
++        if (!btnSnakeStart) return;
++        btnSnakeStart.querySelector("span").textContent = snakeRunning ? "Пауза" : "Старт";
++      }
++
++      function updateSnakeSpeedLabel() {
++        if (snakeSpeedValue) snakeSpeedValue.textContent = snakeSpeedMs + " миллисекунд";
++      }
++
++      function applySnakeSpeed(ms) {
++        snakeSpeedMs = clamp(Number(ms) || 130, 60, 220);
++        updateSnakeSpeedLabel();
++        if (snakeRunning) {
++          clearInterval(snakeTimer);
++          snakeTimer = setInterval(stepSnake, snakeSpeedMs);
++        }
++      }
++
++      function updateSnakeEditorButton() {
++        if (!btnSnakeEditor) return;
++        btnSnakeEditor.setAttribute("aria-pressed", String(snakeEditorOn));
++        btnSnakeEditor.querySelector("span").textContent = snakeEditorOn ? "Редактор: Включен" : "Редактор: Выключен";
++      }
++
++      function setSnakeActive(active) {
++        if (!active) { pauseSnake(); return; }
++        requestAnimationFrame(resizeSnakeCanvas);
++      }
++
++      btnSnakeStart.addEventListener("click", () => {
++        if (!snakeAlive) { resetSnake(); startSnake(); }
++        else if (snakeRunning) pauseSnake();
++        else startSnake();
++      });
++
++      btnSnakeRestart.addEventListener("click", () => { resetSnake(); });
++      snakeSpeed.addEventListener("input", () => applySnakeSpeed(snakeSpeed.value));
++      applySnakeSpeed(snakeSpeed.value);
++
++      snakeApples.addEventListener("change", () => {
++        const count = clamp(Number(snakeApples.value) || 1, 1, 6);
++        snakeApplesCount = count;
++        snakeApples.value = String(count);
++        spawnSnakeApples();
++        drawSnake();
++      });
++
++      btnSnakeEditor.addEventListener("click", () => {
++        snakeEditorOn = !snakeEditorOn;
++        updateSnakeEditorButton();
++        if (snakeEditorOn) pauseSnake();
++      });
++      updateSnakeEditorButton();
++
++      btnSnakeClear.addEventListener("click", () => {
++        snakeWalls.clear();
++        drawSnake();
++      });
++
++      snakePad.addEventListener("click", (e) => {
++        const btn = e.target.closest("button[data-dir]");
++        if (!btn) return;
++        const dir = btn.dataset.dir;
++        if (dir === "up") setSnakeDirection(0, -1);
++        if (dir === "down") setSnakeDirection(0, 1);
++        if (dir === "left") setSnakeDirection(-1, 0);
++        if (dir === "right") setSnakeDirection(1, 0);
++      });
++
++      snakeCanvas.addEventListener("click", (e) => {
++        if (!snakeEditorOn) return;
++        const rect = snakeCanvas.getBoundingClientRect();
++        const x = Math.floor((e.clientX - rect.left) / (rect.width / SNAKE_GRID));
++        const y = Math.floor((e.clientY - rect.top) / (rect.height / SNAKE_GRID));
++        if (x < 0 || y < 0 || x >= SNAKE_GRID || y >= SNAKE_GRID) return;
++        const key = cellKey(x, y);
++        const occupiedBySnake = snakeBody.some((p) => p.x === x && p.y === y);
++        const occupiedByApple = snakeApplesPositions.some((a) => a.x === x && a.y === y);
++        if (occupiedBySnake || occupiedByApple) return;
++        if (snakeWalls.has(key)) snakeWalls.delete(key);
++        else snakeWalls.add(key);
++        drawSnake();
++      });
++
++      window.addEventListener("keydown", (e) => {
++        if (!viewSnake.classList.contains("active")) return;
++        const key = e.key.toLowerCase();
++        if (key === "arrowup" || key === "w") setSnakeDirection(0, -1);
++        if (key === "arrowdown" || key === "s") setSnakeDirection(0, 1);
++        if (key === "arrowleft" || key === "a") setSnakeDirection(-1, 0);
++        if (key === "arrowright" || key === "d") setSnakeDirection(1, 0);
++      });
++
++      updateSnakeHud();
++      resizeSnakeCanvas();
++      resetSnake();
++      window.addEventListener("resize", resizeSnakeCanvas);
++
++      function formatBytes(bytes) {
++        const units = [
++          { value: 1, label: "байт" },
++          { value: 1024, label: "килобайт" },
++          { value: 1024 * 1024, label: "мегабайт" },
++          { value: 1024 * 1024 * 1024, label: "гигабайт" }
++        ];
++        let unit = units[0];
++        for (const u of units) {
++          if (bytes >= u.value) unit = u;
++        }
++        const num = bytes / unit.value;
++        const value = num >= 10 ? num.toFixed(0) : num.toFixed(1);
++        return value + " " + unit.label;
++      }
++
++      function setCloudToken(token) {
++        cloudToken = token || "";
++        if (cloudToken) storage.setItem(CLOUD_TOKEN_KEY, cloudToken);
++        else storage.removeItem(CLOUD_TOKEN_KEY);
++        updateCloudAuthUI();
++      }
++
++      function updateCloudAuthUI() {
++        const authed = !!cloudToken;
++        btnCloudLogin.style.display = authed ? "none" : "inline-flex";
++        btnCloudRegister.style.display = authed ? "none" : "inline-flex";
++        btnCloudLogout.style.display = authed ? "inline-flex" : "none";
++        btnCloudUpload.disabled = !authed;
++        btnCloudRefresh.disabled = !authed;
++        if (cloudFileInput) cloudFileInput.disabled = !authed;
++        cloudStatus.textContent = authed ? "Авторизован" : "Не авторизован";
++        if (!authed) {
++          cloudUsage.textContent = "0 байт из 5 гигабайт";
++          renderCloudList([]);
++        }
++      }
++
++      async function apiJson(path, options = {}) {
++        const headers = options.headers ? { ...options.headers } : {};
++        if (!(options.body instanceof FormData)) headers["Content-Type"] = headers["Content-Type"] || "application/json";
++        if (cloudToken) headers.Authorization = "Bearer " + cloudToken;
++        const resp = await fetch(API_BASE + path, { ...options, headers });
++        const data = await resp.json().catch(() => ({}));
++        if (!resp.ok) {
++          const message = data.message || data.error || "Ошибка сервера";
++          if (resp.status === 401) setCloudToken("");
++          throw new Error(message);
++        }
++        return data;
++      }
++
++      async function apiBlob(path) {
++        const headers = {};
++        if (cloudToken) headers.Authorization = "Bearer " + cloudToken;
++        const resp = await fetch(API_BASE + path, { headers });
++        if (!resp.ok) {
++          if (resp.status === 401) setCloudToken("");
++          throw new Error("Ошибка загрузки файла");
++        }
++        return resp.blob();
++      }
++
++      function renderCloudList(files) {
++        cloudList.innerHTML = "";
++        if (!files.length) {
++          cloudEmpty.style.display = "flex";
++          return;
++        }
++        cloudEmpty.style.display = "none";
++        for (const file of files) {
++          const row = document.createElement("div");
++          row.className = "cloudFile";
++          row.innerHTML = `
++            <div class="cloudMeta">
++              <div class="cloudName">${escapeHtml(file.name || "Файл")}</div>
++              <div class="cloudInfo">${formatBytes(file.size || 0)} • ${formatDate(file.uploadedAt)}</div>
++            </div>
++            <div class="cloudActions">
++              <button class="btn btnGhost" data-role="download">Скачать</button>
++              <button class="btn" data-role="delete">Удалить</button>
++            </div>
++          `;
++          row.querySelector('[data-role="download"]').addEventListener("click", async () => {
++            try {
++              const blob = await apiBlob("/api/files/" + file.id + "/download");
++              const url = URL.createObjectURL(blob);
++              const a = document.createElement("a");
++              a.href = url;
++              a.download = file.name || "file";
++              document.body.appendChild(a);
++              a.click();
++              a.remove();
++              URL.revokeObjectURL(url);
++            } catch (err) {
++              showToast(err.message || "Ошибка загрузки");
++            }
++          });
++          row.querySelector('[data-role="delete"]').addEventListener("click", async () => {
++            try {
++              await apiJson("/api/files/" + file.id, { method: "DELETE" });
++              showToast("Файл удален");
++              loadCloudFiles();
++            } catch (err) {
++              showToast(err.message || "Ошибка удаления");
++            }
++          });
++          cloudList.appendChild(row);
++        }
++      }
++
++      async function loadCloudFiles() {
++        if (!cloudToken) {
++          renderCloudList([]);
++          return;
++        }
++        try {
++          const data = await apiJson("/api/files");
++          const used = Number(data.usedBytes || 0);
++          const limit = Number(data.limitBytes || CLOUD_LIMIT_BYTES);
++          cloudUsage.textContent = formatBytes(used) + " из " + formatBytes(limit);
++          renderCloudList(Array.isArray(data.files) ? data.files : []);
++        } catch (err) {
++          showToast(err.message || "Ошибка загрузки списка");
++        }
++      }
++
++      async function cloudLogin(mode) {
++        const username = (cloudUser.value || "").trim();
++        const password = (cloudPass.value || "").trim();
++        if (!username || !password) { showToast("Введите логин и пароль"); return; }
++        try {
++          const data = await apiJson("/api/auth/" + mode, { method: "POST", body: JSON.stringify({ username, password }) });
++          if (data && data.token) {
++            setCloudToken(data.token);
++            cloudPass.value = "";
++            showToast(mode === "login" ? "Вход выполнен" : "Аккаунт создан");
++            loadCloudFiles();
++          }
++        } catch (err) {
++          showToast(err.message || "Ошибка авторизации");
++        }
++      }
++
++      btnCloudLogin.addEventListener("click", () => cloudLogin("login"));
++      btnCloudRegister.addEventListener("click", () => cloudLogin("register"));
++      btnCloudLogout.addEventListener("click", () => {
++        setCloudToken("");
++        showToast("Выход выполнен");
++      });
++
++      btnCloudUpload.addEventListener("click", () => {
++        if (!cloudToken) { showToast("Сначала выполните вход"); return; }
++        cloudFileInput.click();
++      });
++      btnCloudRefresh.addEventListener("click", () => loadCloudFiles());
++      cloudFileInput.addEventListener("change", async (e) => {
++        if (!cloudToken) { showToast("Сначала выполните вход"); return; }
++        const files = Array.from(e.target.files || []);
++        if (!files.length) return;
++        const form = new FormData();
++        files.forEach((f) => form.append("files", f));
++        try {
++          await apiJson("/api/files", { method: "POST", body: form });
++          showToast("Файлы загружены");
++          loadCloudFiles();
++        } catch (err) {
++          showToast(err.message || "Ошибка загрузки");
++        } finally {
++          cloudFileInput.value = "";
++        }
++      });
++
++      function setCloudActive(active) {
++        if (!active) return;
++        updateCloudAuthUI();
++        if (cloudToken) loadCloudFiles();
++      }
++
++      updateCloudAuthUI();
++
++      const snowContainer = document.querySelector(".snow");
++      if (snowContainer) {
++        const isMobile = window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
++        const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
++        const lowPower = (navigator.deviceMemory && navigator.deviceMemory <= 4) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
++        document.body.classList.toggle("low-power", !!lowPower || !!reduceMotion);
++        const COUNT = reduceMotion ? 0 : (isMobile ? (lowPower ? 18 : 32) : (lowPower ? 46 : 70));
++
++        for (let i = 0; i < COUNT; i++) {
++          const flake = document.createElement("span");
++          flake.className = "snowflake";
++          const depth = Math.random();
++          const size = 8 + depth * 14;
++          const left = Math.random() * 100;
++          const startTop = -30 - Math.random() * 120;
++          const fallDuration = 18 + (1 - depth) * 8 + Math.random() * 6;
++          const swayDuration = 10 + Math.random() * 6;
++          const delay = -Math.random() * fallDuration;
++          const op = 0.32 + depth * 0.56;
++          const drift = (Math.random() * 2 - 1) * (4 + depth * 10);
++          const spin = (Math.random() * 2 - 1) * (60 + depth * 100);
++
++          flake.style.width = size + "px";
++          flake.style.height = size + "px";
++          flake.style.left = left + "vw";
++          flake.style.top = startTop + "vh";
++          flake.style.setProperty("--op", op.toFixed(2));
++          flake.style.setProperty("--drift", drift.toFixed(1) + "px");
++          flake.style.setProperty("--spin", spin.toFixed(1) + "deg");
++          flake.style.animationDuration = fallDuration + "s, " + swayDuration + "s, " + (4 + Math.random() * 3) + "s";
++          flake.style.animationDelay = delay + "s, " + delay + "s, " + delay + "s";
++          snowContainer.appendChild(flake);
++        }
++      }
++
++      updateUI();
++    })();
++  </script>
++</body>
++</html>
