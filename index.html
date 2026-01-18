@@ -36,6 +36,7 @@
 
       --mx: 50%;
       --my: 20%;
+      --flake-img: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><radialGradient id='g' cx='50%25' cy='50%25' r='60%25'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='60%25' stop-color='%23e9f6ff'/><stop offset='100%25' stop-color='%23cfeaff'/></radialGradient></defs><g stroke='url(%23g)' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'><g id='a'><line x1='100' y1='100' x2='100' y2='12'/><line x1='100' y1='28' x2='88' y2='18'/><line x1='100' y1='28' x2='112' y2='18'/><line x1='100' y1='50' x2='86' y2='42'/><line x1='100' y1='50' x2='114' y2='42'/><line x1='100' y1='72' x2='90' y2='66'/><line x1='100' y1='72' x2='110' y2='66'/></g><use href='%23a'/><use href='%23a' transform='rotate(60 100 100)'/><use href='%23a' transform='rotate(120 100 100)'/><use href='%23a' transform='rotate(180 100 100)'/><use href='%23a' transform='rotate(240 100 100)'/><use href='%23a' transform='rotate(300 100 100)'/></g><circle cx='100' cy='100' r='6' fill='%23ffffff'/></svg>");
     }
 
     body.theme-light{
@@ -86,14 +87,14 @@
       pointer-events: none;
       z-index: 0;
       background:
-        radial-gradient(980px 560px at var(--mx) var(--my),
+        radial-gradient(720px 420px at var(--mx) var(--my),
           rgba(99,102,241,0.22),
           rgba(99,102,241,0.10) 40%,
           rgba(99,102,241,0.00) 74%),
-        radial-gradient(740px 440px at calc(var(--mx) + 10%) calc(var(--my) + 16%),
+        radial-gradient(520px 320px at calc(var(--mx) + 10%) calc(var(--my) + 16%),
           rgba(56,189,248,0.14),
           rgba(56,189,248,0.00) 70%);
-      opacity: 0.95;
+      opacity: 0.82;
       transition: opacity .25s ease;
     }
 
@@ -128,13 +129,13 @@
       pointer-events: none;
       z-index: 0;
       background:
-        radial-gradient(760px 460px at var(--mx) var(--my),
+        radial-gradient(520px 320px at var(--mx) var(--my),
           rgba(99,102,241,0.16),
           rgba(99,102,241,0.00) 66%),
-        radial-gradient(560px 340px at calc(var(--mx) + 10%) calc(var(--my) + 20%),
+        radial-gradient(380px 240px at calc(var(--mx) + 10%) calc(var(--my) + 20%),
           rgba(56,189,248,0.10),
           rgba(56,189,248,0.00) 72%);
-      opacity: 0.85;
+      opacity: 0.62;
       mix-blend-mode: screen;
     }
     body.theme-light .page::before{
@@ -399,10 +400,28 @@
 <path fill='black' d='M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h10V5H7zm2 3h6v2H9V8zm0 4h6v2H9v-2z'/>\
 </svg>");
     }
+    .icon-game{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z'/>\
+</svg>");
+    }
+    .icon-snake{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M6 6h7a3 3 0 0 1 0 6H9a1 1 0 0 0 0 2h6a4 4 0 0 1 0 8H8v-2h7a2 2 0 0 0 0-4H9a3 3 0 0 1 0-6h4a1 1 0 1 0 0-2H6V6z'/>\
+</svg>");
+    }
     .icon-plus{
       mask-image: url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
 <path fill='black' d='M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z'/>\
+</svg>");
+    }
+    .icon-music{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M16 3v10.2a2.8 2.8 0 1 1-2-2.68V5.5L8 7v6.2a2.8 2.8 0 1 1-2-2.68V5l10-2z'/>\
 </svg>");
     }
 
@@ -730,6 +749,267 @@
       color: var(--muted);
     }
 
+    /* Game tab */
+    .gameWrap{
+      display:grid;
+      grid-template-columns: minmax(0,1fr) 280px;
+      gap: 14px;
+      margin-top: 14px;
+      align-items: start;
+    }
+    @media (max-width: 960px){
+      .gameWrap{
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .boardWrap{
+      padding: 12px;
+    }
+
+    .mineBoard{
+      --cols: 9;
+      display:grid;
+      grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+      gap: 6px;
+      padding: 12px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--card2);
+      width: min(100%, 460px);
+      margin: 0 auto;
+    }
+
+    .cell{
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
+      border: 1px solid var(--border2);
+      background: var(--btn);
+      color: var(--text);
+      position: relative;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: background .12s ease, transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 6px 14px rgba(2,6,23,0.12);
+    }
+    .cell:hover{ transform: translateY(-1px); }
+    .cell:active{ transform: translateY(0); }
+    .cell.revealed{
+      background: var(--page);
+      border-color: var(--border);
+      cursor: default;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .cell.flagged{ color: #ef4444; }
+    .cell.flagged::before{
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 14px;
+      left: calc(50% - 7px);
+      top: calc(50% - 7px);
+      background: #e2e8f0;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(2,6,23,0.25);
+    }
+    .cell.flagged::after{
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 8px;
+      left: calc(50% - 6px);
+      top: calc(50% - 7px);
+      background: #ef4444;
+      clip-path: polygon(0 0, 100% 25%, 0 50%, 100% 75%, 0 100%);
+      border-radius: 2px;
+    }
+    .cell.question{ color: #f59e0b; }
+    .cell.mine.revealed{ color: #ef4444; }
+    .cell.n1{ color: #38bdf8; }
+    .cell.n2{ color: #22c55e; }
+    .cell.n3{ color: #f97316; }
+    .cell.n4{ color: #a855f7; }
+    .cell.n5{ color: #e11d48; }
+
+    .gameHud{
+      padding: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .statRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .statRow strong{
+      color: var(--text);
+      font-weight: 700;
+    }
+    .gameActions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .gameInputs{
+      display:flex;
+      gap: 6px;
+      align-items:center;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px dashed var(--border2);
+      background: var(--card2);
+    }
+    .gameInput{
+      display:flex;
+      align-items:center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--btn);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .gameInput span{
+      font-weight: 700;
+      color: var(--text);
+    }
+    .gameInput input{
+      width: 46px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 12px;
+      text-align: center;
+    }
+    .tabs.compact{
+      padding: 4px;
+      gap: 4px;
+    }
+    .tabs.compact .tab{
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+    .gameHelp{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Snake tab */
+    .snakeWrap{
+      display:grid;
+      grid-template-columns: minmax(0,1fr) 280px;
+      gap: 14px;
+      margin-top: 14px;
+      align-items: start;
+    }
+    @media (max-width: 960px){
+      .snakeWrap{
+        grid-template-columns: 1fr;
+      }
+    }
+    .snakeBoard{
+      padding: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .snakeCanvas{
+      width: min(100%, 420px);
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--card2);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      display:block;
+    }
+    .snakeHud{
+      padding: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .snakePad{
+      margin-top: 6px;
+      display:grid;
+      grid-template-columns: repeat(3, 44px);
+      grid-template-rows: repeat(3, 44px);
+      gap: 6px;
+      justify-content:center;
+    }
+    .snakePadSpacer{
+      width: 44px;
+      height: 44px;
+    }
+    .snakeBtn{
+      border-radius: 12px;
+      border: 1px solid var(--border2);
+      background: var(--btn);
+      color: var(--text);
+      font-size: 12px;
+      cursor: pointer;
+      transition: background .14s ease, transform .10s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      user-select: none;
+    }
+    .snakeBtn:hover{ background: var(--btn-hover); transform: translateY(-1px); }
+    .snakeBtn:active{ transform: translateY(0); }
+    .snakeInputs{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px dashed var(--border2);
+      background: var(--card2);
+    }
+    .snakeInput{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--btn);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .snakeInput span{
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .snakeInput input[type="number"]{
+      width: 44px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 12px;
+      text-align: center;
+    }
+    .snakeInput input[type="range"]{
+      width: 110px;
+    }
+    .snakeInput em{
+      font-style: normal;
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
     /* toast */
     .toast{
       position: fixed;
@@ -774,37 +1054,42 @@
       position: absolute;
       top: -12vh;
       left: 0;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%,
-        rgba(255,255,255,0.95),
-        rgba(255,255,255,0.55) 55%,
-        rgba(255,255,255,0.18) 100%);
-      box-shadow:
-        0 0 12px rgba(255,255,255,0.55),
-        0 0 28px rgba(56,189,248,0.18);
-      filter: blur(0.25px);
-      opacity: 0.85;
+      background-image: var(--flake-img);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      filter:
+        drop-shadow(0 0 8px rgba(255,255,255,0.45))
+        blur(var(--blur, 0.20px));
+      opacity: var(--op, 0.85);
       animation-name: snow-fall, snow-sway, snow-twinkle;
       animation-timing-function: linear, ease-in-out, ease-in-out;
       animation-iteration-count: infinite, infinite, infinite;
-      will-change: transform, opacity;
+      transform-origin: center;
+      will-change: transform, opacity, margin-left;
     }
     body.theme-light .snowflake{
-      box-shadow:
-        0 0 10px rgba(255,255,255,0.35),
-        0 0 22px rgba(99,102,241,0.10);
+      filter:
+        drop-shadow(0 0 6px rgba(255,255,255,0.30))
+        blur(var(--blur, 0.20px));
       opacity: 0.65;
     }
+    body.low-power .snowflake{
+      filter: blur(var(--blur, 0.20px));
+    }
 
-    @keyframes snow-fall{ to{ transform: translateY(120vh); } }
+    @keyframes snow-fall{
+      0%{ transform: translateY(0) rotate(0deg); }
+      100%{ transform: translateY(120vh) rotate(var(--spin, 180deg)); }
+    }
     @keyframes snow-sway{
       0%{ margin-left: 0px; }
-      50%{ margin-left: 26px; }
+      50%{ margin-left: var(--drift, 24px); }
       100%{ margin-left: 0px; }
     }
     @keyframes snow-twinkle{
       0%,100%{ opacity: var(--op, 0.8); }
-      50%{ opacity: calc(var(--op, 0.8) + 0.18); }
+      50%{ opacity: calc(var(--op, 0.8) + 0.12); }
     }
 
     @media (max-width: 768px){
@@ -842,6 +1127,14 @@
             <span class="icon icon-notes"></span>
             <span>Заметки</span>
           </button>
+          <button class="tab" id="tabGame" role="tab" aria-selected="false">
+            <span class="icon icon-game"></span>
+            <span>Сапер</span>
+          </button>
+          <button class="tab" id="tabSnake" role="tab" aria-selected="false">
+            <span class="icon icon-snake"></span>
+            <span>Змейка</span>
+          </button>
         </div>
 
         <span class="chip" id="countChip">0 файлов</span>
@@ -871,9 +1164,68 @@
           </button>
         </div>
 
+        <!-- actions for game -->
+        <div id="actionsGame" style="display:none; gap:10px; flex-wrap:wrap; align-items:center;">
+          <div class="gameInputs" aria-label="Параметры поля">
+            <label class="gameInput">
+              <span>Р</span>
+              <input id="rowsInput" type="number" min="6" max="24" value="9" aria-label="Ряды" />
+            </label>
+            <label class="gameInput">
+              <span>К</span>
+              <input id="colsInput" type="number" min="6" max="24" value="9" aria-label="Колонки" />
+            </label>
+            <label class="gameInput">
+              <span>М</span>
+              <input id="minesInput" type="number" min="1" max="99" value="10" aria-label="Мины" />
+            </label>
+          </div>
+          <button class="btn btnPrimary" id="btnApplyGame">
+            <span class="icon icon-plus"></span>
+            <span>Создать</span>
+          </button>
+          <button class="btn btnGhost" id="btnRestartGame">
+            <span>Рестарт</span>
+          </button>
+          <button class="btn btnGhost" id="btnSound" aria-pressed="true">
+            <span>Звук: Вкл</span>
+          </button>
+        </div>
+
+        <!-- actions for snake -->
+        <div id="actionsSnake" style="display:none; gap:10px; flex-wrap:wrap; align-items:center;">
+          <button class="btn btnPrimary" id="btnSnakeStart">
+            <span>Старт</span>
+          </button>
+          <button class="btn btnGhost" id="btnSnakeRestart">
+            <span>Рестарт</span>
+          </button>
+          <div class="snakeInputs" aria-label="Настройки змейки">
+            <label class="snakeInput">
+              <span>Скорость</span>
+              <input id="snakeSpeed" type="range" min="60" max="220" step="10" value="130" />
+              <em id="snakeSpeedValue">130мс</em>
+            </label>
+            <label class="snakeInput">
+              <span>Яблоки</span>
+              <input id="snakeApples" type="number" min="1" max="6" value="3" />
+            </label>
+          </div>
+          <button class="btn btnGhost" id="btnSnakeEditor" aria-pressed="false">
+            <span>Редактор: Выкл</span>
+          </button>
+          <button class="btn btnGhost" id="btnSnakeClear">
+            <span>Очистить</span>
+          </button>
+        </div>
+
         <button class="btn" id="btnTheme" title="Переключить тему">
           <span class="icon icon-theme"></span>
           <span>Тема</span>
+        </button>
+        <button class="btn" id="btnMusic" title="Музыка" aria-pressed="true">
+          <span class="icon icon-music"></span>
+          <span>Музыка: Вкл</span>
         </button>
       </div>
     </div>
@@ -950,21 +1302,103 @@
         </div>
       </section>
 
+      <!-- VIEW: Game -->
+      <section class="view" id="viewGame">
+        <div class="gameWrap">
+          <div class="panel">
+            <div class="panelHeader">
+              <div class="title">
+                <span class="icon icon-game"></span>
+                <span>Сапер</span>
+              </div>
+              <div class="status" id="gameStatus">Готово</div>
+            </div>
+            <div class="boardWrap">
+              <div class="mineBoard" id="mineBoard" aria-label="Поле сапера"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panelHeader">
+              <div class="title">
+                <span class="icon icon-game"></span>
+                <span>Инфо</span>
+              </div>
+              <div class="status" id="gameResult"></div>
+            </div>
+            <div class="gameHud">
+              <div class="statRow"><span>Мины</span><strong id="minesLeft">0</strong></div>
+              <div class="statRow"><span>Время</span><strong id="gameTime">0с</strong></div>
+              <div class="gameHelp">ЛКМ - открыть, ПКМ - флаг / ?.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: Snake -->
+      <section class="view" id="viewSnake">
+        <div class="snakeWrap">
+          <div class="panel">
+            <div class="panelHeader">
+              <div class="title">
+                <span class="icon icon-snake"></span>
+                <span>Змейка</span>
+              </div>
+              <div class="status" id="snakeStatus">Готово</div>
+            </div>
+            <div class="snakeBoard">
+              <canvas class="snakeCanvas" id="snakeCanvas" aria-label="Поле змейки"></canvas>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panelHeader">
+              <div class="title">
+                <span class="icon icon-snake"></span>
+                <span>Инфо</span>
+              </div>
+              <div class="status" id="snakeResult"></div>
+            </div>
+            <div class="snakeHud">
+              <div class="statRow"><span>Счет</span><strong id="snakeScore">0</strong></div>
+              <div class="statRow"><span>Лучший</span><strong id="snakeBest">0</strong></div>
+              <div class="gameHelp">Стрелки или WASD.</div>
+              <div class="snakePad" id="snakePad" aria-label="Управление змейкой">
+                <span class="snakePadSpacer"></span>
+                <button class="snakeBtn" data-dir="up">▲</button>
+                <span class="snakePadSpacer"></span>
+                <button class="snakeBtn" data-dir="left">◀</button>
+                <span class="snakePadSpacer"></span>
+                <button class="snakeBtn" data-dir="right">▶</button>
+                <span class="snakePadSpacer"></span>
+                <button class="snakeBtn" data-dir="down">▼</button>
+                <span class="snakePadSpacer"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </div>
 
   <input id="fileInput" type="file" accept="image/*" multiple hidden />
+  <audio id="bgMusic" src="77a2d7c5-7aed-4740-b68f-2e8280497e27.mp3" preload="auto" loop></audio>
   <div class="toast" id="toast"></div>
 
   <script>
     (function () {
       const THEME_KEY = "shots_theme_v4";
       const VIEW_KEY = "shots_view_v1";
+      const SOUND_KEY = "shots_sound_v1";
+      const MUSIC_KEY = "shots_music_v1";
 
       const fileInput = document.getElementById("fileInput");
       const btnUpload = document.getElementById("btnUpload");
       const btnClear  = document.getElementById("btnClear");
       const btnTheme  = document.getElementById("btnTheme");
+      const btnMusic  = document.getElementById("btnMusic");
+      const bgMusic   = document.getElementById("bgMusic");
       const dropzone  = document.getElementById("dropzone");
       const grid      = document.getElementById("grid");
       const empty     = document.getElementById("empty");
@@ -974,10 +1408,44 @@
       // Tabs
       const tabShots = document.getElementById("tabShots");
       const tabNotes = document.getElementById("tabNotes");
+      const tabGame = document.getElementById("tabGame");
+      const tabSnake = document.getElementById("tabSnake");
       const viewShots = document.getElementById("viewShots");
       const viewNotes = document.getElementById("viewNotes");
+      const viewGame = document.getElementById("viewGame");
+      const viewSnake = document.getElementById("viewSnake");
       const actionsShots = document.getElementById("actionsShots");
       const actionsNotes = document.getElementById("actionsNotes");
+      const actionsGame = document.getElementById("actionsGame");
+      const actionsSnake = document.getElementById("actionsSnake");
+
+      // Game UI
+      const btnApplyGame = document.getElementById("btnApplyGame");
+      const btnRestartGame = document.getElementById("btnRestartGame");
+      const btnSound = document.getElementById("btnSound");
+      const rowsInput = document.getElementById("rowsInput");
+      const colsInput = document.getElementById("colsInput");
+      const minesInput = document.getElementById("minesInput");
+      const mineBoard = document.getElementById("mineBoard");
+      const minesLeft = document.getElementById("minesLeft");
+      const gameTime = document.getElementById("gameTime");
+      const gameStatus = document.getElementById("gameStatus");
+      const gameResult = document.getElementById("gameResult");
+
+      // Snake UI
+      const btnSnakeStart = document.getElementById("btnSnakeStart");
+      const btnSnakeRestart = document.getElementById("btnSnakeRestart");
+      const btnSnakeEditor = document.getElementById("btnSnakeEditor");
+      const btnSnakeClear = document.getElementById("btnSnakeClear");
+      const snakeSpeed = document.getElementById("snakeSpeed");
+      const snakeSpeedValue = document.getElementById("snakeSpeedValue");
+      const snakeApples = document.getElementById("snakeApples");
+      const snakeCanvas = document.getElementById("snakeCanvas");
+      const snakeScore = document.getElementById("snakeScore");
+      const snakeBest = document.getElementById("snakeBest");
+      const snakeStatus = document.getElementById("snakeStatus");
+      const snakeResult = document.getElementById("snakeResult");
+      const snakePad = document.getElementById("snakePad");
 
       // Notes UI
       const noteList = document.getElementById("noteList");
@@ -990,23 +1458,34 @@
       const noteMeta = document.getElementById("noteMeta");
 
       /* ✨ Мягкое смещение подсветки за мышкой */
-      let targetX = 0.5, targetY = 0.2;
-      let currentX = 0.5, currentY = 0.2;
+      function setGlowFromClient(x, y) {
+        const mx = x / window.innerWidth;
+        const my = y / window.innerHeight;
+        document.documentElement.style.setProperty("--mx", (mx * 100).toFixed(2) + "%");
+        document.documentElement.style.setProperty("--my", (my * 100).toFixed(2) + "%");
+      }
 
-      window.addEventListener("mousemove", (e) => {
-        targetX = e.clientX / window.innerWidth;
-        targetY = e.clientY / window.innerHeight;
+      let glowX = window.innerWidth * 0.5;
+      let glowY = window.innerHeight * 0.2;
+      let glowRaf = 0;
+
+      function scheduleGlowUpdate() {
+        if (glowRaf) return;
+        glowRaf = requestAnimationFrame(() => {
+          setGlowFromClient(glowX, glowY);
+          glowRaf = 0;
+        });
+      }
+
+      window.addEventListener("pointermove", (e) => {
+        glowX = e.clientX;
+        glowY = e.clientY;
+        scheduleGlowUpdate();
       }, { passive: true });
 
-      function animateGlow() {
-        const ease = 0.07;
-        currentX += (targetX - currentX) * ease;
-        currentY += (targetY - currentY) * ease;
-        document.documentElement.style.setProperty("--mx", (currentX * 100).toFixed(2) + "%");
-        document.documentElement.style.setProperty("--my", (currentY * 100).toFixed(2) + "%");
-        requestAnimationFrame(animateGlow);
-      }
-      animateGlow();
+      window.addEventListener("resize", scheduleGlowUpdate);
+
+      setGlowFromClient(glowX, glowY);
 
       function showToast(msg) {
         toast.textContent = msg;
@@ -1225,30 +1704,75 @@
       });
 
       // =========================
+      // Background music
+      // =========================
+      let musicEnabled = localStorage.getItem(MUSIC_KEY) !== "off";
+
+      function updateMusicButton() {
+        if (!btnMusic) return;
+        btnMusic.setAttribute("aria-pressed", String(musicEnabled));
+        btnMusic.querySelector("span").textContent = musicEnabled ? "Музыка: Вкл" : "Музыка: Выкл";
+      }
+
+      function tryPlayMusic() {
+        if (!bgMusic || !musicEnabled) return;
+        bgMusic.volume = 0.25;
+        const p = bgMusic.play();
+        if (p && typeof p.catch === "function") p.catch(() => {});
+      }
+
+      updateMusicButton();
+      if (btnMusic) {
+        btnMusic.addEventListener("click", () => {
+          musicEnabled = !musicEnabled;
+          localStorage.setItem(MUSIC_KEY, musicEnabled ? "on" : "off");
+          updateMusicButton();
+          if (musicEnabled) tryPlayMusic();
+          else if (bgMusic) bgMusic.pause();
+        });
+      }
+      document.addEventListener("pointerdown", tryPlayMusic, { once: true, passive: true });
+
+      // =========================
       // Tabs switch
       // =========================
       function setView(name) {
+        const isShots = name === "shots";
         const isNotes = name === "notes";
+        const isGame = name === "game";
+        const isSnake = name === "snake";
 
-        tabShots.classList.toggle("active", !isNotes);
+        tabShots.classList.toggle("active", isShots);
         tabNotes.classList.toggle("active", isNotes);
-        tabShots.setAttribute("aria-selected", String(!isNotes));
+        tabGame.classList.toggle("active", isGame);
+        tabSnake.classList.toggle("active", isSnake);
+        tabShots.setAttribute("aria-selected", String(isShots));
         tabNotes.setAttribute("aria-selected", String(isNotes));
+        tabGame.setAttribute("aria-selected", String(isGame));
+        tabSnake.setAttribute("aria-selected", String(isSnake));
 
-        viewShots.classList.toggle("active", !isNotes);
+        viewShots.classList.toggle("active", isShots);
         viewNotes.classList.toggle("active", isNotes);
+        viewGame.classList.toggle("active", isGame);
+        viewSnake.classList.toggle("active", isSnake);
 
-        actionsShots.style.display = isNotes ? "none" : "flex";
+        actionsShots.style.display = isShots ? "flex" : "none";
         actionsNotes.style.display = isNotes ? "flex" : "none";
-        countChip.style.display = isNotes ? "none" : "inline-flex";
+        actionsGame.style.display = isGame ? "flex" : "none";
+        actionsSnake.style.display = isSnake ? "flex" : "none";
+        countChip.style.display = isShots ? "inline-flex" : "none";
 
         localStorage.setItem(VIEW_KEY, name);
+        setSnakeActive(isSnake);
       }
 
       tabShots.addEventListener("click", () => setView("shots"));
       tabNotes.addEventListener("click", () => setView("notes"));
+      tabGame.addEventListener("click", () => setView("game"));
+      tabSnake.addEventListener("click", () => setView("snake"));
 
-      const savedView = localStorage.getItem(VIEW_KEY) || "shots";
+      const savedViewRaw = localStorage.getItem(VIEW_KEY);
+      const savedView = ["shots", "notes", "game", "snake"].includes(savedViewRaw) ? savedViewRaw : "shots";
       setView(savedView);
 
       // =========================
@@ -1459,35 +1983,845 @@
       })();
 
       // =========================
+      // Minesweeper
+      // =========================
+      let audioCtx = null;
+      let soundEnabled = localStorage.getItem(SOUND_KEY) !== "off";
+
+      function updateSoundButton() {
+        if (!btnSound) return;
+        btnSound.setAttribute("aria-pressed", String(soundEnabled));
+        btnSound.querySelector("span").textContent = soundEnabled ? "Звук: Вкл" : "Звук: Выкл";
+      }
+
+      function ensureAudio() {
+        if (!soundEnabled) return null;
+        if (!audioCtx) {
+          const AudioCtor = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtor) return null;
+          audioCtx = new AudioCtor();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      }
+
+      function playTone(freq, duration, type, volume, when) {
+        const ctx = ensureAudio();
+        if (!ctx) return;
+        const startAt = ctx.currentTime + (when || 0);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type || "sine";
+        osc.frequency.setValueAtTime(freq, startAt);
+        gain.gain.setValueAtTime(0.0001, startAt);
+        gain.gain.linearRampToValueAtTime(volume || 0.05, startAt + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(startAt);
+        osc.stop(startAt + duration + 0.03);
+      }
+
+      function playSound(type) {
+        if (!soundEnabled) return;
+        if (type === "open") {
+          playTone(420, 0.08, "triangle", 0.035);
+        } else if (type === "flag") {
+          playTone(740, 0.06, "square", 0.03);
+        } else if (type === "question") {
+          playTone(520, 0.06, "sine", 0.03);
+        } else if (type === "boom") {
+          playTone(140, 0.18, "sawtooth", 0.05);
+          playTone(90, 0.22, "triangle", 0.045, 0.02);
+        } else if (type === "win") {
+          playTone(440, 0.08, "sine", 0.04);
+          playTone(660, 0.08, "sine", 0.04, 0.06);
+          playTone(880, 0.12, "sine", 0.045, 0.12);
+        } else if (type === "lose") {
+          playTone(360, 0.12, "triangle", 0.04);
+          playTone(220, 0.14, "triangle", 0.04, 0.08);
+        }
+      }
+
+      updateSoundButton();
+      if (btnSound) {
+        btnSound.addEventListener("click", () => {
+          soundEnabled = !soundEnabled;
+          localStorage.setItem(SOUND_KEY, soundEnabled ? "on" : "off");
+          updateSoundButton();
+          if (soundEnabled) playSound("open");
+        });
+      }
+
+      const DEFAULT_CONFIG = { rows: 9, cols: 9, mines: 10 };
+      let currentConfig = { ...DEFAULT_CONFIG };
+
+      let game = null;
+      let gameTimer = null;
+      let startTime = 0;
+
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
+      function normalizeConfig(rows, cols, mines) {
+        const r = clamp(Math.round(rows), 6, 24);
+        const c = clamp(Math.round(cols), 6, 24);
+        const maxMines = r * c - 1;
+        const m = clamp(Math.round(mines), 1, Math.max(1, maxMines));
+        return { rows: r, cols: c, mines: m };
+      }
+
+      function syncGameInputs(cfg) {
+        if (!rowsInput || !colsInput || !minesInput) return;
+        rowsInput.value = String(cfg.rows);
+        colsInput.value = String(cfg.cols);
+        minesInput.value = String(cfg.mines);
+      }
+
+      function getConfigFromInputs() {
+        if (!rowsInput || !colsInput || !minesInput) return { ...currentConfig };
+        const rows = Number(rowsInput.value);
+        const cols = Number(colsInput.value);
+        const mines = Number(minesInput.value);
+        if (!Number.isFinite(rows) || !Number.isFinite(cols) || !Number.isFinite(mines)) {
+          return null;
+        }
+        return normalizeConfig(rows, cols, mines);
+      }
+
+      function startTimer() {
+        if (gameTimer) return;
+        startTime = Date.now();
+        gameTime.textContent = "0с";
+        gameTimer = setInterval(() => {
+          const seconds = Math.floor((Date.now() - startTime) / 1000);
+          gameTime.textContent = seconds + "с";
+        }, 1000);
+      }
+
+      function stopTimer() {
+        clearInterval(gameTimer);
+        gameTimer = null;
+      }
+
+      function updateMinesLeft() {
+        const left = Math.max(game.mines - game.flags, 0);
+        minesLeft.textContent = String(left);
+      }
+
+      function setStatus(text) {
+        gameStatus.textContent = text;
+      }
+
+      function makeCell(index) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "cell";
+        btn.addEventListener("click", () => revealCell(index));
+        btn.addEventListener("contextmenu", (e) => {
+          e.preventDefault();
+          toggleFlag(index);
+        });
+        return btn;
+      }
+
+      function initBoard(cfg) {
+        const config = cfg ? normalizeConfig(cfg.rows, cfg.cols, cfg.mines) : currentConfig;
+        currentConfig = { ...config };
+        stopTimer();
+        game = {
+          rows: config.rows,
+          cols: config.cols,
+          mines: config.mines,
+          initialMines: config.mines,
+          flags: 0,
+          revealed: 0,
+          firstClick: true,
+          over: false,
+          cells: []
+        };
+
+        mineBoard.style.setProperty("--cols", String(config.cols));
+        mineBoard.innerHTML = "";
+        for (let i = 0; i < config.rows * config.cols; i++) {
+          const cell = {
+            mine: false,
+            revealed: false,
+            flagged: false,
+            questioned: false,
+            adj: 0,
+            el: makeCell(i)
+          };
+          game.cells.push(cell);
+          mineBoard.appendChild(cell.el);
+        }
+
+        gameTime.textContent = "0с";
+        updateMinesLeft();
+        setStatus("Готово");
+        if (gameResult) gameResult.textContent = "";
+        syncGameInputs(currentConfig);
+      }
+
+      function placeMines(excludeIndex) {
+        const total = game.rows * game.cols;
+        const safe = new Set(getSafeIndices(excludeIndex));
+        const pool = [];
+        for (let i = 0; i < total; i++) {
+          if (!safe.has(i)) pool.push(i);
+        }
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        const minesToPlace = Math.min(game.mines, pool.length);
+        if (minesToPlace !== game.mines) {
+          game.mines = minesToPlace;
+          updateMinesLeft();
+        }
+        for (let i = 0; i < minesToPlace; i++) {
+          game.cells[pool[i]].mine = true;
+        }
+        computeAdjacency();
+      }
+
+      function getSafeIndices(index) {
+        const safe = [];
+        const r = Math.floor(index / game.cols);
+        const c = index % game.cols;
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            const rr = r + dr;
+            const cc = c + dc;
+            if (rr < 0 || rr >= game.rows || cc < 0 || cc >= game.cols) continue;
+            safe.push(rr * game.cols + cc);
+          }
+        }
+        return safe;
+      }
+
+      function computeAdjacency() {
+        for (let r = 0; r < game.rows; r++) {
+          for (let c = 0; c < game.cols; c++) {
+            const index = r * game.cols + c;
+            const cell = game.cells[index];
+            if (cell.mine) {
+              cell.adj = 0;
+              continue;
+            }
+            let count = 0;
+            for (let dr = -1; dr <= 1; dr++) {
+              for (let dc = -1; dc <= 1; dc++) {
+                if (dr === 0 && dc === 0) continue;
+                const rr = r + dr;
+                const cc = c + dc;
+                if (rr < 0 || rr >= game.rows || cc < 0 || cc >= game.cols) continue;
+                const nIndex = rr * game.cols + cc;
+                if (game.cells[nIndex].mine) count++;
+              }
+            }
+            cell.adj = count;
+          }
+        }
+      }
+
+      function revealCell(index) {
+        const cell = game.cells[index];
+        if (game.over || cell.revealed || cell.flagged) return;
+        if (cell.questioned) {
+          cell.questioned = false;
+          cell.el.classList.remove("question");
+          cell.el.textContent = "";
+        }
+
+        if (game.firstClick) {
+          game.firstClick = false;
+          placeMines(index);
+          startTimer();
+        }
+
+        if (cell.mine) {
+          cell.revealed = true;
+          cell.el.classList.add("revealed", "mine");
+          cell.el.textContent = "*";
+          playSound("boom");
+          endGame(false, "boom");
+          return;
+        }
+
+        playSound("open");
+        floodReveal(index);
+        checkWin();
+      }
+
+      function floodReveal(startIndex) {
+        const queue = [startIndex];
+        while (queue.length) {
+          const index = queue.pop();
+          const cell = game.cells[index];
+          if (cell.revealed || cell.flagged) continue;
+          if (cell.questioned) {
+            cell.questioned = false;
+            cell.el.classList.remove("question");
+          }
+          cell.revealed = true;
+          cell.el.classList.add("revealed");
+          game.revealed++;
+
+          if (cell.adj > 0) {
+            cell.el.textContent = String(cell.adj);
+            cell.el.classList.add("n" + cell.adj);
+            continue;
+          }
+
+          const r = Math.floor(index / game.cols);
+          const c = index % game.cols;
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              if (dr === 0 && dc === 0) continue;
+              const rr = r + dr;
+              const cc = c + dc;
+              if (rr < 0 || rr >= game.rows || cc < 0 || cc >= game.cols) continue;
+              const nIndex = rr * game.cols + cc;
+              const next = game.cells[nIndex];
+              if (!next.revealed && !next.flagged && !next.mine) {
+                queue.push(nIndex);
+              }
+            }
+          }
+        }
+      }
+
+      function toggleFlag(index) {
+        const cell = game.cells[index];
+        if (game.over || cell.revealed) return;
+        const wasFlagged = cell.flagged;
+        let soundType = "";
+
+        if (cell.flagged) {
+          cell.flagged = false;
+          cell.questioned = true;
+          soundType = "question";
+        } else if (cell.questioned) {
+          cell.questioned = false;
+        } else {
+          cell.flagged = true;
+          soundType = "flag";
+        }
+
+        if (wasFlagged !== cell.flagged) {
+          game.flags += cell.flagged ? 1 : -1;
+        }
+
+        cell.el.classList.toggle("flagged", cell.flagged);
+        cell.el.classList.toggle("question", cell.questioned);
+        cell.el.textContent = cell.questioned ? "?" : "";
+        updateMinesLeft();
+        if (soundType) playSound(soundType);
+      }
+
+      function revealMines() {
+        for (const cell of game.cells) {
+          if (cell.mine) {
+            cell.el.classList.add("revealed", "mine");
+            cell.el.classList.remove("question");
+            cell.el.textContent = "*";
+          }
+        }
+      }
+
+      function endGame(won, cause) {
+        game.over = true;
+        stopTimer();
+        if (!won) revealMines();
+        setStatus(won ? "Победа!" : "Поражение");
+        if (gameResult) gameResult.textContent = won ? "Победа!" : "Поражение";
+        if (won) {
+          playSound("win");
+        } else if (cause !== "boom") {
+          playSound("lose");
+        }
+      }
+
+      function checkWin() {
+        if (game.revealed >= (game.rows * game.cols - game.mines)) {
+          endGame(true);
+        }
+      }
+
+      if (btnApplyGame) {
+        btnApplyGame.addEventListener("click", () => {
+          const cfg = getConfigFromInputs();
+          if (!cfg) {
+            showToast("Введите числа для поля.");
+            return;
+          }
+          currentConfig = cfg;
+          initBoard(currentConfig);
+          showToast("Поле создано.");
+        });
+      }
+
+      if (btnRestartGame) {
+        btnRestartGame.addEventListener("click", () => initBoard(currentConfig));
+      }
+
+      if (rowsInput) {
+        rowsInput.addEventListener("change", () => {
+          const cfg = getConfigFromInputs();
+          if (cfg) syncGameInputs(cfg);
+        });
+      }
+      if (colsInput) {
+        colsInput.addEventListener("change", () => {
+          const cfg = getConfigFromInputs();
+          if (cfg) syncGameInputs(cfg);
+        });
+      }
+      if (minesInput) {
+        minesInput.addEventListener("change", () => {
+          const cfg = getConfigFromInputs();
+          if (cfg) syncGameInputs(cfg);
+        });
+      }
+
+      if (mineBoard) {
+        syncGameInputs(currentConfig);
+        initBoard(currentConfig);
+      }
+
+      // =========================
+      // Snake
+      // =========================
+      const SNAKE_BEST_KEY = "snake_best_v1";
+      const SNAKE_GRID = 18;
+
+      let snakeCtx = null;
+      let snakeTimer = null;
+      let snakeRunning = false;
+      let snakeAlive = true;
+      let snakeDir = { x: 1, y: 0 };
+      let snakeNextDir = { x: 1, y: 0 };
+      let snakeApplesPositions = [];
+      let snakeBody = [];
+      let snakeScoreVal = 0;
+      let snakeBestVal = Number(localStorage.getItem(SNAKE_BEST_KEY) || 0);
+      let snakeSpeedMs = 130;
+      let snakeApplesCount = 3;
+      let snakeCellSize = 20;
+      let snakeEditorOn = false;
+      let snakeWalls = new Set();
+
+      function updateSnakeHud() {
+        if (snakeScore) snakeScore.textContent = String(snakeScoreVal);
+        if (snakeBest) snakeBest.textContent = String(snakeBestVal);
+      }
+
+      function setSnakeStatus(text) {
+        if (snakeStatus) snakeStatus.textContent = text;
+        if (snakeResult) snakeResult.textContent = text === "Игра" ? "" : text;
+      }
+
+      function resizeSnakeCanvas() {
+        if (!snakeCanvas) return;
+        const parent = snakeCanvas.parentElement;
+        const size = Math.min(parent.clientWidth || 0, 420);
+        if (size < 140) {
+          if (viewSnake && viewSnake.classList.contains("active")) {
+            requestAnimationFrame(resizeSnakeCanvas);
+          }
+          return;
+        }
+        const ratio = window.devicePixelRatio || 1;
+        snakeCanvas.width = Math.floor(size * ratio);
+        snakeCanvas.height = Math.floor(size * ratio);
+        snakeCanvas.style.width = size + "px";
+        snakeCanvas.style.height = size + "px";
+        snakeCtx = snakeCanvas.getContext("2d");
+        if (!snakeCtx) {
+          setSnakeStatus("Canvas не поддерживается");
+          return;
+        }
+        snakeCtx.setTransform(1, 0, 0, 1, 0, 0);
+        snakeCtx.scale(ratio, ratio);
+        snakeCellSize = size / SNAKE_GRID;
+        drawSnake();
+      }
+
+      function resetSnake() {
+        snakeAlive = true;
+        snakeRunning = false;
+        clearInterval(snakeTimer);
+        snakeTimer = null;
+        const start = findSnakeStart();
+        let tailX = start.x - 1;
+        if (tailX < 0 || snakeWalls.has(cellKey(tailX, start.y))) {
+          tailX = start.x + 1;
+        }
+        if (tailX >= SNAKE_GRID || snakeWalls.has(cellKey(tailX, start.y))) {
+          tailX = start.x;
+        }
+        snakeBody = [
+          { x: start.x, y: start.y },
+          { x: tailX, y: start.y }
+        ];
+        snakeDir = { x: 1, y: 0 };
+        snakeNextDir = { x: 1, y: 0 };
+        snakeScoreVal = 0;
+        spawnSnakeApples();
+        updateSnakeHud();
+        updateSnakeButton();
+        setSnakeStatus("Готово");
+        drawSnake();
+      }
+
+      function cellKey(x, y) {
+        return x + "," + y;
+      }
+
+      function findSnakeStart() {
+        const startX = Math.floor(SNAKE_GRID / 2);
+        const startY = Math.floor(SNAKE_GRID / 2);
+        if (!snakeWalls.has(cellKey(startX, startY))) {
+          return { x: startX, y: startY };
+        }
+        for (let r = 0; r < SNAKE_GRID; r++) {
+          for (let c = 0; c < SNAKE_GRID; c++) {
+            if (!snakeWalls.has(cellKey(c, r))) return { x: c, y: r };
+          }
+        }
+        return { x: 0, y: 0 };
+      }
+
+      function getRandomFreeCell(avoidSet) {
+        let x = 0;
+        let y = 0;
+        let tries = 0;
+        do {
+          x = Math.floor(Math.random() * SNAKE_GRID);
+          y = Math.floor(Math.random() * SNAKE_GRID);
+          tries++;
+        } while (avoidSet.has(cellKey(x, y)) && tries < 2000);
+        return { x, y, ok: !avoidSet.has(cellKey(x, y)) };
+      }
+
+      function spawnSnakeApples() {
+        const occupied = new Set();
+        snakeBody.forEach((p) => occupied.add(cellKey(p.x, p.y)));
+        snakeWalls.forEach((k) => occupied.add(k));
+        snakeApplesPositions = [];
+        for (let i = 0; i < snakeApplesCount; i++) {
+          const pick = getRandomFreeCell(occupied);
+          if (!pick.ok) break;
+          const key = cellKey(pick.x, pick.y);
+          occupied.add(key);
+          snakeApplesPositions.push({ x: pick.x, y: pick.y });
+        }
+      }
+
+      function fillCell(x, y, color) {
+        const pad = 1;
+        const px = x * snakeCellSize + pad;
+        const py = y * snakeCellSize + pad;
+        const size = snakeCellSize - pad * 2;
+        snakeCtx.fillStyle = color;
+        if (snakeCtx.roundRect) {
+          snakeCtx.beginPath();
+          snakeCtx.roundRect(px, py, size, size, 6);
+          snakeCtx.fill();
+        } else {
+          snakeCtx.fillRect(px, py, size, size);
+        }
+      }
+
+      function drawSnake() {
+        if (!snakeCtx || !snakeCanvas) return;
+        const w = snakeCanvas.clientWidth;
+        const h = snakeCanvas.clientHeight;
+        snakeCtx.clearRect(0, 0, w, h);
+
+        snakeCtx.fillStyle = "rgba(99,102,241,0.10)";
+        snakeCtx.fillRect(0, 0, w, h);
+
+        snakeWalls.forEach((key) => {
+          const parts = key.split(",");
+          const x = Number(parts[0]);
+          const y = Number(parts[1]);
+          fillCell(x, y, "#334155");
+        });
+
+        for (const apple of snakeApplesPositions) {
+          fillCell(apple.x, apple.y, "#f97316");
+        }
+
+        for (let i = 0; i < snakeBody.length; i++) {
+          const part = snakeBody[i];
+          fillCell(part.x, part.y, i === 0 ? "#38bdf8" : "#0ea5e9");
+        }
+      }
+
+      function setSnakeDirection(dx, dy) {
+        if (snakeEditorOn) return;
+        if (snakeDir.x === -dx && snakeDir.y === -dy) return;
+        snakeNextDir = { x: dx, y: dy };
+        if (!snakeRunning && snakeAlive) startSnake();
+      }
+
+      function stepSnake() {
+        if (!snakeRunning || !snakeAlive) return;
+        snakeDir = snakeNextDir;
+        const head = snakeBody[0];
+        const next = { x: head.x + snakeDir.x, y: head.y + snakeDir.y };
+        const nextKey = cellKey(next.x, next.y);
+
+        if (
+          next.x < 0 || next.x >= SNAKE_GRID ||
+          next.y < 0 || next.y >= SNAKE_GRID
+        ) {
+          endSnake(false);
+          return;
+        }
+
+        if (snakeWalls.has(nextKey)) {
+          endSnake(false);
+          return;
+        }
+
+        if (snakeBody.some((p) => p.x === next.x && p.y === next.y)) {
+          endSnake(false);
+          return;
+        }
+
+        snakeBody.unshift(next);
+        const appleIndex = snakeApplesPositions.findIndex(
+          (a) => a.x === next.x && a.y === next.y
+        );
+        if (appleIndex !== -1) {
+          snakeScoreVal += 1;
+          if (snakeScoreVal > snakeBestVal) {
+            snakeBestVal = snakeScoreVal;
+            localStorage.setItem(SNAKE_BEST_KEY, String(snakeBestVal));
+          }
+          updateSnakeHud();
+          snakeApplesPositions.splice(appleIndex, 1);
+          if (snakeApplesPositions.length < snakeApplesCount) {
+            const occupied = new Set();
+            snakeBody.forEach((p) => occupied.add(cellKey(p.x, p.y)));
+            snakeWalls.forEach((k) => occupied.add(k));
+            snakeApplesPositions.forEach((a) => occupied.add(cellKey(a.x, a.y)));
+            const pick = getRandomFreeCell(occupied);
+            if (pick.ok) snakeApplesPositions.push({ x: pick.x, y: pick.y });
+          }
+        } else {
+          snakeBody.pop();
+        }
+        drawSnake();
+      }
+
+      function startSnake() {
+        if (snakeRunning || !snakeAlive || snakeEditorOn) return;
+        snakeRunning = true;
+        setSnakeStatus("Игра");
+        updateSnakeButton();
+        clearInterval(snakeTimer);
+        snakeTimer = setInterval(stepSnake, snakeSpeedMs);
+      }
+
+      function pauseSnake() {
+        if (!snakeRunning) return;
+        snakeRunning = false;
+        clearInterval(snakeTimer);
+        snakeTimer = null;
+        setSnakeStatus("Пауза");
+        updateSnakeButton();
+      }
+
+      function endSnake() {
+        snakeAlive = false;
+        snakeRunning = false;
+        clearInterval(snakeTimer);
+        snakeTimer = null;
+        setSnakeStatus("Проигрыш");
+        updateSnakeButton();
+      }
+
+      function updateSnakeButton() {
+        if (!btnSnakeStart) return;
+        btnSnakeStart.querySelector("span").textContent = snakeRunning ? "Пауза" : "Старт";
+      }
+
+      function updateSnakeSpeedLabel() {
+        if (snakeSpeedValue) snakeSpeedValue.textContent = snakeSpeedMs + "мс";
+      }
+
+      function applySnakeSpeed(ms) {
+        snakeSpeedMs = clamp(Number(ms) || 130, 60, 220);
+        updateSnakeSpeedLabel();
+        if (snakeRunning) {
+          clearInterval(snakeTimer);
+          snakeTimer = setInterval(stepSnake, snakeSpeedMs);
+        }
+      }
+
+      function updateSnakeEditorButton() {
+        if (!btnSnakeEditor) return;
+        btnSnakeEditor.setAttribute("aria-pressed", String(snakeEditorOn));
+        btnSnakeEditor.querySelector("span").textContent =
+          snakeEditorOn ? "Редактор: Вкл" : "Редактор: Выкл";
+      }
+
+      function setSnakeActive(active) {
+        if (!active) {
+          pauseSnake();
+          return;
+        }
+        requestAnimationFrame(resizeSnakeCanvas);
+      }
+
+      if (btnSnakeStart) {
+        btnSnakeStart.addEventListener("click", () => {
+          if (!snakeAlive) {
+            resetSnake();
+            startSnake();
+          } else if (snakeRunning) {
+            pauseSnake();
+          } else {
+            startSnake();
+          }
+        });
+      }
+
+      if (btnSnakeRestart) {
+        btnSnakeRestart.addEventListener("click", () => {
+          resetSnake();
+        });
+      }
+
+      if (snakeSpeed) {
+        snakeSpeed.addEventListener("input", () => applySnakeSpeed(snakeSpeed.value));
+        applySnakeSpeed(snakeSpeed.value);
+      }
+
+      if (snakeApples) {
+        snakeApples.addEventListener("change", () => {
+          const count = clamp(Number(snakeApples.value) || 1, 1, 6);
+          snakeApplesCount = count;
+          snakeApples.value = String(count);
+          spawnSnakeApples();
+          drawSnake();
+        });
+      }
+
+      if (btnSnakeEditor) {
+        btnSnakeEditor.addEventListener("click", () => {
+          snakeEditorOn = !snakeEditorOn;
+          updateSnakeEditorButton();
+          if (snakeEditorOn) pauseSnake();
+        });
+        updateSnakeEditorButton();
+      }
+
+      if (btnSnakeClear) {
+        btnSnakeClear.addEventListener("click", () => {
+          snakeWalls.clear();
+          drawSnake();
+        });
+      }
+
+      if (snakePad) {
+        snakePad.addEventListener("click", (e) => {
+          const btn = e.target.closest("button[data-dir]");
+          if (!btn) return;
+          const dir = btn.dataset.dir;
+          if (dir === "up") setSnakeDirection(0, -1);
+          if (dir === "down") setSnakeDirection(0, 1);
+          if (dir === "left") setSnakeDirection(-1, 0);
+          if (dir === "right") setSnakeDirection(1, 0);
+        });
+      }
+
+      if (snakeCanvas) {
+        snakeCanvas.addEventListener("click", (e) => {
+          if (!snakeEditorOn) return;
+          const rect = snakeCanvas.getBoundingClientRect();
+          const x = Math.floor((e.clientX - rect.left) / (rect.width / SNAKE_GRID));
+          const y = Math.floor((e.clientY - rect.top) / (rect.height / SNAKE_GRID));
+          if (x < 0 || y < 0 || x >= SNAKE_GRID || y >= SNAKE_GRID) return;
+          const key = cellKey(x, y);
+          const occupiedBySnake = snakeBody.some((p) => p.x === x && p.y === y);
+          const occupiedByApple = snakeApplesPositions.some((a) => a.x === x && a.y === y);
+          if (occupiedBySnake || occupiedByApple) return;
+          if (snakeWalls.has(key)) snakeWalls.delete(key);
+          else snakeWalls.add(key);
+          drawSnake();
+        });
+      }
+
+      window.addEventListener("keydown", (e) => {
+        if (!viewSnake || !viewSnake.classList.contains("active")) return;
+        const key = e.key.toLowerCase();
+        if (key === "arrowup" || key === "w") setSnakeDirection(0, -1);
+        if (key === "arrowdown" || key === "s") setSnakeDirection(0, 1);
+        if (key === "arrowleft" || key === "a") setSnakeDirection(-1, 0);
+        if (key === "arrowright" || key === "d") setSnakeDirection(1, 0);
+      });
+
+      if (snakeCanvas) {
+        if (snakeApples) {
+          const count = clamp(Number(snakeApples.value) || 3, 1, 6);
+          snakeApplesCount = count;
+          snakeApples.value = String(count);
+        }
+        updateSnakeHud();
+        resizeSnakeCanvas();
+        resetSnake();
+        window.addEventListener("resize", resizeSnakeCanvas);
+      }
+
+      // =========================
       // Snow generation
       // =========================
       const snowContainer = document.querySelector(".snow");
       if (snowContainer) {
         const isMobile = window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
-        const COUNT = isMobile ? 0 : 46;
+        const reduceMotion =
+          window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const lowPower =
+          reduceMotion ||
+          (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+          (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+        document.body.classList.toggle("low-power", !!lowPower);
+        const COUNT = isMobile ? 0 : (lowPower ? 46 : 70);
 
         for (let i = 0; i < COUNT; i++) {
           const flake = document.createElement("span");
           flake.className = "snowflake";
 
-          const size = 6 + Math.random() * 12;
+          const depth = Math.random();
+          const size = 8 + depth * 14;
           const left = Math.random() * 100;
-          const startTop = -20 - Math.random() * 140;
-          const fallDuration = 9 + Math.random() * 16;
-          const swayDuration = 4 + Math.random() * 7;
+          const startTop = -30 - Math.random() * 120;
+          const fallDuration = 18 + (1 - depth) * 8 + Math.random() * 6;
+          const swayDuration = 10 + Math.random() * 6;
           const delay = -Math.random() * fallDuration;
-          const op = 0.55 + Math.random() * 0.35;
+          const op = 0.32 + depth * 0.56;
+          const drift = (Math.random() * 2 - 1) * (4 + depth * 10);
+          const spin = (Math.random() * 2 - 1) * (60 + depth * 100);
+          const blur = depth < 0.35 ? 0.6 : (depth < 0.7 ? 0.35 : 0.15);
 
           flake.style.width = size + "px";
           flake.style.height = size + "px";
           flake.style.left = left + "vw";
           flake.style.top = startTop + "vh";
-          flake.style.setProperty("--op", op.toString());
+          flake.style.setProperty("--op", op.toFixed(2));
+          flake.style.setProperty("--drift", drift.toFixed(1) + "px");
+          flake.style.setProperty("--spin", spin.toFixed(1) + "deg");
+          flake.style.setProperty("--blur", blur.toFixed(2) + "px");
           flake.style.animationDuration =
-            fallDuration + "s, " + swayDuration + "s, " + (2.5 + Math.random() * 3.5) + "s";
+            fallDuration + "s, " + swayDuration + "s, " + (4 + Math.random() * 3) + "s";
           flake.style.animationDelay = delay + "s, " + delay + "s, " + delay + "s";
-
-          if (size > 14) flake.style.filter = "blur(0.55px)";
 
           snowContainer.appendChild(flake);
         }
