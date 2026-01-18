@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Скриншоты — Notion Style</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root{
+      --bg:#050814;
+      --page:#070b18;
+      --text:#e5e7eb;
+      --muted:#9aa7bd;
+
+      --border: rgba(226, 232, 240, 0.10);
+      --border2: rgba(226, 232, 240, 0.18);
+
+      --card:#070b18;
+      --card2:#0b1226;
+
+      --shadow: 0 30px 90px rgba(0,0,0,0.65);
+      --shadow2: 0 18px 50px rgba(0,0,0,0.55);
+
+      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --radius-md: 14px;
+
+      --btn:#0b1226;
+      --btn-hover:#111a33;
+
+      --primary:#f8fafc;
+      --primaryText:#050814;
+
+      --chip:#111a33;
+      --chipText:#c7d2fe;
+
+      --mx: 50%;
+      --my: 20%;
+    }
+
+    body.theme-light{
+      --bg:#f5f6f8;
+      --page:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+
+      --border: rgba(15, 23, 42, 0.10);
+      --border2: rgba(15, 23, 42, 0.16);
+
+      --card:#ffffff;
+      --card2:#f7f8fb;
+
+      --shadow: 0 26px 70px rgba(2, 6, 23, 0.10);
+      --shadow2: 0 14px 40px rgba(2, 6, 23, 0.10);
+
+      --btn:#fbfcfe;
+      --btn-hover:#f2f5fb;
+
+      --primary:#0f172a;
+      --primaryText:#f8fafc;
+
+      --chip:#eef2ff;
+      --chipText:#3730a3;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html, body{ height:100%; }
+
+    body{
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display:flex;
+      justify-content:center;
+      padding: 24px 12px 46px;
+      transition: background .18s ease, color .18s ease;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ✨ Внешнее свечение (фон) */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(980px 560px at var(--mx) var(--my),
+          rgba(99,102,241,0.22),
+          rgba(99,102,241,0.10) 40%,
+          rgba(99,102,241,0.00) 74%),
+        radial-gradient(740px 440px at calc(var(--mx) + 10%) calc(var(--my) + 16%),
+          rgba(56,189,248,0.14),
+          rgba(56,189,248,0.00) 70%);
+      opacity: 0.95;
+      transition: opacity .25s ease;
+    }
+
+    /* СНЕГ на фоне */
+    .snow{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    /* Карточка приложения */
+    .page{
+      width: 100%;
+      max-width: 1000px;
+      background: var(--page);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(6px);
+    }
+
+    /* ✅ Внутреннее свечение внутри карточки (чтобы было видно в меню/контенте) */
+    .page::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(760px 460px at var(--mx) var(--my),
+          rgba(99,102,241,0.16),
+          rgba(99,102,241,0.00) 66%),
+        radial-gradient(560px 340px at calc(var(--mx) + 10%) calc(var(--my) + 20%),
+          rgba(56,189,248,0.10),
+          rgba(56,189,248,0.00) 72%);
+      opacity: 0.85;
+      mix-blend-mode: screen;
+    }
+    body.theme-light .page::before{
+      opacity: 0.55;
+      mix-blend-mode: normal;
+    }
+
+    /* Top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.07), rgba(255,255,255,0.00));
+      position: relative;
+      z-index: 1;
+    }
+    body.theme-light .topbar{
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.70), rgba(255,255,255,0.00));
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .logo{
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid var(--border2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: var(--card2);
+      box-shadow: var(--shadow2);
+      flex: 0 0 auto;
+    }
+
+    .brandText{
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .brandText h1{
+      font-size: 16px;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .brandText p{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    .topRight{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: var(--chipText);
+      font-size: 12px;
+      border: 1px solid var(--border);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap: 9px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border2);
+      background: var(--btn);
+      color: var(--text);
+      cursor: pointer;
+      transition:
+        transform .10s ease,
+        background .14s ease,
+        box-shadow .14s ease,
+        border-color .14s ease,
+        filter .14s ease;
+      box-shadow: 0 1px 0 rgba(2,6,23,0.06);
+      user-select:none;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .btn:hover{
+      background: var(--btn-hover);
+      border-color: var(--border2);
+      box-shadow: 0 14px 34px rgba(2,6,23,0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn:active{
+      transform: translateY(0px);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+    }
+
+    .btnPrimary{
+      background: var(--primary);
+      color: var(--primaryText);
+      border-color: transparent;
+      box-shadow: 0 18px 44px rgba(2,6,23,0.16);
+    }
+    body.theme-light .btnPrimary{
+      box-shadow: 0 18px 44px rgba(2,6,23,0.16);
+    }
+    .btnPrimary:hover{
+      filter: brightness(0.98);
+      box-shadow: 0 22px 52px rgba(2,6,23,0.18);
+    }
+
+    .btnGhost{
+      background: transparent;
+      border-style: dashed;
+      box-shadow: none;
+    }
+    .btnGhost:hover{
+      background: var(--btn-hover);
+      border-style: dashed;
+      box-shadow: 0 14px 34px rgba(2,6,23,0.10);
+    }
+
+    .btn:focus-visible{
+      outline: none;
+      box-shadow:
+        0 0 0 3px rgba(99,102,241,0.22),
+        0 0 0 1px rgba(15,23,42,0.42),
+        0 18px 44px rgba(2,6,23,0.12);
+      transform: translateY(-1px);
+    }
+
+    /* Tabs */
+    .tabs{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border2);
+      background: var(--card2);
+      box-shadow: var(--shadow2);
+    }
+
+    .tab{
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12.5px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: background .14s ease, color .14s ease, transform .10s ease;
+      outline: none;
+    }
+
+    .tab:hover{
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-1px);
+      color: var(--text);
+    }
+    body.theme-light .tab:hover{
+      background: rgba(15,23,42,0.06);
+    }
+
+    .tab.active{
+      background: var(--btn);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      box-shadow: 0 14px 34px rgba(2,6,23,0.10);
+    }
+
+    /* ICONS (mask) */
+    .icon{
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      background-color: currentColor;
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      opacity: 0.92;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+    .btnGhost .icon{ opacity: 0.84; }
+    .btn:hover .icon{ opacity: 1; }
+    .btn:hover .icon-upload{ transform: translateY(-2px); }
+    .btn:hover .icon-trash{ transform: rotate(-9deg) translateY(-1px); }
+    .btn:hover .icon-theme{ transform: rotate(12deg); }
+    .btn:hover .icon-download{ transform: translateY(1px); }
+    .btn:active .icon{ transform: scale(0.97); opacity: 0.92; }
+    .btn:focus-visible .icon{ transform: translateY(-1px); opacity: 1; }
+
+    .icon-app{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h10V5H7z'/>\
+</svg>");
+    }
+    .icon-upload{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M12 3l5 5-1.4 1.4L13 6.8V16h-2V6.8L8.4 9.4 7 8l5-5zM4 19h16v2H4v-2z'/>\
+</svg>");
+    }
+    .icon-trash{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v10h-2V9zm4 0h2v10h-2V9z'/>\
+</svg>");
+    }
+    .icon-theme{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8z'/>\
+</svg>");
+    }
+    .icon-download{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M11 3h2v9l3-3 1.4 1.4L12 16.8 6.6 10.4 8 9l3 3V3zM4 19h16v2H4v-2z'/>\
+</svg>");
+    }
+    .icon-photos{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M4 6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v10h10V6H6zm12 3h2v9a2 2 0 0 1-2 2H9v-2h9V9z'/>\
+</svg>");
+    }
+    .icon-notes{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 2v14h10V5H7zm2 3h6v2H9V8zm0 4h6v2H9v-2z'/>\
+</svg>");
+    }
+    .icon-plus{
+      mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path fill='black' d='M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z'/>\
+</svg>");
+    }
+
+    /* Content */
+    .content{
+      padding: 18px;
+      position: relative;
+      z-index: 1;
+      background:
+        radial-gradient(900px 520px at 30% -10%, rgba(99,102,241,0.12), transparent 60%),
+        radial-gradient(900px 520px at 70% 0%, rgba(56,189,248,0.10), transparent 60%);
+    }
+    body.theme-light .content{
+      background:
+        radial-gradient(900px 500px at 30% -10%, rgba(99,102,241,0.06), transparent 60%),
+        radial-gradient(900px 500px at 70% 0%, rgba(56,189,248,0.06), transparent 60%);
+    }
+
+    @media (min-width: 860px){
+      .topbar{ padding: 16px 22px; }
+      .content{ padding: 22px; }
+      .brandText h1{ font-size: 17px; }
+    }
+
+    /* Screens tab UI */
+    .dropzone{
+      border-radius: var(--radius-lg);
+      border: 1px dashed var(--border2);
+      background: var(--card2);
+      padding: 18px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 16px;
+      cursor: pointer;
+      transition: background .14s ease, border-color .14s ease, box-shadow .14s ease, transform .14s ease;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dropzone::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(420px 240px at 30% 20%, rgba(99,102,241,0.14), transparent 60%);
+      opacity: 0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+
+    .dropzone:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 44px rgba(2,6,23,0.12);
+    }
+    .dropzone:hover::before{ opacity: 1; }
+    .dropzone.dragover{
+      border-color: rgba(99,102,241,0.9);
+      box-shadow: 0 22px 52px rgba(2,6,23,0.14);
+    }
+
+    .dzMain{ display:flex; flex-direction:column; gap:4px; position:relative; z-index:1; }
+    .dzTitle{ font-weight: 700; font-size: 14px; letter-spacing:-0.02em; }
+    .dzSub{ font-size: 12px; color: var(--muted); }
+    .dzTag{ font-size: 12px; color: var(--muted); white-space:nowrap; position:relative; z-index:1; }
+
+    .sectionHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-top: 14px;
+      margin-bottom: 10px;
+    }
+    .sectionHead .help{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .empty{
+      margin-top: 12px;
+      border-radius: var(--radius-lg);
+      border: 1px dashed var(--border);
+      background: var(--card2);
+      padding: 16px;
+      color: var(--muted);
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+    }
+    .empty strong{ color: var(--text); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: minmax(0,1fr);
+      gap: 14px;
+      margin-top: 12px;
+    }
+    @media (min-width: 820px){
+      .grid{ grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+    }
+
+    .card{
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--card);
+      overflow: hidden;
+      box-shadow: var(--shadow2);
+      transform: translateZ(0);
+      animation: pop .16s ease-out;
+    }
+    @keyframes pop{
+      from{ transform: translateY(8px); opacity: 0.0; }
+      to{ transform: translateY(0); opacity: 1; }
+    }
+
+    .preview{
+      border-bottom: 1px solid var(--border);
+      background: #0b1020;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height: 140px;
+      max-height: 320px;
+      overflow: hidden;
+    }
+    .preview img{
+      max-width: 100%;
+      max-height: 320px;
+      display:block;
+    }
+
+    .meta{
+      padding: 12px 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .label{
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .nameWrap{
+      display:flex;
+      align-items:center;
+      gap: 6px;
+      border: 1px solid var(--border2);
+      background: var(--btn);
+      border-radius: 999px;
+      padding: 7px 10px;
+      width: 100%;
+    }
+
+    .nameInput{
+      border:none;
+      outline:none;
+      background: transparent;
+      color: var(--text);
+      width: 100%;
+      font-size: 13px;
+    }
+
+    .ext{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .mini{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .actions{
+      display:flex;
+      justify-content:flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Notes tab */
+    .notesWrap{
+      display:grid;
+      grid-template-columns: 320px minmax(0,1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 860px){
+      .notesWrap{
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel{
+      border: 1px solid var(--border);
+      background: var(--card2);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.08);
+      overflow: hidden;
+    }
+
+    .panelHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+    }
+    body.theme-light .panelHeader{
+      background: rgba(15,23,42,0.03);
+    }
+
+    .panelHeader .title{
+      font-weight: 750;
+      letter-spacing: -0.01em;
+      font-size: 13px;
+      color: var(--text);
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+
+    .noteList{
+      max-height: 520px;
+      overflow: auto;
+      padding: 8px;
+    }
+    .noteItem{
+      border: 1px solid var(--border);
+      background: var(--page);
+      border-radius: 14px;
+      padding: 10px 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: transform .10s ease, box-shadow .14s ease, background .14s ease;
+    }
+    .noteItem:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 34px rgba(2,6,23,0.12);
+    }
+    .noteItem.active{
+      border-color: rgba(99,102,241,0.55);
+      box-shadow: 0 14px 34px rgba(99,102,241,0.12);
+    }
+    .noteItem .h{
+      font-weight: 750;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .noteItem .m{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .editor{
+      padding: 12px;
+    }
+
+    .fieldLabel{
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 6px;
+    }
+
+    .input, .textarea{
+      width: 100%;
+      border: 1px solid var(--border2);
+      background: var(--page);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 10px 12px;
+      outline: none;
+      transition: box-shadow .14s ease, border-color .14s ease;
+      font-size: 13px;
+    }
+
+    .textarea{
+      min-height: 320px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    .input:focus, .textarea:focus{
+      border-color: rgba(99,102,241,0.65);
+      box-shadow:
+        0 0 0 3px rgba(99,102,241,0.18),
+        0 0 0 1px rgba(15,23,42,0.30);
+    }
+
+    .editorActions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .status{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: var(--primaryText);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .16s ease, transform .16s ease;
+      z-index: 50;
+      max-width: 92%;
+      text-align:center;
+    }
+    .toast.show{
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    body.theme-light .kbd{
+      background: rgba(15,23,42,0.06);
+    }
+
+    /* ❄️ снежинки — крупнее + glow + twinkle */
+    .snowflake{
+      position: absolute;
+      top: -12vh;
+      left: 0;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%,
+        rgba(255,255,255,0.95),
+        rgba(255,255,255,0.55) 55%,
+        rgba(255,255,255,0.18) 100%);
+      box-shadow:
+        0 0 12px rgba(255,255,255,0.55),
+        0 0 28px rgba(56,189,248,0.18);
+      filter: blur(0.25px);
+      opacity: 0.85;
+      animation-name: snow-fall, snow-sway, snow-twinkle;
+      animation-timing-function: linear, ease-in-out, ease-in-out;
+      animation-iteration-count: infinite, infinite, infinite;
+      will-change: transform, opacity;
+    }
+    body.theme-light .snowflake{
+      box-shadow:
+        0 0 10px rgba(255,255,255,0.35),
+        0 0 22px rgba(99,102,241,0.10);
+      opacity: 0.65;
+    }
+
+    @keyframes snow-fall{ to{ transform: translateY(120vh); } }
+    @keyframes snow-sway{
+      0%{ margin-left: 0px; }
+      50%{ margin-left: 26px; }
+      100%{ margin-left: 0px; }
+    }
+    @keyframes snow-twinkle{
+      0%,100%{ opacity: var(--op, 0.8); }
+      50%{ opacity: calc(var(--op, 0.8) + 0.18); }
+    }
+
+    @media (max-width: 768px){
+      .snow{ display:none; }
+    }
+
+    /* Views */
+    .view{ display:none; }
+    .view.active{ display:block; }
+  </style>
+</head>
+
+<body>
+  <div class="snow"></div>
+
+  <div class="page">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <span class="icon icon-app"></span>
+        </div>
+        <div class="brandText">
+          <h1>Скриншоты</h1>
+          <p>Загрузка, вставка, переименование и скачивание — всё в браузере</p>
+        </div>
+      </div>
+
+      <div class="topRight">
+        <div class="tabs" role="tablist" aria-label="Вкладки">
+          <button class="tab active" id="tabShots" role="tab" aria-selected="true">
+            <span class="icon icon-photos"></span>
+            <span>Скриншоты</span>
+          </button>
+          <button class="tab" id="tabNotes" role="tab" aria-selected="false">
+            <span class="icon icon-notes"></span>
+            <span>Заметки</span>
+          </button>
+        </div>
+
+        <span class="chip" id="countChip">0 файлов</span>
+
+        <!-- actions for screenshots -->
+        <div id="actionsShots" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btnPrimary" id="btnUpload">
+            <span class="icon icon-upload"></span>
+            <span>Загрузить</span>
+          </button>
+
+          <button class="btn btnGhost" id="btnClear">
+            <span class="icon icon-trash"></span>
+            <span>Очистить</span>
+          </button>
+        </div>
+
+        <!-- actions for notes -->
+        <div id="actionsNotes" style="display:none; gap:10px; flex-wrap:wrap;">
+          <button class="btn btnPrimary" id="btnNewNote">
+            <span class="icon icon-plus"></span>
+            <span>Новая</span>
+          </button>
+          <button class="btn btnGhost" id="btnDeleteNote">
+            <span class="icon icon-trash"></span>
+            <span>Удалить</span>
+          </button>
+        </div>
+
+        <button class="btn" id="btnTheme" title="Переключить тему">
+          <span class="icon icon-theme"></span>
+          <span>Тема</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- VIEW: Screenshots -->
+      <section class="view active" id="viewShots">
+        <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Зона загрузки">
+          <div class="dzMain">
+            <div class="dzTitle">Перетащите изображения, нажмите «Загрузить» или вставьте из буфера</div>
+            <div class="dzSub">
+              Поддержка: PNG, JPG, GIF, WEBP, SVG, BMP, TIFF и другие.
+              Горячие клавиши: <span class="kbd">Ctrl</span> + <span class="kbd">V</span> / <span class="kbd">Cmd</span> + <span class="kbd">V</span>
+            </div>
+          </div>
+          <div class="dzTag">Drag &amp; Drop • Paste</div>
+        </div>
+
+        <div class="sectionHead">
+          <div class="help">Совет: можно вставлять сразу несколько изображений.</div>
+          <div class="help" id="supportText">Принимаем любые <code>image/*</code></div>
+        </div>
+
+        <div class="empty" id="empty">
+          <div>📝</div>
+          <div>
+            <strong>Здесь пока пусто.</strong><br/>
+            Загрузите файл, перетащите его или вставьте скриншот — и он появится здесь.
+          </div>
+        </div>
+
+        <div class="grid" id="grid" aria-live="polite"></div>
+      </section>
+
+      <!-- VIEW: Notes -->
+      <section class="view" id="viewNotes">
+        <div class="sectionHead" style="margin-top:0;">
+          <div class="help">Заметки сохраняются в IndexedDB (база данных в браузере).</div>
+          <div class="help">Работает на GitHub Pages ✅</div>
+        </div>
+
+        <div class="notesWrap">
+          <div class="panel">
+            <div class="panelHeader">
+              <div class="title">
+                <span class="icon icon-notes"></span>
+                <span>Мои заметки</span>
+              </div>
+              <div class="status" id="notesCount">0</div>
+            </div>
+            <div class="noteList" id="noteList"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panelHeader">
+              <div class="title">
+                <span class="icon icon-notes"></span>
+                <span>Редактор</span>
+              </div>
+              <div class="status" id="saveStatus">Не выбрано</div>
+            </div>
+
+            <div class="editor">
+              <div class="fieldLabel">Заголовок</div>
+              <input class="input" id="noteTitle" placeholder="Например: Идеи для проекта" />
+
+              <div style="height:10px"></div>
+
+              <div class="fieldLabel">Текст</div>
+              <textarea class="textarea" id="noteBody" placeholder="Пишите заметку..."></textarea>
+
+              <div class="editorActions">
+                <div class="status" id="noteMeta">—</div>
+                <div class="status">Автосохранение включено</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <input id="fileInput" type="file" accept="image/*" multiple hidden />
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (function () {
+      const THEME_KEY = "shots_theme_v4";
+      const VIEW_KEY = "shots_view_v1";
+
+      const fileInput = document.getElementById("fileInput");
+      const btnUpload = document.getElementById("btnUpload");
+      const btnClear  = document.getElementById("btnClear");
+      const btnTheme  = document.getElementById("btnTheme");
+      const dropzone  = document.getElementById("dropzone");
+      const grid      = document.getElementById("grid");
+      const empty     = document.getElementById("empty");
+      const toast     = document.getElementById("toast");
+      const countChip = document.getElementById("countChip");
+
+      // Tabs
+      const tabShots = document.getElementById("tabShots");
+      const tabNotes = document.getElementById("tabNotes");
+      const viewShots = document.getElementById("viewShots");
+      const viewNotes = document.getElementById("viewNotes");
+      const actionsShots = document.getElementById("actionsShots");
+      const actionsNotes = document.getElementById("actionsNotes");
+
+      // Notes UI
+      const noteList = document.getElementById("noteList");
+      const noteTitle = document.getElementById("noteTitle");
+      const noteBody = document.getElementById("noteBody");
+      const btnNewNote = document.getElementById("btnNewNote");
+      const btnDeleteNote = document.getElementById("btnDeleteNote");
+      const notesCount = document.getElementById("notesCount");
+      const saveStatus = document.getElementById("saveStatus");
+      const noteMeta = document.getElementById("noteMeta");
+
+      /* ✨ Мягкое смещение подсветки за мышкой */
+      let targetX = 0.5, targetY = 0.2;
+      let currentX = 0.5, currentY = 0.2;
+
+      window.addEventListener("mousemove", (e) => {
+        targetX = e.clientX / window.innerWidth;
+        targetY = e.clientY / window.innerHeight;
+      }, { passive: true });
+
+      function animateGlow() {
+        const ease = 0.07;
+        currentX += (targetX - currentX) * ease;
+        currentY += (targetY - currentY) * ease;
+        document.documentElement.style.setProperty("--mx", (currentX * 100).toFixed(2) + "%");
+        document.documentElement.style.setProperty("--my", (currentY * 100).toFixed(2) + "%");
+        requestAnimationFrame(animateGlow);
+      }
+      animateGlow();
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.classList.remove("show"), 2400);
+      }
+
+      // =========================
+      // Screenshots logic
+      // =========================
+      function isImageFile(file) {
+        return !!file && typeof file.type === "string" && file.type.startsWith("image/");
+      }
+
+      function updateUI() {
+        const count = grid.children.length;
+        empty.style.display = count ? "none" : "flex";
+        countChip.textContent =
+          count + (count === 1 ? " файл" : (count >= 2 && count <= 4 ? " файла" : " файлов"));
+      }
+
+      function sanitizeName(name) {
+        return name.replace(/[\/\\:\*\?"<>|]/g, "_").trim();
+      }
+
+      function splitNameAndExt(file) {
+        const original = (file && file.name) ? file.name : "image";
+        const dot = original.lastIndexOf(".");
+        const base = dot === -1 ? original : original.slice(0, dot);
+        let ext = dot === -1 ? "" : original.slice(dot);
+
+        if (!ext) {
+          if (file.type === "image/png") ext = ".png";
+          else if (file.type === "image/jpeg") ext = ".jpg";
+          else if (file.type === "image/gif") ext = ".gif";
+          else if (file.type === "image/webp") ext = ".webp";
+          else if (file.type === "image/svg+xml") ext = ".svg";
+          else if (file.type === "image/bmp") ext = ".bmp";
+          else if (file.type === "image/tiff") ext = ".tiff";
+          else ext = "";
+        }
+        return { base: base || "image", ext };
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function addCard(file) {
+        const url = URL.createObjectURL(file);
+        const { base, ext } = splitNameAndExt(file);
+
+        const card = document.createElement("article");
+        card.className = "card";
+
+        card.innerHTML = `
+          <div class="preview">
+            <img src="${url}" alt="Изображение" loading="lazy" />
+          </div>
+
+          <div class="meta">
+            <div class="row">
+              <div><div class="label">Имя файла</div></div>
+              <div class="mini">${(file.type || "image/*")}</div>
+            </div>
+
+            <div class="nameWrap">
+              <input class="nameInput" type="text" value="${escapeHtml(base)}" spellcheck="false" />
+              <span class="ext">${escapeHtml(ext)}</span>
+            </div>
+
+            <div class="actions">
+              <button class="btn" data-role="delete">
+                <span class="icon icon-trash"></span>
+                <span>Удалить</span>
+              </button>
+              <button class="btn btnPrimary" data-role="download">
+                <span class="icon icon-download"></span>
+                <span>Скачать</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+        const input = card.querySelector(".nameInput");
+        const extEl = card.querySelector(".ext");
+        const btnDel = card.querySelector('[data-role="delete"]');
+        const btnDl  = card.querySelector('[data-role="download"]');
+
+        btnDl.addEventListener("click", () => {
+          const extText = extEl.textContent || "";
+          let name = sanitizeName(input.value || "");
+          if (!name) name = "image";
+          const filename = name + extText;
+
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        });
+
+        btnDel.addEventListener("click", () => {
+          URL.revokeObjectURL(url);
+          card.remove();
+          updateUI();
+        });
+
+        grid.prepend(card);
+        updateUI();
+      }
+
+      function handleFiles(files) {
+        const list = Array.from(files || []);
+        if (!list.length) return;
+
+        let added = 0;
+        for (const file of list) {
+          if (!isImageFile(file)) continue;
+          addCard(file);
+          added++;
+        }
+
+        if (added > 1) showToast("Добавлено изображений: " + added);
+        else if (added === 1) showToast("Изображение добавлено ✅");
+      }
+
+      btnUpload.addEventListener("click", () => fileInput.click());
+      fileInput.addEventListener("change", (e) => {
+        handleFiles(e.target.files);
+        fileInput.value = "";
+      });
+
+      dropzone.addEventListener("click", () => fileInput.click());
+      dropzone.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          fileInput.click();
+        }
+      });
+
+      dropzone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropzone.classList.add("dragover");
+      });
+      dropzone.addEventListener("dragenter", (e) => {
+        e.preventDefault();
+        dropzone.classList.add("dragover");
+      });
+      ["dragleave", "dragend", "drop"].forEach((name) => {
+        dropzone.addEventListener(name, () => dropzone.classList.remove("dragover"));
+      });
+      dropzone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        handleFiles(e.dataTransfer.files);
+      });
+
+      btnClear.addEventListener("click", () => {
+        Array.from(grid.querySelectorAll("img")).forEach((img) => {
+          if (img.src && img.src.startsWith("blob:")) URL.revokeObjectURL(img.src);
+        });
+        grid.innerHTML = "";
+        updateUI();
+        showToast("Очищено 🗑");
+      });
+
+      document.addEventListener("paste", (event) => {
+        // только когда открыта вкладка "Скриншоты"
+        if (!viewShots.classList.contains("active")) return;
+
+        const clipboard = event.clipboardData || window.clipboardData;
+        if (!clipboard || !clipboard.items) return;
+
+        const items = Array.from(clipboard.items);
+        const imageFiles = [];
+
+        for (const item of items) {
+          if (item.type && item.type.startsWith("image/")) {
+            const file = item.getAsFile();
+            if (file) imageFiles.push(file);
+          }
+        }
+
+        if (imageFiles.length) {
+          handleFiles(imageFiles);
+          event.preventDefault();
+        }
+      });
+
+      // =========================
+      // Theme
+      // =========================
+      function applyTheme(theme) {
+        const light = theme === "light";
+        document.body.classList.toggle("theme-light", light);
+      }
+
+      const prefersLight =
+        window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      const savedTheme = localStorage.getItem(THEME_KEY) || (prefersLight ? "light" : "dark");
+      applyTheme(savedTheme);
+
+      btnTheme.addEventListener("click", () => {
+        const isLight = document.body.classList.contains("theme-light");
+        const next = isLight ? "dark" : "light";
+        applyTheme(next);
+        localStorage.setItem(THEME_KEY, next);
+        showToast(next === "dark" ? "Тёмная тема 🌙" : "Светлая тема ☀️");
+      });
+
+      // =========================
+      // Tabs switch
+      // =========================
+      function setView(name) {
+        const isNotes = name === "notes";
+
+        tabShots.classList.toggle("active", !isNotes);
+        tabNotes.classList.toggle("active", isNotes);
+        tabShots.setAttribute("aria-selected", String(!isNotes));
+        tabNotes.setAttribute("aria-selected", String(isNotes));
+
+        viewShots.classList.toggle("active", !isNotes);
+        viewNotes.classList.toggle("active", isNotes);
+
+        actionsShots.style.display = isNotes ? "none" : "flex";
+        actionsNotes.style.display = isNotes ? "flex" : "none";
+        countChip.style.display = isNotes ? "none" : "inline-flex";
+
+        localStorage.setItem(VIEW_KEY, name);
+      }
+
+      tabShots.addEventListener("click", () => setView("shots"));
+      tabNotes.addEventListener("click", () => setView("notes"));
+
+      const savedView = localStorage.getItem(VIEW_KEY) || "shots";
+      setView(savedView);
+
+      // =========================
+      // Notes (IndexedDB)
+      // =========================
+      const DB_NAME = "shots_notes_db";
+      const DB_VERSION = 1;
+      const STORE = "notes";
+
+      let db = null;
+      let currentNoteId = null;
+      let saveTimer = null;
+
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          const req = indexedDB.open(DB_NAME, DB_VERSION);
+
+          req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains(STORE)) {
+              const store = db.createObjectStore(STORE, { keyPath: "id", autoIncrement: true });
+              store.createIndex("updatedAt", "updatedAt");
+            }
+          };
+
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      function tx(storeName, mode = "readonly") {
+        const t = db.transaction(storeName, mode);
+        return t.objectStore(storeName);
+      }
+
+      function getAllNotes() {
+        return new Promise((resolve, reject) => {
+          const store = tx(STORE, "readonly");
+          const req = store.getAll();
+          req.onsuccess = () => {
+            const arr = req.result || [];
+            // сортировка: новые сверху
+            arr.sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+            resolve(arr);
+          };
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      function addNote(note) {
+        return new Promise((resolve, reject) => {
+          const store = tx(STORE, "readwrite");
+          const req = store.add(note);
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      function putNote(note) {
+        return new Promise((resolve, reject) => {
+          const store = tx(STORE, "readwrite");
+          const req = store.put(note);
+          req.onsuccess = () => resolve(true);
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      function deleteNote(id) {
+        return new Promise((resolve, reject) => {
+          const store = tx(STORE, "readwrite");
+          const req = store.delete(id);
+          req.onsuccess = () => resolve(true);
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      function formatDate(ts) {
+        if (!ts) return "";
+        const d = new Date(ts);
+        return d.toLocaleString("ru-RU", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
+      }
+
+      function setEditorEnabled(enabled) {
+        noteTitle.disabled = !enabled;
+        noteBody.disabled = !enabled;
+        btnDeleteNote.disabled = !enabled;
+      }
+
+      function renderNoteList(notes) {
+        noteList.innerHTML = "";
+        notesCount.textContent = notes.length + (notes.length === 1 ? " заметка" : (notes.length >= 2 && notes.length <= 4 ? " заметки" : " заметок"));
+
+        if (!notes.length) {
+          const div = document.createElement("div");
+          div.style.padding = "12px";
+          div.style.color = "var(--muted)";
+          div.style.fontSize = "12px";
+          div.textContent = "Заметок пока нет. Нажмите «Новая».";
+          noteList.appendChild(div);
+          return;
+        }
+
+        for (const n of notes) {
+          const item = document.createElement("div");
+          item.className = "noteItem" + (n.id === currentNoteId ? " active" : "");
+          const title = (n.title || "").trim() || "Без названия";
+          const snippet = ((n.body || "").trim().replace(/\s+/g," ")).slice(0, 80) || "—";
+          item.innerHTML = `
+            <div class="h">${escapeHtml(title)}</div>
+            <div class="m">${escapeHtml(snippet)}</div>
+          `;
+          item.addEventListener("click", () => loadNoteIntoEditor(n));
+          noteList.appendChild(item);
+        }
+      }
+
+      function loadNoteIntoEditor(note) {
+        currentNoteId = note.id;
+        noteTitle.value = note.title || "";
+        noteBody.value = note.body || "";
+        saveStatus.textContent = "Открыто";
+        noteMeta.textContent = "Обновлено: " + formatDate(note.updatedAt) + " • Создано: " + formatDate(note.createdAt);
+        setEditorEnabled(true);
+        refreshNotesList(); // чтобы подсветить active
+      }
+
+      async function refreshNotesList() {
+        const notes = await getAllNotes();
+        renderNoteList(notes);
+
+        // если открытая заметка удалена — сброс
+        if (currentNoteId != null && !notes.some(n => n.id === currentNoteId)) {
+          currentNoteId = null;
+          noteTitle.value = "";
+          noteBody.value = "";
+          saveStatus.textContent = "Не выбрано";
+          noteMeta.textContent = "—";
+          setEditorEnabled(false);
+        }
+      }
+
+      function scheduleAutoSave() {
+        if (currentNoteId == null) return;
+        saveStatus.textContent = "Сохранение…";
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(async () => {
+          await saveCurrentNote();
+        }, 350);
+      }
+
+      async function saveCurrentNote() {
+        if (currentNoteId == null) return;
+
+        // получим текущую заметку
+        const notes = await getAllNotes();
+        const n = notes.find(x => x.id === currentNoteId);
+        if (!n) return;
+
+        n.title = noteTitle.value;
+        n.body = noteBody.value;
+        n.updatedAt = Date.now();
+
+        await putNote(n);
+
+        saveStatus.textContent = "Сохранено";
+        noteMeta.textContent = "Обновлено: " + formatDate(n.updatedAt) + " • Создано: " + formatDate(n.createdAt);
+        refreshNotesList();
+      }
+
+      btnNewNote.addEventListener("click", async () => {
+        const now = Date.now();
+        const id = await addNote({
+          title: "Новая заметка",
+          body: "",
+          createdAt: now,
+          updatedAt: now
+        });
+        showToast("Заметка создана ✅");
+        await refreshNotesList();
+
+        // открываем созданную
+        const notes = await getAllNotes();
+        const created = notes.find(n => n.id === id);
+        if (created) loadNoteIntoEditor(created);
+        noteTitle.focus();
+        noteTitle.setSelectionRange(0, noteTitle.value.length);
+      });
+
+      btnDeleteNote.addEventListener("click", async () => {
+        if (currentNoteId == null) return;
+        const id = currentNoteId;
+        await deleteNote(id);
+        showToast("Заметка удалена 🗑");
+        currentNoteId = null;
+        await refreshNotesList();
+      });
+
+      noteTitle.addEventListener("input", scheduleAutoSave);
+      noteBody.addEventListener("input", scheduleAutoSave);
+
+      // Init notes DB
+      (async () => {
+        try{
+          db = await openDB();
+          setEditorEnabled(false);
+          await refreshNotesList();
+        }catch(err){
+          console.error(err);
+          showToast("Ошибка IndexedDB (заметки не сохраняются)");
+          setEditorEnabled(false);
+        }
+      })();
+
+      // =========================
+      // Snow generation
+      // =========================
+      const snowContainer = document.querySelector(".snow");
+      if (snowContainer) {
+        const isMobile = window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
+        const COUNT = isMobile ? 0 : 46;
+
+        for (let i = 0; i < COUNT; i++) {
+          const flake = document.createElement("span");
+          flake.className = "snowflake";
+
+          const size = 6 + Math.random() * 12;        // 6–18px
+          const left = Math.random() * 100;
+          const startTop = -20 - Math.random() * 140;
+          const fallDuration = 9 + Math.random() * 16; // 9–25s
+          const swayDuration = 4 + Math.random() * 7;  // 4–11s
+          const delay = -Math.random() * fallDuration;
+          const op = 0.55 + Math.random() * 0.35;
+
+          flake.style.width = size + "px";
+          flake.style.height = size + "px";
+          flake.style.left = left + "vw";
+          flake.style.top = startTop + "vh";
+          flake.style.setProperty("--op", op.toString());
+          flake.style.animationDuration =
+            fallDuration + "s, " + swayDuration + "s, " + (2.5 + Math.random() * 3.5) + "s";
+          flake.style.animationDelay = delay + "s, " + delay + "s, " + delay + "s";
+
+          if (size > 14) flake.style.filter = "blur(0.55px)";
+
+          snowContainer.appendChild(flake);
+        }
+      }
+
+      updateUI();
+    })();
+  </script>
+</body>
+</html>
